@@ -35,5 +35,11 @@ namespace WinFormsUI
         {
             Program.SharedContext.SetPair(Constants.PROMPT_KEY, tbPrompt.Text);
         }
+
+        private void bt_EditResponse_Click(object sender, EventArgs e)
+        {
+            tbResponse.ReadOnly = !tbResponse.ReadOnly;
+        }
+
     }
 }

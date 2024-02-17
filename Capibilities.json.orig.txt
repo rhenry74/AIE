@@ -1,0 +1,79 @@
+[
+  {
+    "Action": "paste email subjet from clipboard into email",
+    "AppClass": "email",
+    "AppPath": null,
+    "ActionType": 1,
+    "Description": "Set the Subject of an EMail",
+    "Route": "subject",
+    "Method": 1,
+    "ContentType": "application/json",
+    "Contract": "SingleText"
+  },
+  {
+    "Action": "copy email subjet from email to clipboard",
+    "AppClass": "email",
+    "AppPath": null,
+    "ActionType": 1,
+    "Description": "Get the Subject of an EMail",
+    "Route": "subject",
+    "Method": 0,
+    "ContentType": "application/json",
+    "Contract": "SingleText"
+  },
+  {
+    "Action": "paste clipboard at the end of the email body",
+    "AppClass": "email",
+    "AppPath": null,
+    "ActionType": 1,
+    "Description": "Set the Body of an EMail",
+    "Route": "body",
+    "Method": 1,
+    "ContentType": "application/json",
+    "Contract": "SingleText"
+  },
+  {
+    "Action": "set email subject to []",
+    "AppClass": "email",
+    "AppPath": null,
+    "ActionType": 1,
+    "Description": "Set the Subject of an EMail",
+    "Route": "body",
+    "Method": 1,
+    "ContentType": "application/json",
+    "Contract": "SingleText"
+  },
+  {
+    "Action": "in email, in body, add []",
+    "AppClass": "email",
+    "AppPath": null,
+    "ActionType": 1,
+    "Description": "Set the Body of an EMail",
+    "Route": "body",
+    "Method": 1,
+    "ContentType": "application/json",
+    "Contract": "SingleText"
+  },
+  {
+    "Action": "in email, in to address, add []",
+    "AppClass": "email",
+    "AppPath": null,
+    "ActionType": 1,
+    "Description": "Set the Recipient of an EMail",
+    "Route": "recipient",
+    "Method": 1,
+    "ContentType": "application/json",
+    "Contract": "SingleText"
+  },
+  {
+    "Action": "launch email",
+    "AppClass": "email",
+    "AppPath": "C:\\Users\\rhenry74\\source\\repos\\AIE\\AIE_Email\\WinFormsUI\\bin\\Debug\\net8.0-windows\\WinFormsUI.exe",
+    "ActionType": 0,
+    "Description": "Launch EMail",
+    "Route": null,
+    "Method": 4,
+    "ContentType": null,
+    "Contract": "SingleText"
+  }
+]

@@ -64,14 +64,14 @@ namespace WinFormsUI
                     foreach (var comparison in comparisons)
                     {
                         Program.SharedContext.AutomationLog.Enqueue(comparison.Capibility.Action + " : " +
-                            comparison.DotProduct);
+                            comparison.Likeness);
                         if (topChoice == null)
                         {
                             topChoice = comparison;
                         }
                     }
 
-                    if (topChoice.DotProduct > 0.97)
+                    if (topChoice.Likeness > 0.97)
                     {
                         this.CapibilityToExecute = topChoice.Capibility;
                         Program.SharedContext.AutomationLog.Enqueue("Compilation Success.");

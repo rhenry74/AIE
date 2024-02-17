@@ -79,7 +79,7 @@
             // UI_UpdateTimer
             // 
             UI_UpdateTimer.Enabled = true;
-            UI_UpdateTimer.Interval = 555;
+            UI_UpdateTimer.Interval = 125;
             UI_UpdateTimer.Tick += UI_UpdateTimer_Tick;
             // 
             // splitContainer1

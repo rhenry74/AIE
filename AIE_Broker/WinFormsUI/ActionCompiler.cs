@@ -46,12 +46,13 @@ namespace WinFormsUI
                         var endPosition = this.ActionText.Substring(startPosition + 1).IndexOf("]");
                         this.Parameter = this.ActionText.Substring(startPosition + 1, startPosition + endPosition - startPosition);
                         actionText = this.ActionText.Substring(0, startPosition);
-                        actionText = actionText + "?";
+                        actionText = actionText + "[]";
                         if (this.ActionText.Length > startPosition + endPosition)
                         {
                             actionText = actionText + this.ActionText.Substring(startPosition + endPosition + 2,
                                 this.ActionText.Length - (startPosition + endPosition) - 2);
                         }
+                        Program.SharedContext.AutomationLog.Enqueue("Parameter='" + this.Parameter + "'");
                     }
 
                     //find best match
@@ -62,7 +63,7 @@ namespace WinFormsUI
                     EmbeddingComparison topChoice = null;
                     foreach (var comparison in comparisons)
                     {
-                        Program.SharedContext.AutomationLog.Enqueue(comparison.Capibility.Action + " - " +
+                        Program.SharedContext.AutomationLog.Enqueue(comparison.Capibility.Action + " : " +
                             comparison.DotProduct);
                         if (topChoice == null)
                         {

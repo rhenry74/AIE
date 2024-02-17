@@ -56,6 +56,10 @@ namespace WinFormsUI
 
         private void tbCompile_Click(object sender, EventArgs e)
         {
+            Program.CompileQueue.Clear();
+            Program.ExecuteQueue.Clear();
+            tbAutomationStatus.Clear();
+
             foreach (var action in tbResponse.Lines)
             {
                 Program.CompileQueue.Enqueue(new ActionCompiler(action));

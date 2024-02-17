@@ -84,7 +84,7 @@
             // splitContainer1
             // 
             splitContainer1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            splitContainer1.BackColor = SystemColors.Control;
+            splitContainer1.BackColor = SystemColors.ControlLight;
             splitContainer1.BorderStyle = BorderStyle.Fixed3D;
             splitContainer1.Location = new Point(0, 4);
             splitContainer1.Name = "splitContainer1";
@@ -285,10 +285,11 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.Control;
+            BackColor = SystemColors.ControlLight;
             ClientSize = new Size(348, 503);
             Controls.Add(splitContainer2);
             Name = "MainWin";
+            SizeGripStyle = SizeGripStyle.Hide;
             Text = "AIE Broker";
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();

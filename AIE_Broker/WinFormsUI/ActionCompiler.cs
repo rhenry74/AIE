@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace WinFormsUI
@@ -15,15 +18,27 @@ namespace WinFormsUI
             this.ActionText = actionText;
         }
 
-        public bool Compiled { get; internal set; } = false;
+        public bool Compiled { get; set; } = false;
+        public bool Compiling { get; set; } = false;
+
+        
 
         public void Compile()
         {
-            Task.Run(() =>
-            {
-                HttpClient client = new HttpClient();
+            Compiling = true;
 
-                //do lots of stuff
+            Task.Run(async () =>
+            {
+                Program.SharedContext.AutomationLog.Enqueue("Compiling: " + this.ActionText);
+
+                var embedding = await Embedding.GetForAsync(this.ActionText);
+
+                var possibleActions = await Embedding.TopThreeCapibilitiesFor(embedding);
+                Program.SharedContext.AutomationLog.Enqueue("Top 3:");
+                foreach (var possibleAction in possibleActions)
+                {
+                    Program.SharedContext.AutomationLog.Enqueue(possibleAction.Action);
+                }
 
                 Compiled = true;
             });

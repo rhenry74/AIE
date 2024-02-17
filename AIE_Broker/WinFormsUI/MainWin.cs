@@ -37,8 +37,8 @@ namespace WinFormsUI
                 {
                     Program.ExecuteQueue.Enqueue(new ActionExecutor(Program.CompileQueue.Dequeue()));
                 }
-                else
-                {
+                if (!actionCompiler.Compiling)
+                { 
                     actionCompiler.Compile();
                 }
             }

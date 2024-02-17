@@ -32,5 +32,6 @@ namespace AIE_InterThread
         public MethodType Method { get; set; }
         public string ContentType { get; set; } 
         public string Contract { get; set; }
+        public double[]? Vector { get; set; }
     }
 }

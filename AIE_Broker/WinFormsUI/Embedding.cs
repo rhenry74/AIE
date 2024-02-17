@@ -12,26 +12,30 @@ namespace WinFormsUI
     {
         public ApplicationCapibility Capibility { get; set; }
         public Embedding ToCompare { get; set; }
+
+        private double? _DotProduct;
         public double DotProduct 
-        { 
+        {
             get
             {
-                int count = 0;
-                double sum = 0;
-                foreach(double val in Capibility.Vector)
+                if (_DotProduct != null)
                 {
-                    var product = val * ToCompare.v1[count];
-                    sum = sum + val;
-                    count++;
+                    return _DotProduct.Value;
                 }
-                return sum / count;
+
+                _DotProduct = 0;
+                for(int count = 0; count < Capibility.Vector.Length; count++)
+                {
+                    _DotProduct += Capibility.Vector[count] * ToCompare.Vector[count];
+                }
+                return _DotProduct.Value;
             }
         } 
     }
 
     public class Embedding
     {
-        public double[] v1 { get; set; }
+        public double[] Vector { get; set; }
 
         public static async Task<Embedding> GetForAsync(string text)
         {
@@ -45,7 +49,7 @@ namespace WinFormsUI
             return embedding;
         }
 
-        public async static Task<IEnumerable<ApplicationCapibility>> TopThreeCapibilitiesFor(Embedding embedding)
+        public async static Task<IEnumerable<EmbeddingComparison>> TopThreeCapibilitiesFor(Embedding embedding)
         {
             var comparisons = new List<EmbeddingComparison>();
 
@@ -65,7 +69,8 @@ namespace WinFormsUI
                 comparisons.Add(comparison);
             }
 
-            return comparisons.OrderByDescending(c => c.DotProduct).Take(3).Select(c => c.Capibility).AsEnumerable();
+            var selected = comparisons.OrderByDescending(c => c.DotProduct).Take(3);
+            return selected.AsEnumerable();
         }
     }
 

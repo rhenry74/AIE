@@ -60,9 +60,9 @@ namespace WinFormsUI
                 Capabilities = JsonSerializer.Deserialize<List<ApplicationCapibility>>(File.ReadAllText(capibilitiesFilePath));
                 SharedContext.AutomationLog.Enqueue("Capibilities Loaded");
             }
-            catch
+            catch(Exception ex)
             {
-                SharedContext.AutomationLog.Enqueue("Error Loading Capibilities");
+                SharedContext.AutomationLog.Enqueue("Error Loading Capibilities: " + ex.ToString());
             }
             if (Capabilities.Count == 0)
             {
@@ -136,7 +136,7 @@ namespace WinFormsUI
                 if (capibility.Vector == null)
                 {
                     SharedContext.AutomationLog.Enqueue("Getting Embedding for: " + capibility.Action);
-                    capibility.Vector = (await Embedding.GetForAsync(capibility.Action)).v1;
+                    capibility.Vector = (await Embedding.GetForAsync(capibility.Action)).Vector;
                 }
             }
 

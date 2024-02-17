@@ -63,6 +63,7 @@
             tbAutomationStatus.Multiline = true;
             tbAutomationStatus.Name = "tbAutomationStatus";
             tbAutomationStatus.ReadOnly = true;
+            tbAutomationStatus.ScrollBars = ScrollBars.Both;
             tbAutomationStatus.Size = new Size(345, 140);
             tbAutomationStatus.TabIndex = 16;
             // 
@@ -170,6 +171,7 @@
             tbPrompt.Location = new Point(3, 21);
             tbPrompt.Multiline = true;
             tbPrompt.Name = "tbPrompt";
+            tbPrompt.ScrollBars = ScrollBars.Both;
             tbPrompt.Size = new Size(345, 105);
             tbPrompt.TabIndex = 14;
             // 
@@ -246,6 +248,7 @@
             tbResponse.Multiline = true;
             tbResponse.Name = "tbResponse";
             tbResponse.ReadOnly = true;
+            tbResponse.ScrollBars = ScrollBars.Both;
             tbResponse.Size = new Size(345, 105);
             tbResponse.TabIndex = 20;
             tbResponse.TextChanged += tbResponse_TextChanged;

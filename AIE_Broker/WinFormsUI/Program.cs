@@ -145,5 +145,24 @@ namespace WinFormsUI
             await File.WriteAllTextAsync(capibilitiesFilePath, JsonSerializer.Serialize(Capabilities));
             SharedContext.AutomationLog.Enqueue("Capibility Vectors Saved");
         }
+
+        public static string[] GeneratePrompt(string[] question)
+        {
+            var lines = new List<string>();
+            lines.Add(ConfigurationManager.AppSettings["automationPrompt"]);
+            lines.Add("");
+            foreach (var capibility in Capabilities)
+            {
+                lines.Add(capibility.Action.Replace("[]", "[?]"));
+            }
+            lines.Add("");
+            lines.Add("The human's request is:");
+            lines.Add("");
+            foreach (var questionLine in question)
+            {
+                lines.Add(questionLine);
+            }
+            return lines.ToArray();
+        }
     }
 }

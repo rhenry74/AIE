@@ -33,9 +33,10 @@
             label4 = new Label();
             UI_UpdateTimer = new System.Windows.Forms.Timer(components);
             splitContainer1 = new SplitContainer();
+            btSeePrompt = new Button();
             tbRate = new Button();
             btClearChat = new Button();
-            button1 = new Button();
+            btPromptLLM = new Button();
             label3 = new Label();
             tbPrompt = new TextBox();
             btLearn = new Button();
@@ -93,9 +94,10 @@
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(btSeePrompt);
             splitContainer1.Panel1.Controls.Add(tbRate);
             splitContainer1.Panel1.Controls.Add(btClearChat);
-            splitContainer1.Panel1.Controls.Add(button1);
+            splitContainer1.Panel1.Controls.Add(btPromptLLM);
             splitContainer1.Panel1.Controls.Add(label3);
             splitContainer1.Panel1.Controls.Add(tbPrompt);
             // 
@@ -111,6 +113,22 @@
             splitContainer1.SplitterDistance = 164;
             splitContainer1.TabIndex = 19;
             // 
+            // btSeePrompt
+            // 
+            btSeePrompt.AccessibleDescription = "";
+            btSeePrompt.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btSeePrompt.BackColor = SystemColors.ButtonFace;
+            btSeePrompt.BackgroundImage = Properties.Resources.seePrompt_sm;
+            btSeePrompt.BackgroundImageLayout = ImageLayout.Zoom;
+            btSeePrompt.Location = new Point(41, 127);
+            btSeePrompt.Name = "btSeePrompt";
+            btSeePrompt.Size = new Size(30, 30);
+            btSeePrompt.TabIndex = 23;
+            toolTip1.SetToolTip(btSeePrompt, "Preview Prompt");
+            btSeePrompt.UseVisualStyleBackColor = false;
+            btSeePrompt.Visible = false;
+            btSeePrompt.Click += btSeePrompt_Click;
+            // 
             // tbRate
             // 
             tbRate.AccessibleDescription = "";
@@ -119,7 +137,7 @@
             tbRate.BackColor = SystemColors.ButtonFace;
             tbRate.BackgroundImage = Properties.Resources.rate;
             tbRate.BackgroundImageLayout = ImageLayout.Zoom;
-            tbRate.Location = new Point(72, 128);
+            tbRate.Location = new Point(103, 127);
             tbRate.Name = "tbRate";
             tbRate.Size = new Size(30, 30);
             tbRate.TabIndex = 22;
@@ -134,7 +152,7 @@
             btClearChat.BackColor = SystemColors.ButtonFace;
             btClearChat.BackgroundImage = Properties.Resources.clearChat;
             btClearChat.BackgroundImageLayout = ImageLayout.Zoom;
-            btClearChat.Location = new Point(41, 128);
+            btClearChat.Location = new Point(72, 127);
             btClearChat.Name = "btClearChat";
             btClearChat.Size = new Size(30, 30);
             btClearChat.TabIndex = 17;
@@ -142,19 +160,19 @@
             btClearChat.UseVisualStyleBackColor = false;
             btClearChat.Visible = false;
             // 
-            // button1
+            // btPromptLLM
             // 
-            button1.AccessibleDescription = "";
-            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button1.BackColor = SystemColors.ButtonFace;
-            button1.BackgroundImage = Properties.Resources.brain;
-            button1.BackgroundImageLayout = ImageLayout.Zoom;
-            button1.Location = new Point(10, 128);
-            button1.Name = "button1";
-            button1.Size = new Size(30, 30);
-            button1.TabIndex = 16;
-            toolTip1.SetToolTip(button1, "Generate Response");
-            button1.UseVisualStyleBackColor = false;
+            btPromptLLM.AccessibleDescription = "";
+            btPromptLLM.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btPromptLLM.BackColor = SystemColors.ButtonFace;
+            btPromptLLM.BackgroundImage = Properties.Resources.brain;
+            btPromptLLM.BackgroundImageLayout = ImageLayout.Zoom;
+            btPromptLLM.Location = new Point(10, 128);
+            btPromptLLM.Name = "btPromptLLM";
+            btPromptLLM.Size = new Size(30, 30);
+            btPromptLLM.TabIndex = 16;
+            toolTip1.SetToolTip(btPromptLLM, "Generate Response");
+            btPromptLLM.UseVisualStyleBackColor = false;
             // 
             // label3
             // 
@@ -174,6 +192,7 @@
             tbPrompt.ScrollBars = ScrollBars.Both;
             tbPrompt.Size = new Size(345, 105);
             tbPrompt.TabIndex = 14;
+            tbPrompt.TextChanged += tbPrompt_TextChanged_1;
             // 
             // btLearn
             // 
@@ -318,7 +337,7 @@
         private TextBox tbPrompt;
         private TextBox tbResponse;
         private Label label5;
-        private Button button1;
+        private Button btPromptLLM;
         private Button btEditResponse;
         private ToolTip toolTip1;
         private SplitContainer splitContainer2;
@@ -327,5 +346,6 @@
         private Button tbCompile;
         private Button btRun;
         private Button btLearn;
+        private Button btSeePrompt;
     }
 }

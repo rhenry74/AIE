@@ -38,7 +38,7 @@ namespace WinFormsUI
                     Program.ExecuteQueue.Enqueue(new ActionExecutor(Program.CompileQueue.Dequeue()));
                 }
                 if (!actionCompiler.Compiling)
-                { 
+                {
                     actionCompiler.Compile();
                 }
             }
@@ -69,6 +69,18 @@ namespace WinFormsUI
         private void tbResponse_TextChanged(object sender, EventArgs e)
         {
             tbCompile.Visible = true;
+        }
+
+        private void tbPrompt_TextChanged_1(object sender, EventArgs e)
+        {
+            btSeePrompt.Visible = true;
+        }
+
+        private void btSeePrompt_Click(object sender, EventArgs e)
+        {
+            var dialog = new InfoDia();
+            dialog.tbInfo.Lines = Program.GeneratePrompt(tbPrompt.Lines);
+            dialog.ShowDialog();
         }
     }
 }

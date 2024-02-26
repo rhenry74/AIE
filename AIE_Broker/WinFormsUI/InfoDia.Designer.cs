@@ -38,11 +38,13 @@
             tbInfo.Location = new Point(12, 12);
             tbInfo.Multiline = true;
             tbInfo.Name = "tbInfo";
+            tbInfo.ScrollBars = ScrollBars.Vertical;
             tbInfo.Size = new Size(430, 220);
             tbInfo.TabIndex = 0;
             // 
             // btOk
             // 
+            btOk.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btOk.Location = new Point(367, 238);
             btOk.Name = "btOk";
             btOk.Size = new Size(75, 23);

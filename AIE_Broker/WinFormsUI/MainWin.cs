@@ -36,6 +36,10 @@ namespace WinFormsUI
                 if (actionCompiler.Compiled)
                 {
                     Program.ExecuteQueue.Enqueue(new ActionExecutor(Program.CompileQueue.Dequeue()));
+                    var actionUI = new ActionControl();
+                    flCommands.Controls.Add(actionUI);
+                    actionUI.Initialize(actionCompiler);
+                    actionUI.Width = flCommands.Width-SystemInformation.VerticalScrollBarWidth-6;
                 }
                 if (!actionCompiler.Compiling)
                 {
@@ -58,6 +62,7 @@ namespace WinFormsUI
         {
             Program.CompileQueue.Clear();
             Program.ExecuteQueue.Clear();
+            flCommands.Controls.Clear();
             tbAutomationStatus.Clear();
 
             foreach (var action in tbResponse.Lines)

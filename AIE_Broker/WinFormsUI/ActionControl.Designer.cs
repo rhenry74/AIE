@@ -56,8 +56,8 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(lbActionText);
-            splitContainer1.Size = new Size(332, 25);
-            splitContainer1.SplitterDistance = 161;
+            splitContainer1.Size = new Size(330, 25);
+            splitContainer1.SplitterDistance = 160;
             splitContainer1.TabIndex = 0;
             // 
             // lbTopChoice
@@ -136,6 +136,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(lbState);
             Controls.Add(label3);
             Controls.Add(lbLikeness);
@@ -143,7 +144,7 @@
             Controls.Add(cbExecute);
             Controls.Add(splitContainer1);
             Name = "ActionControl";
-            Size = new Size(338, 50);
+            Size = new Size(336, 48);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);

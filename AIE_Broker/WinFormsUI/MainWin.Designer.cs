@@ -47,8 +47,8 @@
             label5 = new Label();
             toolTip1 = new ToolTip(components);
             splitContainer2 = new SplitContainer();
-            flCommands = new FlowLayoutPanel();
             splitContainer3 = new SplitContainer();
+            flCommands = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -309,15 +309,6 @@
             splitContainer2.SplitterDistance = 328;
             splitContainer2.TabIndex = 20;
             // 
-            // flCommands
-            // 
-            flCommands.Dock = DockStyle.Fill;
-            flCommands.FlowDirection = FlowDirection.TopDown;
-            flCommands.Location = new Point(0, 0);
-            flCommands.Name = "flCommands";
-            flCommands.Size = new Size(344, 117);
-            flCommands.TabIndex = 17;
-            // 
             // splitContainer3
             // 
             splitContainer3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -332,10 +323,21 @@
             // 
             // splitContainer3.Panel2
             // 
+            splitContainer3.Panel2.AutoScroll = true;
             splitContainer3.Panel2.Controls.Add(flCommands);
             splitContainer3.Size = new Size(348, 240);
             splitContainer3.SplitterDistance = 115;
             splitContainer3.TabIndex = 18;
+            // 
+            // flCommands
+            // 
+            flCommands.AutoScroll = true;
+            flCommands.Dock = DockStyle.Fill;
+            flCommands.Location = new Point(0, 0);
+            flCommands.Margin = new Padding(0);
+            flCommands.Name = "flCommands";
+            flCommands.Size = new Size(344, 117);
+            flCommands.TabIndex = 0;
             // 
             // MainWin
             // 
@@ -386,7 +388,7 @@
         private Button btRun;
         private Button btLearn;
         private Button btSeePrompt;
-        private FlowLayoutPanel flCommands;
         private SplitContainer splitContainer3;
+        private FlowLayoutPanel flCommands;
     }
 }

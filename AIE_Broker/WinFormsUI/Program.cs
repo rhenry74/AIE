@@ -38,7 +38,7 @@ namespace WinFormsUI
 
             Context = args.Count() == 1 ? args[0] : "Base";
 
-            await InitializeBrokerage();
+            await InitializeBrokerageAsync();
 
             //start the api
             System.Threading.Tasks.Task.Run(() =>
@@ -51,7 +51,7 @@ namespace WinFormsUI
             Application.Run(new MainWin());
         }
 
-        private async static Task InitializeBrokerage()
+        private async static Task InitializeBrokerageAsync()
         {
             string root = ConfigurationManager.AppSettings["rootPath"];
             var capibilitiesFilePath = Path.Combine(root, Context, "Capibilities.json");

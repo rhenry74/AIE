@@ -19,32 +19,39 @@ namespace WinFormsUI
 
         private void UI_UpdateTimer_Tick(object sender, EventArgs e)
         {
-            if (Program.SharedContext.Altered(Constants.RESPONSE_KEY))
+            try
             {
-                tbResponse.Text = Program.SharedContext.GetValue(Constants.RESPONSE_KEY);
-                Program.SharedContext.SetAltered(Constants.RESPONSE_KEY, false);
-            }
-
-            if (Program.SharedContext.AutomationLog.Count > 0)
-            {
-                tbAutomationStatus.AppendText(Program.SharedContext.AutomationLog.Dequeue() + Environment.NewLine);
-            }
-
-            if (Program.CompileQueue.Count > 0)
-            {
-                var actionCompiler = Program.CompileQueue.Peek();
-                if (actionCompiler.Compiled)
+                if (Program.SharedContext.Altered(Constants.RESPONSE_KEY))
                 {
-                    Program.ExecuteQueue.Enqueue(new ActionExecutor(Program.CompileQueue.Dequeue()));
-                    var actionUI = new ActionControl();
-                    flCommands.Controls.Add(actionUI);
-                    actionUI.Initialize(actionCompiler);
-                    actionUI.Width = flCommands.Width-SystemInformation.VerticalScrollBarWidth-6;
+                    tbResponse.Text = Program.SharedContext.GetValue(Constants.RESPONSE_KEY);
+                    Program.SharedContext.SetAltered(Constants.RESPONSE_KEY, false);
                 }
-                if (!actionCompiler.Compiling)
+
+                if (Program.SharedContext.AutomationLog.Count > 0)
                 {
-                    actionCompiler.Compile();
+                    tbAutomationStatus.AppendText(Program.SharedContext.AutomationLog.Dequeue() + Environment.NewLine);
                 }
+
+                if (Program.CompileQueue.Count > 0)
+                {
+                    var actionCompiler = Program.CompileQueue.Peek();
+                    if (actionCompiler.Compiled)
+                    {
+                        Program.ExecuteQueue.Enqueue(new ActionExecutor(Program.CompileQueue.Dequeue()));
+                        var actionUI = new ActionControl();
+                        flCommands.Controls.Add(actionUI);
+                        actionUI.Initialize(actionCompiler);
+                        actionUI.Width = flCommands.Width - SystemInformation.VerticalScrollBarWidth - 6;
+                    }
+                    if (!actionCompiler.Compiling)
+                    {
+                        actionCompiler.Compile();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.SharedContext.AutomationLog.Enqueue("Catostrophic in timer tick: " + ex.ToString());
             }
         }
 

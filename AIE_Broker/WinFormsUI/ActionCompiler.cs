@@ -58,7 +58,7 @@ namespace WinFormsUI
                     //find best match
                     var embedding = await Embedding.GetForAsync(actionText);
 
-                    var comparisons = await Embedding.TopThreeCapibilitiesFor(embedding);
+                    var comparisons = await Embedding.TopThreeCapibilitiesForAsync(embedding);
                     Program.SharedContext.AutomationLog.Enqueue("Top 3:");
                     EmbeddingComparison nextChoice = null;
                     foreach (var comparison in comparisons)

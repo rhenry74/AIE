@@ -103,7 +103,7 @@ namespace WinFormsUI
             return embedding;
         }
 
-        public async static Task<IEnumerable<EmbeddingComparison>> TopThreeCapibilitiesFor(Embedding embedding)
+        public async static Task<IEnumerable<EmbeddingComparison>> TopThreeCapibilitiesForAsync(Embedding embedding)
         {
             var comparisons = new List<EmbeddingComparison>();
 

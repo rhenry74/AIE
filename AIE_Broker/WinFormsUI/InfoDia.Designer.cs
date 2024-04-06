@@ -51,6 +51,7 @@
             btOk.TabIndex = 1;
             btOk.Text = "Ok";
             btOk.UseVisualStyleBackColor = true;
+            btOk.Click += btOk_Click;
             // 
             // InfoDia
             // 

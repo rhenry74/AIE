@@ -5,16 +5,24 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WinFormsUI
 {
+    public enum CompareMode
+    {
+        DotProduct,
+        Cosign,
+        Levenshtein
+    }
+
     public class EmbeddingComparison
     {
         public ApplicationCapibility Capibility { get; set; }
         public Embedding ToCompare { get; set; }
 
         private double? _likeness;
-        public string Mode { get; set; } = "DotProduct";
+        public CompareMode Mode { get; set; } = CompareMode.Cosign;
 
         public double Likeness 
         {
@@ -25,14 +33,19 @@ namespace WinFormsUI
                     return _likeness.Value;
                 }
 
-                if (Mode == "DotProduct")
+                if (Mode == CompareMode.DotProduct)
                 {
                     _likeness = DotProduct();                    
                 }
 
-                if (Mode == "Cosign")
+                if (Mode == CompareMode.Cosign)
                 {
                     _likeness = CosignSimilarity(Capibility.Vector, ToCompare.Vector);
+                }
+
+                if (Mode == CompareMode.Levenshtein)
+                {
+                    _likeness = LevenshteinDistance(Capibility.Vector, ToCompare.Vector);
                 }
 
                 return _likeness.Value;
@@ -85,7 +98,48 @@ namespace WinFormsUI
 
             //return cosineDistance;
         }
+
+        public double LevenshteinDistance(double[] source, double[] target)
+        {
+            if (source.Length == 0)
+            {
+                return target.Length;
+            }
+            else if (target.Length == 0)
+            {
+                return source.Length;
+            }
+
+            int[][] d = new int[source.Length + 1][];
+
+            for (int i = 0; i <= source.Length; i++)
+            {
+                d[i] = new int[target.Length + 1];
+            }
+
+            for (int i = 0; i < target.Length; i++)
+                d[0][i] = i;
+
+            for (int i = 0; i < source.Length; i++)
+                d[i + 1][0] = i;
+
+            for (int i = 0; i < source.Length; i++)
+            {
+                for (int j = 0; j < target.Length; j++)
+                {
+                    int cost = (source[i] == target[j]) ? 0 : 1;
+
+                    int min = Math.Min(d[i][j], d[i + 1][j + 1]);
+                    min = Math.Min(min, d[i + 1][j]);
+
+                    d[i + 1][j + 1] = min + cost;
+                }
+            }
+
+            return d[source.Length][target.Length];
+        }
     }
+       
 
     public class Embedding
     {
@@ -117,7 +171,7 @@ namespace WinFormsUI
 
                 var comparison = new EmbeddingComparison
                 {
-                    Mode = "Cosign",
+                    Mode = CompareMode.Cosign,
                     Capibility = capibility,
                     ToCompare = embedding
                 };

@@ -53,6 +53,7 @@ namespace WinFormsUI
                                 this.ActionText.Length - (startPosition + endPosition) - 2);
                         }
                         Program.SharedContext.AutomationLog.Enqueue("Parameter='" + this.Parameter + "'");
+
                     }
 
                     //find best match

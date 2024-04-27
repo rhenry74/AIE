@@ -36,6 +36,10 @@
             lbLikeness = new Label();
             lbState = new Label();
             label3 = new Label();
+            lbParmsEx = new Label();
+            label4 = new Label();
+            lbParmsParsed = new Label();
+            label6 = new Label();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -56,8 +60,8 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(lbActionText);
-            splitContainer1.Size = new Size(330, 25);
-            splitContainer1.SplitterDistance = 160;
+            splitContainer1.Size = new Size(610, 25);
+            splitContainer1.SplitterDistance = 295;
             splitContainer1.TabIndex = 0;
             // 
             // lbTopChoice
@@ -83,7 +87,7 @@
             cbExecute.AutoSize = true;
             cbExecute.Checked = true;
             cbExecute.CheckState = CheckState.Checked;
-            cbExecute.Location = new Point(6, 31);
+            cbExecute.Location = new Point(6, 30);
             cbExecute.Name = "cbExecute";
             cbExecute.Size = new Size(67, 19);
             cbExecute.TabIndex = 1;
@@ -93,7 +97,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(76, 31);
+            label1.Location = new Point(76, 30);
             label1.Name = "label1";
             label1.Size = new Size(54, 15);
             label1.TabIndex = 2;
@@ -103,7 +107,7 @@
             // lbLikeness
             // 
             lbLikeness.BorderStyle = BorderStyle.Fixed3D;
-            lbLikeness.Location = new Point(136, 31);
+            lbLikeness.Location = new Point(136, 30);
             lbLikeness.MaximumSize = new Size(60, 17);
             lbLikeness.Name = "lbLikeness";
             lbLikeness.Size = new Size(60, 17);
@@ -125,18 +129,64 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(202, 31);
+            label3.Location = new Point(202, 30);
             label3.Name = "label3";
             label3.Size = new Size(36, 15);
             label3.TabIndex = 4;
             label3.Text = "State:";
             label3.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // lbParmsEx
+            // 
+            lbParmsEx.BorderStyle = BorderStyle.Fixed3D;
+            lbParmsEx.Location = new Point(377, 30);
+            lbParmsEx.MaximumSize = new Size(60, 17);
+            lbParmsEx.Name = "lbParmsEx";
+            lbParmsEx.Size = new Size(38, 17);
+            lbParmsEx.TabIndex = 7;
+            lbParmsEx.Text = "label2";
+            lbParmsEx.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(313, 30);
+            label4.Name = "label4";
+            label4.Size = new Size(65, 15);
+            label4.TabIndex = 6;
+            label4.Text = "Parms Exp:";
+            label4.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lbParmsParsed
+            // 
+            lbParmsParsed.BorderStyle = BorderStyle.Fixed3D;
+            lbParmsParsed.Location = new Point(481, 30);
+            lbParmsParsed.MaximumSize = new Size(60, 17);
+            lbParmsParsed.Name = "lbParmsParsed";
+            lbParmsParsed.Size = new Size(38, 17);
+            lbParmsParsed.TabIndex = 9;
+            lbParmsParsed.Text = "label5";
+            lbParmsParsed.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(416, 30);
+            label6.Name = "label6";
+            label6.Size = new Size(65, 15);
+            label6.TabIndex = 8;
+            label6.Text = "Parms Psd:";
+            label6.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // ActionControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BorderStyle = BorderStyle.FixedSingle;
+            Controls.Add(lbParmsParsed);
+            Controls.Add(label6);
+            Controls.Add(lbParmsEx);
+            Controls.Add(label4);
             Controls.Add(lbState);
             Controls.Add(label3);
             Controls.Add(lbLikeness);
@@ -144,7 +194,7 @@
             Controls.Add(cbExecute);
             Controls.Add(splitContainer1);
             Name = "ActionControl";
-            Size = new Size(336, 48);
+            Size = new Size(616, 48);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
@@ -165,5 +215,9 @@
         private Label lbLikeness;
         private Label lbState;
         private Label label3;
+        private Label lbParmsEx;
+        private Label label4;
+        private Label lbParmsParsed;
+        private Label label6;
     }
 }

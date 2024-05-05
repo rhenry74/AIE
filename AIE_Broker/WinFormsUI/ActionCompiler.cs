@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace WinFormsUI
 {
-    internal class ActionCompiler
+    public class ActionCompiler
     {
-        private string ActionText;
+        public string ActionText;
 
         public ActionCompiler(string actionText)
         {
@@ -22,10 +22,10 @@ namespace WinFormsUI
 
         public bool Compiled { get; set; } = false;
         public bool Compiling { get; set; } = false;
-        public ApplicationCapibility CapibilityToExecute { get; private set; }
+        public EmbeddingComparison? TopChoice { get; private set; } = null;
         public string Error { get; private set; }
-
-        public string Parameter = null;       
+        public bool Success { get; private set; } = false;
+        public string Parameter { get; private set; }    
 
         public void Compile()
         {
@@ -53,32 +53,44 @@ namespace WinFormsUI
                                 this.ActionText.Length - (startPosition + endPosition) - 2);
                         }
                         Program.SharedContext.AutomationLog.Enqueue("Parameter='" + this.Parameter + "'");
+
                     }
 
                     //find best match
                     var embedding = await Embedding.GetForAsync(actionText);
 
-                    var comparisons = await Embedding.TopThreeCapibilitiesFor(embedding);
+                    var comparisons = await Embedding.TopThreeCapibilitiesForAsync(embedding);
                     Program.SharedContext.AutomationLog.Enqueue("Top 3:");
-                    EmbeddingComparison topChoice = null;
+                    EmbeddingComparison nextChoice = null;
                     foreach (var comparison in comparisons)
                     {
                         Program.SharedContext.AutomationLog.Enqueue(comparison.Capibility.Action + " : " +
-                            comparison.DotProduct);
-                        if (topChoice == null)
+                            comparison.Likeness);
+                        if (TopChoice == null)
                         {
-                            topChoice = comparison;
+                            TopChoice = comparison;
+                        }
+                        else
+                        {
+                            nextChoice = comparison;
                         }
                     }
 
-                    if (topChoice.DotProduct > 0.97)
+                    if (TopChoice.Likeness > 0.99)
                     {
-                        this.CapibilityToExecute = topChoice.Capibility;
+                        this.Success = true;
                         Program.SharedContext.AutomationLog.Enqueue("Compilation Success.");
                     }
                     else
                     {
-                        this.Error = "Ambigous";
+                        if (TopChoice.Likeness - nextChoice.Likeness < 0.01)
+                        {
+                            this.Error = "Ambigous";                            
+                        }
+                        else
+                        {
+                            this.Error = "Weak Likeness";
+                        }
                         Program.SharedContext.AutomationLog.Enqueue(this.Error);
                     }
                 }

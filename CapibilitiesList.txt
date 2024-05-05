@@ -1,0 +1,9 @@
+set calendar event title to []
+set calendar event start date-time to []
+set calendar event end date-time to []
+append [] to calendar description
+set email subject to []
+add [] to email body
+add address [] to email recipients
+launch email
+launch calendar

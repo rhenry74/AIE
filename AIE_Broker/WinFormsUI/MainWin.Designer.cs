@@ -33,9 +33,10 @@
             label4 = new Label();
             UI_UpdateTimer = new System.Windows.Forms.Timer(components);
             splitContainer1 = new SplitContainer();
+            btSeePrompt = new Button();
             tbRate = new Button();
             btClearChat = new Button();
-            button1 = new Button();
+            btPromptLLM = new Button();
             label3 = new Label();
             tbPrompt = new TextBox();
             btLearn = new Button();
@@ -46,6 +47,8 @@
             label5 = new Label();
             toolTip1 = new ToolTip(components);
             splitContainer2 = new SplitContainer();
+            splitContainer3 = new SplitContainer();
+            flCommands = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -54,17 +57,21 @@
             splitContainer2.Panel1.SuspendLayout();
             splitContainer2.Panel2.SuspendLayout();
             splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer3).BeginInit();
+            splitContainer3.Panel1.SuspendLayout();
+            splitContainer3.Panel2.SuspendLayout();
+            splitContainer3.SuspendLayout();
             SuspendLayout();
             // 
             // tbAutomationStatus
             // 
-            tbAutomationStatus.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tbAutomationStatus.Location = new Point(5, 22);
+            tbAutomationStatus.Dock = DockStyle.Fill;
+            tbAutomationStatus.Location = new Point(0, 0);
             tbAutomationStatus.Multiline = true;
             tbAutomationStatus.Name = "tbAutomationStatus";
             tbAutomationStatus.ReadOnly = true;
-            tbAutomationStatus.ScrollBars = ScrollBars.Both;
-            tbAutomationStatus.Size = new Size(345, 140);
+            tbAutomationStatus.ScrollBars = ScrollBars.Vertical;
+            tbAutomationStatus.Size = new Size(344, 111);
             tbAutomationStatus.TabIndex = 16;
             // 
             // label4
@@ -79,7 +86,7 @@
             // UI_UpdateTimer
             // 
             UI_UpdateTimer.Enabled = true;
-            UI_UpdateTimer.Interval = 555;
+            UI_UpdateTimer.Interval = 125;
             UI_UpdateTimer.Tick += UI_UpdateTimer_Tick;
             // 
             // splitContainer1
@@ -93,9 +100,10 @@
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(btSeePrompt);
             splitContainer1.Panel1.Controls.Add(tbRate);
             splitContainer1.Panel1.Controls.Add(btClearChat);
-            splitContainer1.Panel1.Controls.Add(button1);
+            splitContainer1.Panel1.Controls.Add(btPromptLLM);
             splitContainer1.Panel1.Controls.Add(label3);
             splitContainer1.Panel1.Controls.Add(tbPrompt);
             // 
@@ -107,9 +115,25 @@
             splitContainer1.Panel2.Controls.Add(btEditResponse);
             splitContainer1.Panel2.Controls.Add(tbResponse);
             splitContainer1.Panel2.Controls.Add(label5);
-            splitContainer1.Size = new Size(354, 332);
-            splitContainer1.SplitterDistance = 164;
+            splitContainer1.Size = new Size(354, 321);
+            splitContainer1.SplitterDistance = 158;
             splitContainer1.TabIndex = 19;
+            // 
+            // btSeePrompt
+            // 
+            btSeePrompt.AccessibleDescription = "";
+            btSeePrompt.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btSeePrompt.BackColor = SystemColors.ButtonFace;
+            btSeePrompt.BackgroundImage = Properties.Resources.seePrompt_sm;
+            btSeePrompt.BackgroundImageLayout = ImageLayout.Zoom;
+            btSeePrompt.Location = new Point(41, 121);
+            btSeePrompt.Name = "btSeePrompt";
+            btSeePrompt.Size = new Size(30, 30);
+            btSeePrompt.TabIndex = 23;
+            toolTip1.SetToolTip(btSeePrompt, "Preview Prompt");
+            btSeePrompt.UseVisualStyleBackColor = false;
+            btSeePrompt.Visible = false;
+            btSeePrompt.Click += btSeePrompt_Click;
             // 
             // tbRate
             // 
@@ -119,7 +143,7 @@
             tbRate.BackColor = SystemColors.ButtonFace;
             tbRate.BackgroundImage = Properties.Resources.rate;
             tbRate.BackgroundImageLayout = ImageLayout.Zoom;
-            tbRate.Location = new Point(72, 128);
+            tbRate.Location = new Point(103, 121);
             tbRate.Name = "tbRate";
             tbRate.Size = new Size(30, 30);
             tbRate.TabIndex = 22;
@@ -134,7 +158,7 @@
             btClearChat.BackColor = SystemColors.ButtonFace;
             btClearChat.BackgroundImage = Properties.Resources.clearChat;
             btClearChat.BackgroundImageLayout = ImageLayout.Zoom;
-            btClearChat.Location = new Point(41, 128);
+            btClearChat.Location = new Point(72, 121);
             btClearChat.Name = "btClearChat";
             btClearChat.Size = new Size(30, 30);
             btClearChat.TabIndex = 17;
@@ -142,19 +166,19 @@
             btClearChat.UseVisualStyleBackColor = false;
             btClearChat.Visible = false;
             // 
-            // button1
+            // btPromptLLM
             // 
-            button1.AccessibleDescription = "";
-            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button1.BackColor = SystemColors.ButtonFace;
-            button1.BackgroundImage = Properties.Resources.brain;
-            button1.BackgroundImageLayout = ImageLayout.Zoom;
-            button1.Location = new Point(10, 128);
-            button1.Name = "button1";
-            button1.Size = new Size(30, 30);
-            button1.TabIndex = 16;
-            toolTip1.SetToolTip(button1, "Generate Response");
-            button1.UseVisualStyleBackColor = false;
+            btPromptLLM.AccessibleDescription = "";
+            btPromptLLM.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btPromptLLM.BackColor = SystemColors.ButtonFace;
+            btPromptLLM.BackgroundImage = Properties.Resources.brain;
+            btPromptLLM.BackgroundImageLayout = ImageLayout.Zoom;
+            btPromptLLM.Location = new Point(10, 122);
+            btPromptLLM.Name = "btPromptLLM";
+            btPromptLLM.Size = new Size(30, 30);
+            btPromptLLM.TabIndex = 16;
+            toolTip1.SetToolTip(btPromptLLM, "Generate Response");
+            btPromptLLM.UseVisualStyleBackColor = false;
             // 
             // label3
             // 
@@ -171,9 +195,10 @@
             tbPrompt.Location = new Point(3, 21);
             tbPrompt.Multiline = true;
             tbPrompt.Name = "tbPrompt";
-            tbPrompt.ScrollBars = ScrollBars.Both;
-            tbPrompt.Size = new Size(345, 105);
+            tbPrompt.ScrollBars = ScrollBars.Vertical;
+            tbPrompt.Size = new Size(345, 99);
             tbPrompt.TabIndex = 14;
+            tbPrompt.TextChanged += tbPrompt_TextChanged_1;
             // 
             // btLearn
             // 
@@ -183,7 +208,7 @@
             btLearn.BackColor = SystemColors.ButtonFace;
             btLearn.BackgroundImage = Properties.Resources.learn;
             btLearn.BackgroundImageLayout = ImageLayout.Zoom;
-            btLearn.Location = new Point(103, 128);
+            btLearn.Location = new Point(103, 123);
             btLearn.Name = "btLearn";
             btLearn.Size = new Size(30, 30);
             btLearn.TabIndex = 24;
@@ -199,7 +224,7 @@
             btRun.BackColor = SystemColors.ButtonFace;
             btRun.BackgroundImage = Properties.Resources.run;
             btRun.BackgroundImageLayout = ImageLayout.Zoom;
-            btRun.Location = new Point(72, 128);
+            btRun.Location = new Point(72, 123);
             btRun.Name = "btRun";
             btRun.Size = new Size(30, 30);
             btRun.TabIndex = 23;
@@ -216,7 +241,7 @@
             tbCompile.BackgroundImage = Properties.Resources.Compile;
             tbCompile.BackgroundImageLayout = ImageLayout.Zoom;
             tbCompile.ForeColor = SystemColors.ControlText;
-            tbCompile.Location = new Point(41, 127);
+            tbCompile.Location = new Point(41, 122);
             tbCompile.Name = "tbCompile";
             tbCompile.Size = new Size(30, 30);
             tbCompile.TabIndex = 22;
@@ -233,7 +258,7 @@
             btEditResponse.BackColor = SystemColors.ButtonFace;
             btEditResponse.BackgroundImage = Properties.Resources.edit1;
             btEditResponse.BackgroundImageLayout = ImageLayout.Zoom;
-            btEditResponse.Location = new Point(10, 127);
+            btEditResponse.Location = new Point(10, 122);
             btEditResponse.Name = "btEditResponse";
             btEditResponse.Size = new Size(30, 30);
             btEditResponse.TabIndex = 21;
@@ -248,8 +273,8 @@
             tbResponse.Multiline = true;
             tbResponse.Name = "tbResponse";
             tbResponse.ReadOnly = true;
-            tbResponse.ScrollBars = ScrollBars.Both;
-            tbResponse.Size = new Size(345, 105);
+            tbResponse.ScrollBars = ScrollBars.Vertical;
+            tbResponse.Size = new Size(345, 100);
             tbResponse.TabIndex = 20;
             tbResponse.TextChanged += tbResponse_TextChanged;
             // 
@@ -277,19 +302,49 @@
             // 
             // splitContainer2.Panel2
             // 
-            splitContainer2.Panel2.Controls.Add(tbAutomationStatus);
+            splitContainer2.Panel2.Controls.Add(splitContainer3);
             splitContainer2.Panel2.Controls.Add(label4);
             splitContainer2.Panel2.RightToLeft = RightToLeft.No;
-            splitContainer2.Size = new Size(358, 509);
-            splitContainer2.SplitterDistance = 339;
+            splitContainer2.Size = new Size(358, 594);
+            splitContainer2.SplitterDistance = 328;
             splitContainer2.TabIndex = 20;
+            // 
+            // splitContainer3
+            // 
+            splitContainer3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            splitContainer3.BorderStyle = BorderStyle.Fixed3D;
+            splitContainer3.Location = new Point(3, 21);
+            splitContainer3.Name = "splitContainer3";
+            splitContainer3.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainer3.Panel1
+            // 
+            splitContainer3.Panel1.Controls.Add(tbAutomationStatus);
+            // 
+            // splitContainer3.Panel2
+            // 
+            splitContainer3.Panel2.AutoScroll = true;
+            splitContainer3.Panel2.Controls.Add(flCommands);
+            splitContainer3.Size = new Size(348, 240);
+            splitContainer3.SplitterDistance = 115;
+            splitContainer3.TabIndex = 18;
+            // 
+            // flCommands
+            // 
+            flCommands.AutoScroll = true;
+            flCommands.Dock = DockStyle.Fill;
+            flCommands.Location = new Point(0, 0);
+            flCommands.Margin = new Padding(0);
+            flCommands.Name = "flCommands";
+            flCommands.Size = new Size(344, 117);
+            flCommands.TabIndex = 0;
             // 
             // MainWin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
-            ClientSize = new Size(348, 503);
+            ClientSize = new Size(348, 588);
             Controls.Add(splitContainer2);
             Name = "MainWin";
             SizeGripStyle = SizeGripStyle.Hide;
@@ -305,6 +360,11 @@
             splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
             splitContainer2.ResumeLayout(false);
+            splitContainer3.Panel1.ResumeLayout(false);
+            splitContainer3.Panel1.PerformLayout();
+            splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer3).EndInit();
+            splitContainer3.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -318,7 +378,7 @@
         private TextBox tbPrompt;
         private TextBox tbResponse;
         private Label label5;
-        private Button button1;
+        private Button btPromptLLM;
         private Button btEditResponse;
         private ToolTip toolTip1;
         private SplitContainer splitContainer2;
@@ -327,5 +387,8 @@
         private Button tbCompile;
         private Button btRun;
         private Button btLearn;
+        private Button btSeePrompt;
+        private SplitContainer splitContainer3;
+        private FlowLayoutPanel flCommands;
     }
 }

@@ -44,7 +44,10 @@ namespace WinFormsUI
                 return Results.Ok(newCapibility.Action);
             });
 
-            app.Urls.Add("http://localhost:7770");
+            var brokerServer = Program.PortMappings.First(pm => pm.Name == "Broker");
+            var baseAddress = new Uri("http://" + brokerServer.Server + ":" + brokerServer.Port);
+
+            app.Urls.Add(baseAddress.ToString());
             app.Run();
         }
     }

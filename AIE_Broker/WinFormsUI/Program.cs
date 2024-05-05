@@ -38,7 +38,7 @@ namespace WinFormsUI
 
             Context = args.Count() == 1 ? args[0] : "Base";
 
-            await InitializeBrokerage();
+            await InitializeBrokerageAsync();
 
             //start the api
             System.Threading.Tasks.Task.Run(() =>
@@ -51,7 +51,7 @@ namespace WinFormsUI
             Application.Run(new MainWin());
         }
 
-        private async static Task InitializeBrokerage()
+        private async static Task InitializeBrokerageAsync()
         {
             string root = ConfigurationManager.AppSettings["rootPath"];
             var capibilitiesFilePath = Path.Combine(root, Context, "Capibilities.json");
@@ -144,6 +144,25 @@ namespace WinFormsUI
             var capibilitiesFilePath = Path.Combine(root, Context, "Capibilities.json");
             await File.WriteAllTextAsync(capibilitiesFilePath, JsonSerializer.Serialize(Capabilities));
             SharedContext.AutomationLog.Enqueue("Capibility Vectors Saved");
+        }
+
+        public static string[] GeneratePrompt(string[] question)
+        {
+            var lines = new List<string>();
+            lines.Add(ConfigurationManager.AppSettings["automationPrompt"]);
+            lines.Add("");
+            foreach (var capibility in Capabilities)
+            {
+                lines.Add(capibility.Action.Replace("[]", "[?]"));
+            }
+            lines.Add("");
+            lines.Add("The human's request is:");
+            lines.Add("");
+            foreach (var questionLine in question)
+            {
+                lines.Add(questionLine);
+            }
+            return lines.ToArray();
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace WinFormsUI
+namespace Email
 {
     static class Program
     {

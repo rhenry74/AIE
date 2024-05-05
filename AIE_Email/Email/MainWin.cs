@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WinFormsUI
+namespace Email
 {
     public partial class MainWin : Form
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinFormsUI
+namespace Email
 {
     internal static class Constants
     {

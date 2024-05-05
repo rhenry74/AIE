@@ -8,13 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WinFormsUI
+namespace Broker
 {
-    public partial class BetterButton : UserControl
+    public partial class InfoDia : Form
     {
-        public BetterButton()
+        public InfoDia()
         {
             InitializeComponent();
+        }
+
+        private void btOk_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

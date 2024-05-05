@@ -1,4 +1,4 @@
-﻿namespace WinFormsUI
+﻿namespace Email
 {
     partial class MainWin
     {

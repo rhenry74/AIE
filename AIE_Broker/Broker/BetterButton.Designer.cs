@@ -1,4 +1,4 @@
-﻿namespace WinFormsUI
+﻿namespace Broker
 {
     partial class BetterButton
     {

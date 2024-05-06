@@ -7,7 +7,7 @@ using System.Configuration;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace WinFormsUI
+namespace Broker
 {
     static class Program
     {
@@ -83,7 +83,7 @@ namespace WinFormsUI
                     Action = "launch email",
                     ActionType = ActionType.LAUNCH,
                     AppClass = "email",
-                    AppPath = "C:\\Users\\rhenry74\\source\\repos\\AIE\\AIE_Email\\WinFormsUI\\bin\\Debug\\net8.0-windows\\WinFormsUI.exe",
+                    AppPath = "C:\\Users\\rhenry74\\source\\repos\\AIE\\AIE_Email\\Email\\bin\\Debug\\net8.0-windows\\Email.exe",
                     ContentType = null,
                     Contract = "SingleText",
                     Description = "Launch EMail",

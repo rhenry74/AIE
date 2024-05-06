@@ -1,4 +1,4 @@
-﻿namespace WinFormsUI
+﻿namespace Broker
 {
     public class PortMapping
     {

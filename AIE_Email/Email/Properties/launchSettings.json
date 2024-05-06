@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Email": {
+      "commandName": "Project",
+      "commandLineArgs": "-install"
+    }
+  }
+}

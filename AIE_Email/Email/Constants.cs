@@ -9,5 +9,7 @@ namespace Email
     internal static class Constants
     {
         public const string SUBJECT_KEY = "subject";
+        public const string BODY_KEY = "body";
+        public const string RECIPIENT_KEY = "recipient";
     }
 }

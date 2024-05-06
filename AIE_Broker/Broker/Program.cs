@@ -90,19 +90,16 @@ namespace Broker
                     Method = MethodType.NA,
                     Route = null
                 });
-                if (!Directory.Exists(Path.GetDirectoryName(capibilitiesFilePath)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(capibilitiesFilePath));
-                }
 
-                await File.WriteAllTextAsync(capibilitiesFilePath, JsonSerializer.Serialize(Capabilities));
+                await SaveCapibilities();
+
                 SharedContext.AutomationLog.Enqueue("Default Capibilities Saved");
             }
 
-            var porMapFilePath = Path.Combine(root, "PortMap.json");
+            var portMapFilePath = Path.Combine(root, "PortMap.json");
             try
             {
-                PortMappings = JsonSerializer.Deserialize<List<PortMapping>>(File.ReadAllText(porMapFilePath));
+                PortMappings = JsonSerializer.Deserialize<List<PortMapping>>(File.ReadAllText(portMapFilePath));
                 SharedContext.AutomationLog.Enqueue("Port Mappings Loaded");
             }
             catch
@@ -120,10 +117,10 @@ namespace Broker
                 PortMappings.Add(new PortMapping()
                 {
                     Port = 7770,
-                    Server = "basement",
+                    Server = "localhost",
                     Name = "Embeddings"
                 });
-                await File.WriteAllTextAsync(porMapFilePath, JsonSerializer.Serialize(PortMappings));
+                await File.WriteAllTextAsync(portMapFilePath, JsonSerializer.Serialize(PortMappings));
                 SharedContext.AutomationLog.Enqueue("Default Port Map Saved");
             }
         }
@@ -140,10 +137,19 @@ namespace Broker
                 }
             }
 
+            await SaveCapibilities();
+            SharedContext.AutomationLog.Enqueue("Capibility Vectors Saved");
+        }
+
+        public async static Task SaveCapibilities()
+        {
             string root = ConfigurationManager.AppSettings["rootPath"];
             var capibilitiesFilePath = Path.Combine(root, Context, "Capibilities.json");
+            if (!Directory.Exists(Path.GetDirectoryName(capibilitiesFilePath)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(capibilitiesFilePath));
+            }            
             await File.WriteAllTextAsync(capibilitiesFilePath, JsonSerializer.Serialize(Capabilities));
-            SharedContext.AutomationLog.Enqueue("Capibility Vectors Saved");
         }
 
         public static string[] GeneratePrompt(string[] question)

@@ -38,10 +38,22 @@ namespace Broker
 
             registerApi.MapPost("/", (ApplicationCapibility newCapibility) =>
             {
-                //check app class
-                //create reg
+                if (newCapibility.ActionType == ActionType.LAUNCH)
+                {
+                    //we are installing a new app class
+                    //remove all existing capibilities for the app class
+                    var appclass = newCapibility.AppClass;
+                    var existingCapibilitiesForAppClass = Program.Capabilities.Where(c => c.AppClass == appclass).ToList();
+                    foreach(var capibilityToRemove in existingCapibilitiesForAppClass)
+                    {
+                        Program.Capabilities.Remove(capibilityToRemove);
+                    }
+                }
+
+                Program.Capabilities.Add(newCapibility);
+
                 Program.SharedContext.AutomationLog.Enqueue("registerApi POST: " + newCapibility.Action);
-                return Results.Ok(newCapibility.Action);
+                return Results.Ok();
             });
 
             var brokerServer = Program.PortMappings.First(pm => pm.Name == "Broker");

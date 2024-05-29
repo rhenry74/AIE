@@ -49,6 +49,7 @@
             splitContainer2 = new SplitContainer();
             splitContainer3 = new SplitContainer();
             flCommands = new FlowLayoutPanel();
+            llmStatus = new Label();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -109,6 +110,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(llmStatus);
             splitContainer1.Panel2.Controls.Add(btLearn);
             splitContainer1.Panel2.Controls.Add(btRun);
             splitContainer1.Panel2.Controls.Add(tbCompile);
@@ -179,6 +181,7 @@
             btPromptLLM.TabIndex = 16;
             toolTip1.SetToolTip(btPromptLLM, "Generate Response");
             btPromptLLM.UseVisualStyleBackColor = false;
+            btPromptLLM.Click += btPromptLLM_Click;
             // 
             // label3
             // 
@@ -339,6 +342,15 @@
             flCommands.Size = new Size(344, 117);
             flCommands.TabIndex = 0;
             // 
+            // llmStatus
+            // 
+            llmStatus.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            llmStatus.Location = new Point(155, 3);
+            llmStatus.Name = "llmStatus";
+            llmStatus.Size = new Size(192, 15);
+            llmStatus.TabIndex = 25;
+            llmStatus.TextAlign = ContentAlignment.TopRight;
+            // 
             // MainWin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -390,5 +402,6 @@
         private Button btSeePrompt;
         private SplitContainer splitContainer3;
         private FlowLayoutPanel flCommands;
+        private Label llmStatus;
     }
 }

@@ -21,6 +21,10 @@ namespace Broker
 
         public static Queue<ActionExecutor> ExecuteQueue = new Queue<ActionExecutor>();
 
+        public static LargeLanguageModel LLM = null;
+
+        public static string LLMStatus = "";
+
         private static WebServer server;
 
         public static string Context = "Base";
@@ -39,6 +43,8 @@ namespace Broker
             Context = args.Count() == 1 ? args[0] : "Base";
 
             await InitializeBrokerageAsync();
+
+            LLM = new LargeLanguageModel();
 
             //start the api
             System.Threading.Tasks.Task.Run(() =>
@@ -152,23 +158,50 @@ namespace Broker
             await File.WriteAllTextAsync(capibilitiesFilePath, JsonSerializer.Serialize(Capabilities));
         }
 
-        public static string[] GeneratePrompt(string[] question)
+        public static string[] GenerateSystemPrompt()
         {
             var lines = new List<string>();
             lines.Add(ConfigurationManager.AppSettings["automationPrompt"]);
-            lines.Add("");
+            lines.Add("\n\r\n\r");
             foreach (var capibility in Capabilities)
             {
                 lines.Add(capibility.Action.Replace("[]", "[?]"));
             }
-            lines.Add("");
-            lines.Add("The human's request is:");
-            lines.Add("");
-            foreach (var questionLine in question)
-            {
-                lines.Add(questionLine);
-            }
             return lines.ToArray();
+        }
+
+        public static void PromptLLM(string[] lines)
+        {
+            bool running = true;
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                var systemPromptArray = GenerateSystemPrompt();
+                string systemPrompt = "";
+                foreach (var line in systemPromptArray)
+                {
+                    systemPrompt += line;
+                    systemPrompt += Environment.NewLine;
+                }
+                string userPrompt = "";
+                foreach (var line in lines)
+                {
+                    userPrompt += line;
+                    userPrompt += Environment.NewLine;
+                }
+                LLM.Generate(systemPrompt, userPrompt, "");
+                running = false;
+            });
+
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                DateTime now = DateTime.Now;
+                while (running)
+                {
+                    Task.Delay(100);
+                    LLMStatus = "Running: " + DateTime.Now.Subtract(now);
+                }
+                LLMStatus = "Done";
+            });
         }
     }
 }

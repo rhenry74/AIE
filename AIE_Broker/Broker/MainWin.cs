@@ -21,6 +21,13 @@ namespace Broker
         {
             try
             {
+                llmStatus.Text = Program.LLMStatus;
+                if (Program.LLMStatus == "Done")
+                {
+                    tbResponse.Lines = Program.LLM.Result;
+                    Program.LLMStatus = "";
+                }
+
                 if (Program.SharedContext.Altered(Constants.RESPONSE_KEY))
                 {
                     tbResponse.Text = Program.SharedContext.GetValue(Constants.RESPONSE_KEY);
@@ -51,7 +58,7 @@ namespace Broker
             }
             catch (Exception ex)
             {
-                Program.SharedContext.AutomationLog.Enqueue("Catostrophic in timer tick: " + ex.ToString());
+                Program.SharedContext.AutomationLog.Enqueue("Catastrophic in timer tick: " + ex.ToString());
             }
         }
 
@@ -91,8 +98,20 @@ namespace Broker
         private void btSeePrompt_Click(object sender, EventArgs e)
         {
             var dialog = new InfoDia();
-            dialog.tbInfo.Lines = Program.GeneratePrompt(tbPrompt.Lines);
+            dialog.tbInfo.Lines = Program.GenerateSystemPrompt();
             dialog.ShowDialog();
+        }
+
+        private void btPromptLLM_Click(object sender, EventArgs e)
+        {
+            tbResponse.Clear();
+            
+            Program.CompileQueue.Clear();
+            Program.ExecuteQueue.Clear();
+            flCommands.Controls.Clear();
+            tbAutomationStatus.Clear();
+
+            Program.PromptLLM(tbPrompt.Lines);
         }
     }
 }

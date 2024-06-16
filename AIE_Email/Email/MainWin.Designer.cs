@@ -31,7 +31,7 @@
             components = new System.ComponentModel.Container();
             tbAutomationStatus = new TextBox();
             label4 = new Label();
-            textBox1 = new TextBox();
+            tbBody = new TextBox();
             label3 = new Label();
             tbSubject = new TextBox();
             label2 = new Label();
@@ -61,14 +61,14 @@
             label4.TabIndex = 15;
             label4.Text = "Automation:";
             // 
-            // textBox1
+            // tbBody
             // 
-            textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            textBox1.Location = new Point(14, 126);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(886, 274);
-            textBox1.TabIndex = 14;
+            tbBody.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tbBody.Location = new Point(14, 126);
+            tbBody.Multiline = true;
+            tbBody.Name = "tbBody";
+            tbBody.Size = new Size(886, 274);
+            tbBody.TabIndex = 14;
             // 
             // label3
             // 
@@ -127,7 +127,7 @@
             ClientSize = new Size(910, 488);
             Controls.Add(tbAutomationStatus);
             Controls.Add(label4);
-            Controls.Add(textBox1);
+            Controls.Add(tbBody);
             Controls.Add(label3);
             Controls.Add(tbSubject);
             Controls.Add(label2);
@@ -143,7 +143,7 @@
 
         private TextBox tbAutomationStatus;
         private Label label4;
-        private TextBox textBox1;
+        private TextBox tbBody;
         private Label label3;
         private TextBox tbSubject;
         private Label label2;

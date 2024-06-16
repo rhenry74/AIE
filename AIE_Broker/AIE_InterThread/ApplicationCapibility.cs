@@ -9,7 +9,8 @@ namespace AIE_InterThread
     public enum ActionType
     {
         LAUNCH,
-        HTTP
+        HTTP,
+        UI
     }
 
     public enum MethodType

@@ -21,6 +21,10 @@ namespace Broker
 
         public static Queue<ActionExecutor> ExecuteQueue = new Queue<ActionExecutor>();
 
+        public static LargeLanguageModel LLM = null;
+
+        public static string LLMStatus = "";
+
         private static WebServer server;
 
         public static string Context = "Base";
@@ -39,6 +43,8 @@ namespace Broker
             Context = args.Count() == 1 ? args[0] : "Base";
 
             await InitializeBrokerageAsync();
+
+            LLM = new LargeLanguageModel();
 
             //start the api
             System.Threading.Tasks.Task.Run(() =>
@@ -90,19 +96,16 @@ namespace Broker
                     Method = MethodType.NA,
                     Route = null
                 });
-                if (!Directory.Exists(Path.GetDirectoryName(capibilitiesFilePath)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(capibilitiesFilePath));
-                }
 
-                await File.WriteAllTextAsync(capibilitiesFilePath, JsonSerializer.Serialize(Capabilities));
+                await SaveCapibilities();
+
                 SharedContext.AutomationLog.Enqueue("Default Capibilities Saved");
             }
 
-            var porMapFilePath = Path.Combine(root, "PortMap.json");
+            var portMapFilePath = Path.Combine(root, "PortMap.json");
             try
             {
-                PortMappings = JsonSerializer.Deserialize<List<PortMapping>>(File.ReadAllText(porMapFilePath));
+                PortMappings = JsonSerializer.Deserialize<List<PortMapping>>(File.ReadAllText(portMapFilePath));
                 SharedContext.AutomationLog.Enqueue("Port Mappings Loaded");
             }
             catch
@@ -120,10 +123,10 @@ namespace Broker
                 PortMappings.Add(new PortMapping()
                 {
                     Port = 7770,
-                    Server = "basement",
+                    Server = "localhost",
                     Name = "Embeddings"
                 });
-                await File.WriteAllTextAsync(porMapFilePath, JsonSerializer.Serialize(PortMappings));
+                await File.WriteAllTextAsync(portMapFilePath, JsonSerializer.Serialize(PortMappings));
                 SharedContext.AutomationLog.Enqueue("Default Port Map Saved");
             }
         }
@@ -140,29 +143,75 @@ namespace Broker
                 }
             }
 
-            string root = ConfigurationManager.AppSettings["rootPath"];
-            var capibilitiesFilePath = Path.Combine(root, Context, "Capibilities.json");
-            await File.WriteAllTextAsync(capibilitiesFilePath, JsonSerializer.Serialize(Capabilities));
+            await SaveCapibilities();
             SharedContext.AutomationLog.Enqueue("Capibility Vectors Saved");
         }
 
-        public static string[] GeneratePrompt(string[] question)
+        public async static Task SaveCapibilities()
+        {
+            string root = ConfigurationManager.AppSettings["rootPath"];
+            var capibilitiesFilePath = Path.Combine(root, Context, "Capibilities.json");
+            if (!Directory.Exists(Path.GetDirectoryName(capibilitiesFilePath)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(capibilitiesFilePath));
+            }            
+            await File.WriteAllTextAsync(capibilitiesFilePath, JsonSerializer.Serialize(Capabilities));
+        }
+
+        public static string[] GenerateSystemPrompt()
         {
             var lines = new List<string>();
-            lines.Add(ConfigurationManager.AppSettings["automationPrompt"]);
+            lines.Add(ConfigurationManager.AppSettings["systemPrompt"]);
             lines.Add("");
+            //lines.Add("");
             foreach (var capibility in Capabilities)
             {
                 lines.Add(capibility.Action.Replace("[]", "[?]"));
             }
-            lines.Add("");
-            lines.Add("The human's request is:");
-            lines.Add("");
-            foreach (var questionLine in question)
-            {
-                lines.Add(questionLine);
-            }
             return lines.ToArray();
+        }
+
+        public static void PromptLLM(string[] lines)
+        {
+            bool running = true;
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                var systemPromptArray = GenerateSystemPrompt();
+                string systemPrompt = "";
+                foreach (var line in systemPromptArray)
+                {
+                    systemPrompt += line;
+                    systemPrompt += "\r\n";
+                }
+                string userPrompt = "";
+                foreach (var line in lines)
+                {
+                    userPrompt += line;
+                    userPrompt += "\r\n";
+                }
+                LLM.Generate(systemPrompt, userPrompt, "");
+                running = false;
+            });
+
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                DateTime now = DateTime.Now;
+                while (running)
+                {
+                    Task.Delay(100);
+                    LLMStatus = "Running: " + DateTime.Now.Subtract(now);
+                }
+                LLMStatus = "Done";
+            });
+        }
+
+        public static void ClearCapibilities()
+        {
+            foreach (var capibility in Capabilities)
+            {
+                capibility.Vector = null;
+            }
+            SaveCapibilities();
         }
     }
 }

@@ -16,9 +16,9 @@ namespace Email
     
     public class WebServer
     {
-        public void Main(string[] args)
+        public void Main(int port)
         {
-            var builder = WebApplication.CreateSlimBuilder(args);
+            var builder = WebApplication.CreateSlimBuilder();
 
             builder.Services.ConfigureHttpJsonOptions(options =>
             {
@@ -53,11 +53,25 @@ namespace Email
             subjectApi.MapPost("/", (SingleText newSubject) =>
                 {
                     Program.SharedContext.SetPair(Constants.SUBJECT_KEY, newSubject.Text);
-                    Program.SharedContext.AutomationLog.Enqueue("subjectApi POST: " + newSubject.ToString());
-                    return Results.Ok(newSubject);
+                    Program.SharedContext.AutomationLog.Enqueue(Constants.SUBJECT_KEY + "Api POST: " + newSubject.ToString());
+                    return Results.Ok();
                 });
 
-            app.Urls.Add("http://localhost:7775");
+            subjectApi.MapPost("/", (SingleText bodyText) =>
+            {
+                Program.SharedContext.SetPair(Constants.BODY_KEY, bodyText.Text);
+                Program.SharedContext.AutomationLog.Enqueue(Constants.BODY_KEY + "Api POST: " + bodyText.ToString());
+                return Results.Ok();
+            });
+
+            subjectApi.MapPost("/", (SingleText email) =>
+            {
+                Program.SharedContext.SetPair(Constants.RECIPIENT_KEY, email.Text);
+                Program.SharedContext.AutomationLog.Enqueue(Constants.RECIPIENT_KEY + "Api POST: " + email.ToString());
+                return Results.Ok();
+            });
+
+            app.Urls.Add("http://localhost:" + port);
             app.Run();
         }
     }

@@ -30,7 +30,21 @@ namespace Email
                 Program.SharedContext.SetAltered(Constants.SUBJECT_KEY, false);
             }
 
-            while(Program.SharedContext.AutomationLog.Count > 0)
+            if (Program.SharedContext.Altered(Constants.BODY_KEY))
+            {
+                var text = Program.SharedContext.GetValue(Constants.BODY_KEY);
+                tbBody.Lines.Append(text); 
+                Program.SharedContext.SetAltered(Constants.BODY_KEY, false);
+            }
+
+            if (Program.SharedContext.Altered(Constants.RECIPIENT_KEY))
+            {
+                var text = Program.SharedContext.GetValue(Constants.RECIPIENT_KEY);
+                tbRecipients.Text = String.IsNullOrEmpty(tbRecipients.Text) ? text : ", " + text;
+                Program.SharedContext.SetAltered(Constants.RECIPIENT_KEY, false);
+            }
+
+            while (Program.SharedContext.AutomationLog.Count > 0)
             {
                 tbAutomationStatus.AppendText(Program.SharedContext.AutomationLog.Dequeue() + Environment.NewLine);
             }

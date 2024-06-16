@@ -33,12 +33,14 @@
             label4 = new Label();
             UI_UpdateTimer = new System.Windows.Forms.Timer(components);
             splitContainer1 = new SplitContainer();
+            bt_Settings = new Button();
             btSeePrompt = new Button();
             tbRate = new Button();
             btClearChat = new Button();
             btPromptLLM = new Button();
             label3 = new Label();
             tbPrompt = new TextBox();
+            llmStatus = new Label();
             btLearn = new Button();
             btRun = new Button();
             tbCompile = new Button();
@@ -49,7 +51,6 @@
             splitContainer2 = new SplitContainer();
             splitContainer3 = new SplitContainer();
             flCommands = new FlowLayoutPanel();
-            llmStatus = new Label();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -72,7 +73,7 @@
             tbAutomationStatus.Name = "tbAutomationStatus";
             tbAutomationStatus.ReadOnly = true;
             tbAutomationStatus.ScrollBars = ScrollBars.Vertical;
-            tbAutomationStatus.Size = new Size(344, 111);
+            tbAutomationStatus.Size = new Size(401, 111);
             tbAutomationStatus.TabIndex = 16;
             // 
             // label4
@@ -101,6 +102,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(bt_Settings);
             splitContainer1.Panel1.Controls.Add(btSeePrompt);
             splitContainer1.Panel1.Controls.Add(tbRate);
             splitContainer1.Panel1.Controls.Add(btClearChat);
@@ -117,9 +119,25 @@
             splitContainer1.Panel2.Controls.Add(btEditResponse);
             splitContainer1.Panel2.Controls.Add(tbResponse);
             splitContainer1.Panel2.Controls.Add(label5);
-            splitContainer1.Size = new Size(354, 321);
+            splitContainer1.Size = new Size(411, 321);
             splitContainer1.SplitterDistance = 158;
             splitContainer1.TabIndex = 19;
+            // 
+            // bt_Settings
+            // 
+            bt_Settings.AccessibleDescription = "";
+            bt_Settings.AccessibleName = "";
+            bt_Settings.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            bt_Settings.BackColor = SystemColors.ButtonFace;
+            bt_Settings.BackgroundImage = Properties.Resources.settings;
+            bt_Settings.BackgroundImageLayout = ImageLayout.Zoom;
+            bt_Settings.Location = new Point(364, 121);
+            bt_Settings.Name = "bt_Settings";
+            bt_Settings.Size = new Size(30, 30);
+            bt_Settings.TabIndex = 24;
+            toolTip1.SetToolTip(bt_Settings, "Rate Response");
+            bt_Settings.UseVisualStyleBackColor = false;
+            bt_Settings.Click += bt_Settings_Click;
             // 
             // btSeePrompt
             // 
@@ -199,9 +217,18 @@
             tbPrompt.Multiline = true;
             tbPrompt.Name = "tbPrompt";
             tbPrompt.ScrollBars = ScrollBars.Vertical;
-            tbPrompt.Size = new Size(345, 99);
+            tbPrompt.Size = new Size(402, 99);
             tbPrompt.TabIndex = 14;
             tbPrompt.TextChanged += tbPrompt_TextChanged_1;
+            // 
+            // llmStatus
+            // 
+            llmStatus.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            llmStatus.Location = new Point(212, 3);
+            llmStatus.Name = "llmStatus";
+            llmStatus.Size = new Size(192, 15);
+            llmStatus.TabIndex = 25;
+            llmStatus.TextAlign = ContentAlignment.TopRight;
             // 
             // btLearn
             // 
@@ -277,7 +304,7 @@
             tbResponse.Name = "tbResponse";
             tbResponse.ReadOnly = true;
             tbResponse.ScrollBars = ScrollBars.Vertical;
-            tbResponse.Size = new Size(345, 100);
+            tbResponse.Size = new Size(402, 100);
             tbResponse.TabIndex = 20;
             tbResponse.TextChanged += tbResponse_TextChanged;
             // 
@@ -308,7 +335,7 @@
             splitContainer2.Panel2.Controls.Add(splitContainer3);
             splitContainer2.Panel2.Controls.Add(label4);
             splitContainer2.Panel2.RightToLeft = RightToLeft.No;
-            splitContainer2.Size = new Size(358, 594);
+            splitContainer2.Size = new Size(415, 594);
             splitContainer2.SplitterDistance = 328;
             splitContainer2.TabIndex = 20;
             // 
@@ -328,7 +355,7 @@
             // 
             splitContainer3.Panel2.AutoScroll = true;
             splitContainer3.Panel2.Controls.Add(flCommands);
-            splitContainer3.Size = new Size(348, 240);
+            splitContainer3.Size = new Size(405, 240);
             splitContainer3.SplitterDistance = 115;
             splitContainer3.TabIndex = 18;
             // 
@@ -339,24 +366,15 @@
             flCommands.Location = new Point(0, 0);
             flCommands.Margin = new Padding(0);
             flCommands.Name = "flCommands";
-            flCommands.Size = new Size(344, 117);
+            flCommands.Size = new Size(401, 117);
             flCommands.TabIndex = 0;
-            // 
-            // llmStatus
-            // 
-            llmStatus.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            llmStatus.Location = new Point(155, 3);
-            llmStatus.Name = "llmStatus";
-            llmStatus.Size = new Size(192, 15);
-            llmStatus.TabIndex = 25;
-            llmStatus.TextAlign = ContentAlignment.TopRight;
             // 
             // MainWin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
-            ClientSize = new Size(348, 588);
+            ClientSize = new Size(405, 588);
             Controls.Add(splitContainer2);
             Name = "MainWin";
             SizeGripStyle = SizeGripStyle.Hide;
@@ -403,5 +421,6 @@
         private SplitContainer splitContainer3;
         private FlowLayoutPanel flCommands;
         private Label llmStatus;
+        private Button bt_Settings;
     }
 }

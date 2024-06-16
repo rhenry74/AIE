@@ -23,19 +23,28 @@ namespace Email
         [STAThread]
         static async Task Main(string[] args)
         {
-            if (args.Length > 0)
+            var portText = args[0];
+
+            if (args.Length > 1)
             {
-                if (args[0] == "-install")
+                if (args[1] == "-install")
                 {
-                    await SelfRegisterAsync();
-                    return;
+                    try
+                    {
+                        await SelfRegisterAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Could not self register capibilities with the AI broker.");
+                        Console.WriteLine(ex.ToString());
+                    }
                 }
             }
 
             System.Threading.Tasks.Task.Run(() =>
             {
                 server = new WebServer();
-                server.Main(args);
+                server.Main(int.Parse(portText));
             });
 
             // To customize application configuration such as set high DPI settings or default font,

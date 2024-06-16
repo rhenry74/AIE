@@ -161,8 +161,9 @@ namespace Broker
         public static string[] GenerateSystemPrompt()
         {
             var lines = new List<string>();
-            lines.Add(ConfigurationManager.AppSettings["automationPrompt"]);
-            lines.Add("\n\r\n\r");
+            lines.Add(ConfigurationManager.AppSettings["systemPrompt"]);
+            lines.Add("");
+            //lines.Add("");
             foreach (var capibility in Capabilities)
             {
                 lines.Add(capibility.Action.Replace("[]", "[?]"));
@@ -180,13 +181,13 @@ namespace Broker
                 foreach (var line in systemPromptArray)
                 {
                     systemPrompt += line;
-                    systemPrompt += Environment.NewLine;
+                    systemPrompt += "\r\n";
                 }
                 string userPrompt = "";
                 foreach (var line in lines)
                 {
                     userPrompt += line;
-                    userPrompt += Environment.NewLine;
+                    userPrompt += "\r\n";
                 }
                 LLM.Generate(systemPrompt, userPrompt, "");
                 running = false;
@@ -202,6 +203,15 @@ namespace Broker
                 }
                 LLMStatus = "Done";
             });
+        }
+
+        public static void ClearCapibilities()
+        {
+            foreach (var capibility in Capabilities)
+            {
+                capibility.Vector = null;
+            }
+            SaveCapibilities();
         }
     }
 }

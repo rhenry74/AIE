@@ -2,7 +2,7 @@
   "profiles": {
     "Email": {
       "commandName": "Project",
-      "commandLineArgs": "-install"
+      "commandLineArgs": "7775 -install"
     }
   }
 }

@@ -16,9 +16,9 @@ namespace Email
     
     public class WebServer
     {
-        public void Main(string[] args)
+        public void Main(int port)
         {
-            var builder = WebApplication.CreateSlimBuilder(args);
+            var builder = WebApplication.CreateSlimBuilder();
 
             builder.Services.ConfigureHttpJsonOptions(options =>
             {
@@ -71,7 +71,7 @@ namespace Email
                 return Results.Ok();
             });
 
-            app.Urls.Add("http://localhost:7775");
+            app.Urls.Add("http://localhost:" + port);
             app.Run();
         }
     }

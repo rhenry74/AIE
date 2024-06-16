@@ -105,13 +105,20 @@ namespace Broker
         private void btPromptLLM_Click(object sender, EventArgs e)
         {
             tbResponse.Clear();
-            
+
             Program.CompileQueue.Clear();
             Program.ExecuteQueue.Clear();
             flCommands.Controls.Clear();
             tbAutomationStatus.Clear();
 
             Program.PromptLLM(tbPrompt.Lines);
+        }
+
+        private void bt_Settings_Click(object sender, EventArgs e)
+        {
+            var dialog = new Settings();
+            
+            dialog.ShowDialog();
         }
     }
 }

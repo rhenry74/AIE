@@ -33,11 +33,19 @@ namespace Broker
 
         public void Generate(string systemPrompt, string userPrompt, string contextPrompt)
         {           
-            var prompt = "<|start_header_id|>system<|end_header_id|>\n\r\n\r";
+            var prompt = "<|begin_of_text|>\r\n<|start_header_id|>system<|end_header_id|>\r\n";
             prompt = prompt + systemPrompt;
-            prompt = prompt + "\n\r<|eot_id|>\n\r<|start_header_id|>user<|end_header_id|>\n\r\n\r";
+            prompt = prompt + "\r\n<|eot_id|>\r\n<|start_header_id|>user<|end_header_id|>\r\n";
+            prompt = prompt + ConfigurationManager.AppSettings["userExample"];
+            prompt = prompt + "\r\n<|eot_id|>\r\n<|start_header_id|>assistant<|end_header_id|>\r\n";
+            prompt = prompt + ConfigurationManager.AppSettings["assistantExample"];
+            prompt = prompt + "\r\n<|eot_id|>\r\n<|start_header_id|>user<|end_header_id|>\r\n";
+            prompt = prompt + $"The current date and time is: {DateTime.Now.ToString()}\r\n";
+            prompt = prompt + $"The user's name is: Robert Henry\r\n";
             prompt = prompt + userPrompt;
-            prompt = prompt + "\n\r<|eot_id|>\n\r<|start_header_id|>assistant<|end_header_id|>\n\r";
+            prompt = prompt + "\r\n<|eot_id|>\r\n<|start_header_id|>assistant<|end_header_id|>\r\n";
+            
+            Console.WriteLine(prompt);
 
             var tokens = _Tokenizer.Encode(prompt);
             var parms = new GeneratorParams(_Model);

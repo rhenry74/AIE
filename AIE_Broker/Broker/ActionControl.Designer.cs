@@ -40,17 +40,22 @@
             label4 = new Label();
             lbParmsParsed = new Label();
             label6 = new Label();
+            groupBox1 = new GroupBox();
+            btStatus = new Button();
+            groupBox2 = new GroupBox();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
             SuspendLayout();
             // 
             // splitContainer1
             // 
             splitContainer1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             splitContainer1.BorderStyle = BorderStyle.Fixed3D;
-            splitContainer1.Location = new Point(3, 3);
+            splitContainer1.Location = new Point(5, 17);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -60,8 +65,8 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(lbActionText);
-            splitContainer1.Size = new Size(610, 25);
-            splitContainer1.SplitterDistance = 295;
+            splitContainer1.Size = new Size(435, 25);
+            splitContainer1.SplitterDistance = 209;
             splitContainer1.TabIndex = 0;
             // 
             // lbTopChoice
@@ -84,10 +89,11 @@
             // 
             // cbExecute
             // 
+            cbExecute.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             cbExecute.AutoSize = true;
             cbExecute.Checked = true;
             cbExecute.CheckState = CheckState.Checked;
-            cbExecute.Location = new Point(6, 30);
+            cbExecute.Location = new Point(24, 16);
             cbExecute.Name = "cbExecute";
             cbExecute.Size = new Size(67, 19);
             cbExecute.TabIndex = 1;
@@ -97,7 +103,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(76, 30);
+            label1.Location = new Point(7, 45);
             label1.Name = "label1";
             label1.Size = new Size(54, 15);
             label1.TabIndex = 2;
@@ -107,7 +113,7 @@
             // lbLikeness
             // 
             lbLikeness.BorderStyle = BorderStyle.Fixed3D;
-            lbLikeness.Location = new Point(136, 30);
+            lbLikeness.Location = new Point(59, 45);
             lbLikeness.MaximumSize = new Size(60, 17);
             lbLikeness.Name = "lbLikeness";
             lbLikeness.Size = new Size(60, 17);
@@ -118,7 +124,7 @@
             // lbState
             // 
             lbState.BorderStyle = BorderStyle.Fixed3D;
-            lbState.Location = new Point(244, 30);
+            lbState.Location = new Point(162, 45);
             lbState.MaximumSize = new Size(60, 17);
             lbState.Name = "lbState";
             lbState.Size = new Size(60, 17);
@@ -129,7 +135,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(202, 30);
+            label3.Location = new Point(127, 45);
             label3.Name = "label3";
             label3.Size = new Size(36, 15);
             label3.TabIndex = 4;
@@ -139,7 +145,7 @@
             // lbParmsEx
             // 
             lbParmsEx.BorderStyle = BorderStyle.Fixed3D;
-            lbParmsEx.Location = new Point(377, 30);
+            lbParmsEx.Location = new Point(291, 45);
             lbParmsEx.MaximumSize = new Size(60, 17);
             lbParmsEx.Name = "lbParmsEx";
             lbParmsEx.Size = new Size(38, 17);
@@ -150,7 +156,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(313, 30);
+            label4.Location = new Point(227, 45);
             label4.Name = "label4";
             label4.Size = new Size(65, 15);
             label4.TabIndex = 6;
@@ -160,7 +166,7 @@
             // lbParmsParsed
             // 
             lbParmsParsed.BorderStyle = BorderStyle.Fixed3D;
-            lbParmsParsed.Location = new Point(481, 30);
+            lbParmsParsed.Location = new Point(403, 45);
             lbParmsParsed.MaximumSize = new Size(60, 17);
             lbParmsParsed.Name = "lbParmsParsed";
             lbParmsParsed.Size = new Size(38, 17);
@@ -171,38 +177,76 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(416, 30);
+            label6.Location = new Point(338, 45);
             label6.Name = "label6";
             label6.Size = new Size(65, 15);
             label6.TabIndex = 8;
             label6.Text = "Parms Psd:";
             label6.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // groupBox1
+            // 
+            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            groupBox1.Controls.Add(btStatus);
+            groupBox1.Controls.Add(cbExecute);
+            groupBox1.Location = new Point(449, 3);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(97, 65);
+            groupBox1.TabIndex = 10;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Execution";
+            // 
+            // btStatus
+            // 
+            btStatus.BackColor = Color.FromArgb(192, 255, 255);
+            btStatus.Location = new Point(1, 38);
+            btStatus.Name = "btStatus";
+            btStatus.Size = new Size(96, 23);
+            btStatus.TabIndex = 2;
+            btStatus.Text = "Ready";
+            btStatus.UseVisualStyleBackColor = false;
+            btStatus.Click += btStatus_Click;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox2.Controls.Add(lbState);
+            groupBox2.Controls.Add(splitContainer1);
+            groupBox2.Controls.Add(label1);
+            groupBox2.Controls.Add(lbParmsParsed);
+            groupBox2.Controls.Add(lbLikeness);
+            groupBox2.Controls.Add(label6);
+            groupBox2.Controls.Add(label3);
+            groupBox2.Controls.Add(lbParmsEx);
+            groupBox2.Controls.Add(label4);
+            groupBox2.Location = new Point(3, 3);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(446, 65);
+            groupBox2.TabIndex = 11;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Compilation";
+            // 
             // ActionControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.Control;
             BorderStyle = BorderStyle.FixedSingle;
-            Controls.Add(lbParmsParsed);
-            Controls.Add(label6);
-            Controls.Add(lbParmsEx);
-            Controls.Add(label4);
-            Controls.Add(lbState);
-            Controls.Add(label3);
-            Controls.Add(lbLikeness);
-            Controls.Add(label1);
-            Controls.Add(cbExecute);
-            Controls.Add(splitContainer1);
+            Controls.Add(groupBox2);
+            Controls.Add(groupBox1);
             Name = "ActionControl";
-            Size = new Size(616, 48);
+            Size = new Size(549, 70);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
             splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -219,5 +263,8 @@
         private Label label4;
         private Label lbParmsParsed;
         private Label label6;
+        private GroupBox groupBox1;
+        private GroupBox groupBox2;
+        private Button btStatus;
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AIE_InterThread;
+using Microsoft.VisualBasic.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,12 +11,105 @@ namespace Broker
     public class ActionExecutor
     {
         public ActionCompiler ActionCompiler { get; }
+
+        //this is a very counter intuitive situation in OO programing where a member of a class should not be accessed from within the class
+        //we keep the ui control here to identify which control goes with this executor
+        //it's very likely that the methods of this class will not be executed on the UI thread
+        //so accessing the ui control could cause problems
         public ActionControl ActionUI { get; }
+
+        public bool Executing { get; internal set; }
+
+        public string Error { get; internal set; } = null;
+
+        public List<string> Log { get; internal set; } = new List<string>();
 
         public ActionExecutor(ActionCompiler actionCompiler, ActionControl actionUI)
         {
             ActionCompiler = actionCompiler;
             ActionUI = actionUI;
-        }       
+            actionUI.Executor = this;//complex wiring here, so it can get the Log
+        }
+
+        internal void Execute()
+        {
+            Executing = true;
+            Log.Add(DateTime.Now.ToShortTimeString() + " Starting...");
+            var capibility = ActionCompiler.TopChoice?.Capibility;
+            if (capibility != null)
+            {
+                Log.Add(DateTime.Now.ToShortTimeString() + " " + capibility.ToString());
+                switch (capibility.ActionType)
+                {
+                    case AIE_InterThread.ActionType.LAUNCH:
+                        LaunchApplication();
+                        break;
+                    case AIE_InterThread.ActionType.HTTP:
+                        CallApplication();
+                        break;
+                    case AIE_InterThread.ActionType.UI:
+                        MessageBox.Show(ActionCompiler.Parameter,
+                            "The LLM says...", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
+                    default:
+                        Error = "Action Type Unknown";
+                        Log.Add(DateTime.Now.ToShortTimeString() + " " + Error);
+                        break;
+                }
+            }
+            else
+            {
+                Error = "Unable to determin top capibility.";
+                Log.Add(DateTime.Now.ToShortTimeString() + " " + Error);
+            }
+            Executing = false;
+        }
+
+        private void LaunchApplication()
+        {
+            try
+            {
+                var capibility = ActionCompiler.TopChoice?.Capibility;
+                Log.Add(DateTime.Now.ToShortTimeString() + " Launching Application " + capibility.AppPath);
+                var portNumber = Program.PortMappings.Max(x => x.Port) + 1;
+                Program.PortMappings.Add(new PortMapping()
+                {
+                    Name = Program.Context + ":" + capibility.AppClass,
+                    Port = portNumber,
+                    Server = "localhost"
+                });
+
+                //start app
+
+            }
+            catch (Exception any)
+            {
+                Error = any.ToString();
+                Log.Add(DateTime.Now.ToShortTimeString() + " Call App Failed");
+            }
+        }
+
+        private void CallApplication()
+        {
+            try
+            {
+                var capibility = ActionCompiler.TopChoice?.Capibility;
+                Log.Add(DateTime.Now.ToShortTimeString() + " Calling API " + capibility.Route);
+
+                var portMap = Program.PortMappings.Find(pm => pm.Name == Program.Context + ":" + capibility.AppClass);
+                Log.Add(DateTime.Now.ToShortTimeString() + " Port = " + portMap.Port);
+
+                var url = portMap.Server + ":" + portMap.Port + capibility.Route;
+                Log.Add(DateTime.Now.ToShortTimeString() + " url = " + url);
+
+                //call api
+
+            }
+            catch (Exception any)
+            {
+                Error = any.ToString();
+                Log.Add(DateTime.Now.ToShortTimeString() + " Launch App Failed");
+            }
+        }
     }
 }

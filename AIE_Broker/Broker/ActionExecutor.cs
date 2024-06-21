@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace Broker
 {
-    internal class ActionExecutor
+    public class ActionExecutor
     {
-        private ActionCompiler actionCompiler;
+        public ActionCompiler ActionCompiler { get; }
+        public ActionControl ActionUI { get; }
 
-        public ActionExecutor(ActionCompiler actionCompiler)
+        public ActionExecutor(ActionCompiler actionCompiler, ActionControl actionUI)
         {
-            this.actionCompiler = actionCompiler;
-        }
+            ActionCompiler = actionCompiler;
+            ActionUI = actionUI;
+        }       
     }
 }

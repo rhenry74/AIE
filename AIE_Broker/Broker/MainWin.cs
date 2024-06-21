@@ -36,7 +36,12 @@ namespace Broker
 
                 if (Program.SharedContext.AutomationLog.Count > 0)
                 {
-                    tbAutomationStatus.AppendText(Program.SharedContext.AutomationLog.Dequeue() + Environment.NewLine);
+                    var toPump = Program.SharedContext.AutomationLog.Count;
+                    while (toPump > 0)
+                    {
+                        tbAutomationStatus.AppendText(Program.SharedContext.AutomationLog.Dequeue() + Environment.NewLine);
+                        toPump--;
+                    }
                 }
 
                 if (Program.CompileQueue.Count > 0)
@@ -44,17 +49,30 @@ namespace Broker
                     var actionCompiler = Program.CompileQueue.Peek();
                     if (actionCompiler.Compiled)
                     {
-                        Program.ExecuteQueue.Enqueue(new ActionExecutor(Program.CompileQueue.Dequeue()));
                         var actionUI = new ActionControl();
+                        Program.ExecuteQueue.Enqueue(new ActionExecutor(
+                            Program.CompileQueue.Dequeue(),
+                            actionUI));
                         flCommands.Controls.Add(actionUI);
                         actionUI.Initialize(actionCompiler);
                         actionUI.Width = flCommands.Width - SystemInformation.VerticalScrollBarWidth - 6;
+                        
                     }
                     if (!actionCompiler.Compiling)
                     {
                         actionCompiler.Compile();
                     }
                 }
+
+                if (!btRun.Visible && Program.ExecuteQueue.Count > 0)
+                {
+                    btRun.Visible = true;
+                }
+                if (btRun.Visible && Program.ExecuteQueue.Count == 0)
+                {
+                    btRun.Visible = false;
+                }
+
             }
             catch (Exception ex)
             {
@@ -117,8 +135,13 @@ namespace Broker
         private void bt_Settings_Click(object sender, EventArgs e)
         {
             var dialog = new Settings();
-            
+
             dialog.ShowDialog();
+        }
+
+        private void btRun_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

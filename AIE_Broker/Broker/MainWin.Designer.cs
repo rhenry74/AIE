@@ -261,6 +261,7 @@
             toolTip1.SetToolTip(btRun, "Execute");
             btRun.UseVisualStyleBackColor = false;
             btRun.Visible = false;
+            btRun.Click += btRun_Click;
             // 
             // tbCompile
             // 

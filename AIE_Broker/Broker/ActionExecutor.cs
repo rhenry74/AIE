@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Broker
 {
-    public class ActionExecutor
+    public class ActionExecutor: BrokerWorker
     {
         public ActionCompiler ActionCompiler { get; }
 
@@ -22,7 +22,6 @@ namespace Broker
 
         public string Error { get; internal set; } = null;
 
-        public List<string> Log { get; internal set; } = new List<string>();
 
         public ActionExecutor(ActionCompiler actionCompiler, ActionControl actionUI)
         {
@@ -34,11 +33,11 @@ namespace Broker
         internal void Execute()
         {
             Executing = true;
-            Log.Add(DateTime.Now.ToShortTimeString() + " Starting...");
+            LogMessage(" Starting...");
             var capibility = ActionCompiler.TopChoice?.Capibility;
             if (capibility != null)
             {
-                Log.Add(DateTime.Now.ToShortTimeString() + " " + capibility.ToString());
+                LogMessage(capibility.ToString());
                 switch (capibility.ActionType)
                 {
                     case AIE_InterThread.ActionType.LAUNCH:
@@ -53,14 +52,14 @@ namespace Broker
                         break;
                     default:
                         Error = "Action Type Unknown";
-                        Log.Add(DateTime.Now.ToShortTimeString() + " " + Error);
+                        LogMessage(Error);
                         break;
                 }
             }
             else
             {
                 Error = "Unable to determin top capibility.";
-                Log.Add(DateTime.Now.ToShortTimeString() + " " + Error);
+                LogMessage(Error);
             }
             Executing = false;
         }
@@ -70,7 +69,7 @@ namespace Broker
             try
             {
                 var capibility = ActionCompiler.TopChoice?.Capibility;
-                Log.Add(DateTime.Now.ToShortTimeString() + " Launching Application " + capibility.AppPath);
+                LogMessage("Launching Application " + capibility.AppPath);
                 var portNumber = Program.PortMappings.Max(x => x.Port) + 1;
                 Program.PortMappings.Add(new PortMapping()
                 {
@@ -85,7 +84,7 @@ namespace Broker
             catch (Exception any)
             {
                 Error = any.ToString();
-                Log.Add(DateTime.Now.ToShortTimeString() + " Call App Failed");
+                LogMessage("Call App Failed");
             }
         }
 
@@ -94,13 +93,13 @@ namespace Broker
             try
             {
                 var capibility = ActionCompiler.TopChoice?.Capibility;
-                Log.Add(DateTime.Now.ToShortTimeString() + " Calling API " + capibility.Route);
+                LogMessage("Calling API " + capibility.Route);
 
                 var portMap = Program.PortMappings.Find(pm => pm.Name == Program.Context + ":" + capibility.AppClass);
-                Log.Add(DateTime.Now.ToShortTimeString() + " Port = " + portMap.Port);
+                LogMessage("Port = " + portMap.Port);
 
                 var url = portMap.Server + ":" + portMap.Port + capibility.Route;
-                Log.Add(DateTime.Now.ToShortTimeString() + " url = " + url);
+                LogMessage("url = " + url);
 
                 //call api
 
@@ -108,7 +107,7 @@ namespace Broker
             catch (Exception any)
             {
                 Error = any.ToString();
-                Log.Add(DateTime.Now.ToShortTimeString() + " Launch App Failed");
+                LogMessage("Launch App Failed");
             }
         }
     }

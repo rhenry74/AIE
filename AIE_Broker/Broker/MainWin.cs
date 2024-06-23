@@ -59,7 +59,7 @@ namespace Broker
                         actionUI.Width = flCommands.Width - SystemInformation.VerticalScrollBarWidth - 6;
 
                     }
-                    if (!actionCompiler.Compiling)
+                    if (actionCompiler.Status == BrokerWorker.Status.Ready)
                     {
                         actionCompiler.Compile();
                     }
@@ -81,14 +81,15 @@ namespace Broker
                     if (actionExecutor.Executing)
                     {
                         var actionUI = actionExecutor.ActionUI;
-                        actionUI.MakeStatus(ActionControl.Status.Executing);
+                        actionUI.MakeExecuteStatus(BrokerWorker.Status.Executing);
                     }
                 }
                 if (Program.ExecutedQueue.Count > 0)
                 {
                     var actionExecutor = Program.ExecutedQueue.Dequeue();
                     var actionUI = actionExecutor.ActionUI;
-                    actionUI.MakeStatus(actionExecutor.Error == null ? ActionControl.Status.Success : ActionControl.Status.Failure);
+                    actionUI.MakeExecuteStatus(actionExecutor.Error == null ? BrokerWorker.Status.Success :
+                        BrokerWorker.Status.Failure);
                 }
 
             }
@@ -176,11 +177,13 @@ namespace Broker
 
         private void MainWin_Resize(object sender, EventArgs e)
         {
-            foreach(var executor in Program.ExecuteQueue.ToList())
+            foreach (var executor in Program.ExecuteQueue.ToList())
             {
                 var executorUI = executor.ActionUI;
                 executorUI.Width = this.Width - 40;
             }
         }
+
+        
     }
 }

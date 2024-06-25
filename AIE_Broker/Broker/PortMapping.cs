@@ -5,5 +5,6 @@
         public int Port { get; set; }
         public string Server { get; set; }
         public string Name { get; set; }
+        public int ProcessId { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Broker
@@ -30,7 +31,7 @@ namespace Broker
             actionUI.Executor = this;//complex wiring here, so it can get the Log
         }
 
-        internal void Execute()
+        public async Task ExecuteAsync()
         {
             Executing = true;
             LogMessage(" Starting...");
@@ -44,7 +45,7 @@ namespace Broker
                         LaunchApplication();
                         break;
                     case AIE_InterThread.ActionType.HTTP:
-                        CallApplication();
+                        await CallApplicationAsync();
                         break;
                     case AIE_InterThread.ActionType.UI:
                         MessageBox.Show(ActionCompiler.Parameter,
@@ -71,24 +72,41 @@ namespace Broker
                 var capibility = ActionCompiler.TopChoice?.Capibility;
                 LogMessage("Launching Application " + capibility.AppPath);
                 var portNumber = Program.PortMappings.Max(x => x.Port) + 1;
-                Program.PortMappings.Add(new PortMapping()
+                var newPortMapping = new PortMapping()
                 {
                     Name = Program.Context + ":" + capibility.AppClass,
                     Port = portNumber,
                     Server = "localhost"
-                });
+                };
+                Program.PortMappings.Add(newPortMapping);
 
                 //start app
+                var exe = Path.GetFileName(capibility.AppPath);
+                var dir = Path.GetDirectoryName(capibility.AppPath);
+
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                process.StartInfo = new System.Diagnostics.ProcessStartInfo()
+                {
+                    UseShellExecute = true,
+                    RedirectStandardOutput = false,
+                    RedirectStandardError = false,
+                    FileName = exe,
+                    Arguments = portNumber.ToString(),
+                    WorkingDirectory = dir
+                };
+                process.Start();
+                newPortMapping.ProcessId = process.Id;
 
             }
             catch (Exception any)
             {
                 Error = any.ToString();
-                LogMessage("Call App Failed");
+                LogMessage("Launch App Failed");
+                LogMessage(Error);
             }
         }
 
-        private void CallApplication()
+        private async Task CallApplicationAsync()
         {
             try
             {
@@ -98,16 +116,43 @@ namespace Broker
                 var portMap = Program.PortMappings.Find(pm => pm.Name == Program.Context + ":" + capibility.AppClass);
                 LogMessage("Port = " + portMap.Port);
 
-                var url = portMap.Server + ":" + portMap.Port + capibility.Route;
-                LogMessage("url = " + url);
+                var url = "http://" + portMap.Server + ":" + portMap.Port;
+                LogMessage("url = " + url + "/" + capibility.Route);
 
                 //call api
+                HttpClient sender = new HttpClient();
+                sender.BaseAddress = new Uri(url);
 
+                string json = null;
+                if (capibility.Contract == "SingleText")
+                {
+                    var singleText = new SingleText()
+                    {
+                        Text = ActionCompiler.Parameter
+                    };
+                    json = JsonSerializer.Serialize<SingleText>(singleText);
+                }
+                
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                if (capibility.Method == MethodType.POST)
+                {
+                    response = await sender.PostAsync(capibility.Route, content);
+                }
+
+                LogMessage("response.StatusCode: " + response.StatusCode.ToString());
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    Error = "API Call Failed";
+                    LogMessage(Error);
+                }
             }
             catch (Exception any)
             {
                 Error = any.ToString();
-                LogMessage("Launch App Failed");
+                LogMessage("Call App Failed");
+                LogMessage(Error); 
             }
         }
     }

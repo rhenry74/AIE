@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using static System.Windows.Forms.LinkLabel;
@@ -224,12 +225,12 @@ namespace Broker
         public static void ExecuteCommands()
         {
             Executing = true;
-            System.Threading.Tasks.Task.Run(() =>
+            System.Threading.Tasks.Task.Run(async () =>
             {
                 while(ExecuteQueue.Count > 0)
                 {
                     var executor = ExecuteQueue.Dequeue();
-                    executor.Execute();
+                    await executor.ExecuteAsync();
                     ExecutedQueue.Enqueue(executor);
                 }
             });

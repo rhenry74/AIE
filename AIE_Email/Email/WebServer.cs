@@ -42,7 +42,7 @@ namespace Email
                     ? Results.Ok(todo)
                     : Results.NotFound());
    
-            var subjectApi = app.MapGroup("/" + Constants.SUBJECT_KEY);
+            var subjectApi = app.MapGroup("/");
             subjectApi.MapGet("/", () =>
             {
                 var val = new SingleText() { Text = Program.SharedContext.GetValue(Constants.SUBJECT_KEY) };
@@ -50,27 +50,28 @@ namespace Email
                 return Results.Ok(val);
             });
 
-            subjectApi.MapPost("/", (SingleText newSubject) =>
+            subjectApi.MapPost("/" + Constants.SUBJECT_KEY, (SingleText newSubject) =>
                 {
                     Program.SharedContext.SetPair(Constants.SUBJECT_KEY, newSubject.Text);
                     Program.SharedContext.AutomationLog.Enqueue(Constants.SUBJECT_KEY + "Api POST: " + newSubject.ToString());
                     return Results.Ok();
                 });
 
-            subjectApi.MapPost("/", (SingleText bodyText) =>
+            subjectApi.MapPost("/" + Constants.BODY_KEY, (SingleText bodyText) =>
             {
                 Program.SharedContext.SetPair(Constants.BODY_KEY, bodyText.Text);
                 Program.SharedContext.AutomationLog.Enqueue(Constants.BODY_KEY + "Api POST: " + bodyText.ToString());
                 return Results.Ok();
             });
 
-            subjectApi.MapPost("/", (SingleText email) =>
+            subjectApi.MapPost("/" + Constants.RECIPIENT_KEY, (SingleText email) =>
             {
                 Program.SharedContext.SetPair(Constants.RECIPIENT_KEY, email.Text);
                 Program.SharedContext.AutomationLog.Enqueue(Constants.RECIPIENT_KEY + "Api POST: " + email.ToString());
                 return Results.Ok();
             });
 
+            Program.SharedContext.AutomationLog.Enqueue("url: " + "http://localhost:" + port);
             app.Urls.Add("http://localhost:" + port);
             app.Run();
         }

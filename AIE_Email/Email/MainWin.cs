@@ -12,6 +12,7 @@ namespace Email
 {
     public partial class MainWin : Form
     {
+        List<string> _body = new List<string>();
         public MainWin()
         {
             InitializeComponent();
@@ -33,7 +34,8 @@ namespace Email
             if (Program.SharedContext.Altered(Constants.BODY_KEY))
             {
                 var text = Program.SharedContext.GetValue(Constants.BODY_KEY);
-                tbBody.Lines.Append(text); 
+                _body.Add(text);
+                tbBody.Lines = _body.ToArray();
                 Program.SharedContext.SetAltered(Constants.BODY_KEY, false);
             }
 

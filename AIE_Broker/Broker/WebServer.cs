@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -16,7 +17,7 @@ namespace Broker
     
     public class WebServer
     {
-        public void Main(string[] args)
+        public async Task Main(string[] args)
         {
             var builder = WebApplication.CreateSlimBuilder(args);
 
@@ -36,7 +37,7 @@ namespace Broker
             //    return Results.Ok(val);
             //});
 
-            registerApi.MapPost("/", (ApplicationCapibility newCapibility) =>
+            registerApi.MapPost("/", async (ApplicationCapibility newCapibility) =>
             {
                 if (newCapibility.ActionType == ActionType.LAUNCH)
                 {
@@ -51,8 +52,9 @@ namespace Broker
                 }
 
                 Program.Capabilities.Add(newCapibility);
-
+                await Program.SaveCapibilitiesAsync();
                 Program.SharedContext.AutomationLog.Enqueue("registerApi POST: " + newCapibility.Action);
+
                 return Results.Ok();
             });
 

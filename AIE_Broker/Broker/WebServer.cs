@@ -62,6 +62,7 @@ namespace Broker
             var baseAddress = new Uri("http://" + brokerServer.Server + ":" + brokerServer.Port);
 
             app.Urls.Add(baseAddress.ToString());
+            Program.SharedContext.AutomationLog.Enqueue("Starting API: " + baseAddress.ToString());
             app.Run();
         }
     }

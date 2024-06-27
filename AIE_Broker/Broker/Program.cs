@@ -52,13 +52,14 @@ namespace Broker
 
             await InitializeBrokerageAsync();
 
-            LLM = new LargeLanguageModel();
-
             //start the api
             System.Threading.Tasks.Task.Run(() =>
             {
+                LLM = new LargeLanguageModel();
+
                 server = new WebServer();
                 server.Main(args);
+
             });
 
             //bring up the ui

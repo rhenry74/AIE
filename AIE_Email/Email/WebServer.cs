@@ -45,28 +45,29 @@ namespace Email
             var subjectApi = app.MapGroup("/");
             subjectApi.MapGet("/", () =>
             {
-                var val = new SingleText() { Text = Program.SharedContext.GetValue(Constants.SUBJECT_KEY) };
+                //var val = new SingleText() { Text = Program.SharedContext.Dequeue(Constants.SUBJECT_KEY) };
+                var val = "hmmm, not sure how to do this... don't need it right now";
                 Program.SharedContext.AutomationLog.Enqueue("subjectApi GET: " + val);
                 return Results.Ok(val);
             });
 
             subjectApi.MapPost("/" + Constants.SUBJECT_KEY, (SingleText newSubject) =>
                 {
-                    Program.SharedContext.SetPair(Constants.SUBJECT_KEY, newSubject.Text);
+                    Program.SharedContext.Enqueue(Constants.SUBJECT_KEY, newSubject.Text);
                     Program.SharedContext.AutomationLog.Enqueue(Constants.SUBJECT_KEY + "Api POST: " + newSubject.ToString());
                     return Results.Ok();
                 });
 
             subjectApi.MapPost("/" + Constants.BODY_KEY, (SingleText bodyText) =>
             {
-                Program.SharedContext.SetPair(Constants.BODY_KEY, bodyText.Text);
+                Program.SharedContext.Enqueue(Constants.BODY_KEY, bodyText.Text);
                 Program.SharedContext.AutomationLog.Enqueue(Constants.BODY_KEY + "Api POST: " + bodyText.ToString());
                 return Results.Ok();
             });
 
             subjectApi.MapPost("/" + Constants.RECIPIENT_KEY, (SingleText email) =>
             {
-                Program.SharedContext.SetPair(Constants.RECIPIENT_KEY, email.Text);
+                Program.SharedContext.Enqueue(Constants.RECIPIENT_KEY, email.Text);
                 Program.SharedContext.AutomationLog.Enqueue(Constants.RECIPIENT_KEY + "Api POST: " + email.ToString());
                 return Results.Ok();
             });

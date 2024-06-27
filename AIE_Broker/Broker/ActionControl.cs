@@ -48,6 +48,10 @@ namespace Broker
                     btStatus.BackColor = Color.LightGoldenrodYellow;
                     btStatus.Text = status.ToString();
                     break;
+                case Status.Skipped:
+                    btStatus.BackColor = Color.LightYellow;
+                    btStatus.Text = status.ToString();
+                    break;
                 default:
                     btStatus.BackColor = Color.LightSteelBlue;
                     btStatus.Text = "Unknown";
@@ -103,6 +107,11 @@ namespace Broker
             var dialog = new InfoDia();
             dialog.tbInfo.Lines = Action.Logs.ToArray();
             dialog.ShowDialog();
+        }
+
+        private void cbExecute_CheckedChanged(object sender, EventArgs e)
+        {
+            Executor.SkipIt = !cbExecute.Checked;
         }
     }
 }

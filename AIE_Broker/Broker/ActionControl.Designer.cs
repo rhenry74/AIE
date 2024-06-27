@@ -41,8 +41,8 @@
             groupBox1 = new GroupBox();
             btStatus = new Button();
             groupBox2 = new GroupBox();
-            btParsed = new Button();
             btState = new Button();
+            btParsed = new Button();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -99,6 +99,7 @@
             cbExecute.TabIndex = 1;
             cbExecute.Text = "Execute";
             cbExecute.UseVisualStyleBackColor = true;
+            cbExecute.CheckedChanged += cbExecute_CheckedChanged;
             // 
             // label1
             // 
@@ -204,16 +205,6 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "Compilation";
             // 
-            // btParsed
-            // 
-            btParsed.Location = new Point(412, 44);
-            btParsed.Name = "btParsed";
-            btParsed.Size = new Size(34, 23);
-            btParsed.TabIndex = 12;
-            btParsed.Text = "0";
-            btParsed.UseVisualStyleBackColor = true;
-            btParsed.Click += btParsed_Click;
-            // 
             // btState
             // 
             btState.BackColor = Color.FromArgb(192, 255, 255);
@@ -224,6 +215,16 @@
             btState.Text = "Ready";
             btState.UseVisualStyleBackColor = false;
             btState.Click += btState_Click;
+            // 
+            // btParsed
+            // 
+            btParsed.Location = new Point(412, 44);
+            btParsed.Name = "btParsed";
+            btParsed.Size = new Size(34, 23);
+            btParsed.TabIndex = 12;
+            btParsed.Text = "0";
+            btParsed.UseVisualStyleBackColor = true;
+            btParsed.Click += btParsed_Click;
             // 
             // ActionControl
             // 

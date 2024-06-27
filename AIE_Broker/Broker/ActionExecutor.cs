@@ -23,6 +23,7 @@ namespace Broker
 
         public string Error { get; internal set; } = null;
 
+        public bool SkipIt { get; set; }
 
         public ActionExecutor(ActionCompiler actionCompiler, ActionControl actionUI)
         {
@@ -34,11 +35,18 @@ namespace Broker
         public async Task ExecuteAsync()
         {
             Executing = true;
-            LogMessage(" Starting...");
+            LogMessage("Executing...");
             var capibility = ActionCompiler.TopChoice?.Capibility;
             if (capibility != null)
             {
                 LogMessage(capibility.ToString());
+                if (SkipIt)
+                {
+                    Executing = false;
+                    LogMessage("Skiped");
+                    return;
+                }
+
                 switch (capibility.ActionType)
                 {
                     case AIE_InterThread.ActionType.LAUNCH:

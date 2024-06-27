@@ -30,8 +30,7 @@ namespace Broker
 
                 if (Program.SharedContext.Altered(Constants.RESPONSE_KEY))
                 {
-                    tbResponse.Text = Program.SharedContext.GetValue(Constants.RESPONSE_KEY);
-                    Program.SharedContext.SetAltered(Constants.RESPONSE_KEY, false);
+                    tbResponse.Text = Program.SharedContext.Dequeue(Constants.RESPONSE_KEY);
                 }
 
                 if (Program.SharedContext.AutomationLog.Count > 0)
@@ -88,8 +87,15 @@ namespace Broker
                 {
                     var actionExecutor = Program.ExecutedQueue.Dequeue();
                     var actionUI = actionExecutor.ActionUI;
-                    actionUI.MakeExecuteStatus(actionExecutor.Error == null ? BrokerWorker.Status.Success :
-                        BrokerWorker.Status.Failure);
+                    if (actionExecutor.SkipIt)
+                    {
+                        actionUI.MakeExecuteStatus(BrokerWorker.Status.Skipped);
+                    }
+                    else
+                    {
+                        actionUI.MakeExecuteStatus(actionExecutor.Error == null ? BrokerWorker.Status.Success :
+                            BrokerWorker.Status.Failure);
+                    }
                 }
 
             }
@@ -101,7 +107,7 @@ namespace Broker
 
         private void tbPrompt_TextChanged(object sender, EventArgs e)
         {
-            Program.SharedContext.SetPair(Constants.PROMPT_KEY, tbPrompt.Text);
+            Program.SharedContext.Enqueue(Constants.PROMPT_KEY, tbPrompt.Text);
         }
 
         private void bt_EditResponse_Click(object sender, EventArgs e)

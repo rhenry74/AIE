@@ -86,7 +86,6 @@
             tbSubject.Name = "tbSubject";
             tbSubject.Size = new Size(886, 23);
             tbSubject.TabIndex = 12;
-            tbSubject.TextChanged += tbSubject_TextChanged;
             // 
             // label2
             // 

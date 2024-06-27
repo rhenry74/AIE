@@ -10,7 +10,8 @@
             Failure,
             Weak,
             Compiling,
-            Ambigous
+            Ambigous,
+            Skipped
         };
 
         public List<string> Logs { get; internal set; } = new List<string>();

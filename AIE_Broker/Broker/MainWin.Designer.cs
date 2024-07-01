@@ -129,7 +129,6 @@
             bt_Settings.AccessibleName = "";
             bt_Settings.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             bt_Settings.BackColor = SystemColors.ButtonFace;
-            bt_Settings.BackgroundImage = Properties.Resources.settings;
             bt_Settings.BackgroundImageLayout = ImageLayout.Zoom;
             bt_Settings.Location = new Point(543, 83);
             bt_Settings.Name = "bt_Settings";

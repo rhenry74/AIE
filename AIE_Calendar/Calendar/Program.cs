@@ -1,6 +1,7 @@
 using AIE_InterThread;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System.Configuration;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Policy;
@@ -9,7 +10,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Email
+namespace Calendar
 {
     static class Program
     {
@@ -18,6 +19,8 @@ namespace Email
         private static WebServer server;
 
         public static string PortText = "Not Set";
+
+        public static List<CalendarEvent> Events = new List<CalendarEvent>();
 
         /// <summary>
         ///  The main entry point for the application.
@@ -46,6 +49,18 @@ namespace Email
                 }
             }
 
+            string root = ConfigurationManager.AppSettings["rootPath"];
+            var filePath = Path.Combine(root, "CalendarEvents.json");
+            try
+            {
+                Events = JsonSerializer.Deserialize<List<CalendarEvent>>(File.ReadAllText(filePath));
+                SharedContext.AutomationLog.Enqueue("Calendar Events Loaded");
+            }
+            catch (Exception ex)
+            {
+                SharedContext.AutomationLog.Enqueue("Error Loading Calendar Events: " + ex.ToString());
+            }
+
             var serverTask = System.Threading.Tasks.Task.Run( () => 
             {
                 server = new WebServer();
@@ -57,6 +72,17 @@ namespace Email
             ApplicationConfiguration.Initialize();
             Application.Run(new MainWin());
             
+        }
+
+        public async static Task SaveEventsAsync()
+        {
+            string root = ConfigurationManager.AppSettings["rootPath"];
+            var filePath = Path.Combine(root, "CalendarEvents.json");
+            if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+            }
+            await File.WriteAllTextAsync(filePath, JsonSerializer.Serialize(Events));
         }
 
         private static async Task SelfRegisterAsync()
@@ -82,12 +108,12 @@ namespace Email
 
             var capibility = new ApplicationCapibility()
             {
-                Action = "start email application",
+                Action = "start calendar application",
                 ActionType = ActionType.LAUNCH,
-                AppClass = "email",
+                AppClass = Constants.APP_CLASS,
                 AppPath = Application.ExecutablePath,
                 ContentType = "",
-                Description = "launch an empty email in the email app",
+                Description = "launch an empty calendar event",
                 Contract = "",
                 Method = MethodType.NA,
                 Route = ""
@@ -100,14 +126,14 @@ namespace Email
 
             capibility = new ApplicationCapibility()
             {
-                Action = "set email subject to []",
+                Action = "set calendar event title to []",
                 ActionType = ActionType.HTTP,
-                AppClass = "email",
+                AppClass = Constants.APP_CLASS,
                 ContentType = "application/json",
-                Description = "set the subject of the email",
+                Description = "set the title of the calendar event",
                 Contract = "SingleText",
                 Method = MethodType.POST,
-                Route = Constants.SUBJECT_KEY
+                Route = Constants.TITLE_KEY
             };
 
             json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
@@ -116,14 +142,14 @@ namespace Email
 
             capibility = new ApplicationCapibility()
             {
-                Action = "append email body with []",
+                Action = "append calendar event description with []",
                 ActionType = ActionType.HTTP,
-                AppClass = "email",
+                AppClass = Constants.APP_CLASS,
                 ContentType = "application/json",
-                Description = "append a line of the body of the eamil",
+                Description = "append a line of text to the calendar event description",
                 Contract = "SingleText",
                 Method = MethodType.POST,
-                Route = Constants.BODY_KEY
+                Route = Constants.DESCRIPTION_KEY
             };
 
             json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
@@ -132,14 +158,14 @@ namespace Email
 
             capibility = new ApplicationCapibility()
             {
-                Action = "add recipient email address []",
+                Action = "set calendar event date and time to []",
                 ActionType = ActionType.HTTP,
-                AppClass = "email",
+                AppClass = Constants.APP_CLASS,
                 ContentType = "application/json",
                 Description = "add a recipient email address to the email",
                 Contract = "SingleText",
                 Method = MethodType.POST,
-                Route = Constants.RECIPIENT_KEY
+                Route = Constants.FROM_KEY
             };
 
             json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);

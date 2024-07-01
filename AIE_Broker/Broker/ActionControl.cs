@@ -30,6 +30,10 @@ namespace Broker
             UpdateCompileStatus();
             lbParmsEx.Text = this.Action.TopChoice?.Capibility.Action.ToArray().Where(c => c == '[').Count().ToString();
             btParsed.Text = this.Action.Parameter == null ? "0" : "1"; //someday maybe we can have more that 1 parameter per action
+            if (action.Status == Status.Failure)
+            {
+                this.cbExecute.Checked = false;
+            }
         }
 
         public void MakeExecuteStatus(Status status)

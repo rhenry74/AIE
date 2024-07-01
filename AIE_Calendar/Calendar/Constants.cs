@@ -13,7 +13,7 @@ namespace Calendar
         public const string FROM_KEY = "from";
         public const string TO_KEY = "to";
 
-        public const string APP_CLASS = "to";
+        public const string APP_CLASS = "calendar";
 
     }
 }

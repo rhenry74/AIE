@@ -25,9 +25,10 @@ namespace Broker
 
         public LargeLanguageModel()
         {
+            Program.SharedContext.AutomationLog.Enqueue("Loading Llama-3-8B-Instruct");
             var modelPath = ConfigurationManager.AppSettings["modelPath"];
             _Model = new Model(modelPath);
-            Console.WriteLine("Hello, ONNX World! The model loaded.");
+            Program.SharedContext.AutomationLog.Enqueue("Hello, ONNX World! The model loaded.");
             _Tokenizer = new Tokenizer(_Model);
         }
 

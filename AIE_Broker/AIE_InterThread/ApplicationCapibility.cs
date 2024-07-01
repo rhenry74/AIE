@@ -34,5 +34,10 @@ namespace AIE_InterThread
         public string ContentType { get; set; } 
         public string Contract { get; set; }
         public double[]? Vector { get; set; }
+
+        public override string ToString()
+        {
+            return AppClass + ": " + Action;
+        }
     }
 }

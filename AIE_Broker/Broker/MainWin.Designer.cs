@@ -73,7 +73,7 @@
             tbAutomationStatus.Name = "tbAutomationStatus";
             tbAutomationStatus.ReadOnly = true;
             tbAutomationStatus.ScrollBars = ScrollBars.Vertical;
-            tbAutomationStatus.Size = new Size(401, 111);
+            tbAutomationStatus.Size = new Size(580, 120);
             tbAutomationStatus.TabIndex = 16;
             // 
             // label4
@@ -119,8 +119,8 @@
             splitContainer1.Panel2.Controls.Add(btEditResponse);
             splitContainer1.Panel2.Controls.Add(tbResponse);
             splitContainer1.Panel2.Controls.Add(label5);
-            splitContainer1.Size = new Size(411, 321);
-            splitContainer1.SplitterDistance = 158;
+            splitContainer1.Size = new Size(590, 273);
+            splitContainer1.SplitterDistance = 120;
             splitContainer1.TabIndex = 19;
             // 
             // bt_Settings
@@ -131,7 +131,7 @@
             bt_Settings.BackColor = SystemColors.ButtonFace;
             bt_Settings.BackgroundImage = Properties.Resources.settings;
             bt_Settings.BackgroundImageLayout = ImageLayout.Zoom;
-            bt_Settings.Location = new Point(364, 121);
+            bt_Settings.Location = new Point(543, 83);
             bt_Settings.Name = "bt_Settings";
             bt_Settings.Size = new Size(30, 30);
             bt_Settings.TabIndex = 24;
@@ -146,7 +146,7 @@
             btSeePrompt.BackColor = SystemColors.ButtonFace;
             btSeePrompt.BackgroundImage = Properties.Resources.seePrompt_sm;
             btSeePrompt.BackgroundImageLayout = ImageLayout.Zoom;
-            btSeePrompt.Location = new Point(41, 121);
+            btSeePrompt.Location = new Point(41, 83);
             btSeePrompt.Name = "btSeePrompt";
             btSeePrompt.Size = new Size(30, 30);
             btSeePrompt.TabIndex = 23;
@@ -163,7 +163,7 @@
             tbRate.BackColor = SystemColors.ButtonFace;
             tbRate.BackgroundImage = Properties.Resources.rate;
             tbRate.BackgroundImageLayout = ImageLayout.Zoom;
-            tbRate.Location = new Point(103, 121);
+            tbRate.Location = new Point(103, 83);
             tbRate.Name = "tbRate";
             tbRate.Size = new Size(30, 30);
             tbRate.TabIndex = 22;
@@ -178,7 +178,7 @@
             btClearChat.BackColor = SystemColors.ButtonFace;
             btClearChat.BackgroundImage = Properties.Resources.clearChat;
             btClearChat.BackgroundImageLayout = ImageLayout.Zoom;
-            btClearChat.Location = new Point(72, 121);
+            btClearChat.Location = new Point(72, 83);
             btClearChat.Name = "btClearChat";
             btClearChat.Size = new Size(30, 30);
             btClearChat.TabIndex = 17;
@@ -193,7 +193,7 @@
             btPromptLLM.BackColor = SystemColors.ButtonFace;
             btPromptLLM.BackgroundImage = Properties.Resources.brain;
             btPromptLLM.BackgroundImageLayout = ImageLayout.Zoom;
-            btPromptLLM.Location = new Point(10, 122);
+            btPromptLLM.Location = new Point(10, 84);
             btPromptLLM.Name = "btPromptLLM";
             btPromptLLM.Size = new Size(30, 30);
             btPromptLLM.TabIndex = 16;
@@ -217,14 +217,14 @@
             tbPrompt.Multiline = true;
             tbPrompt.Name = "tbPrompt";
             tbPrompt.ScrollBars = ScrollBars.Vertical;
-            tbPrompt.Size = new Size(402, 99);
+            tbPrompt.Size = new Size(581, 61);
             tbPrompt.TabIndex = 14;
             tbPrompt.TextChanged += tbPrompt_TextChanged_1;
             // 
             // llmStatus
             // 
             llmStatus.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            llmStatus.Location = new Point(212, 3);
+            llmStatus.Location = new Point(391, 3);
             llmStatus.Name = "llmStatus";
             llmStatus.Size = new Size(192, 15);
             llmStatus.TabIndex = 25;
@@ -238,7 +238,7 @@
             btLearn.BackColor = SystemColors.ButtonFace;
             btLearn.BackgroundImage = Properties.Resources.learn;
             btLearn.BackgroundImageLayout = ImageLayout.Zoom;
-            btLearn.Location = new Point(103, 123);
+            btLearn.Location = new Point(103, 113);
             btLearn.Name = "btLearn";
             btLearn.Size = new Size(30, 30);
             btLearn.TabIndex = 24;
@@ -254,13 +254,14 @@
             btRun.BackColor = SystemColors.ButtonFace;
             btRun.BackgroundImage = Properties.Resources.run;
             btRun.BackgroundImageLayout = ImageLayout.Zoom;
-            btRun.Location = new Point(72, 123);
+            btRun.Location = new Point(72, 113);
             btRun.Name = "btRun";
             btRun.Size = new Size(30, 30);
             btRun.TabIndex = 23;
             toolTip1.SetToolTip(btRun, "Execute");
             btRun.UseVisualStyleBackColor = false;
             btRun.Visible = false;
+            btRun.Click += btRun_Click;
             // 
             // tbCompile
             // 
@@ -271,7 +272,7 @@
             tbCompile.BackgroundImage = Properties.Resources.Compile;
             tbCompile.BackgroundImageLayout = ImageLayout.Zoom;
             tbCompile.ForeColor = SystemColors.ControlText;
-            tbCompile.Location = new Point(41, 122);
+            tbCompile.Location = new Point(41, 112);
             tbCompile.Name = "tbCompile";
             tbCompile.Size = new Size(30, 30);
             tbCompile.TabIndex = 22;
@@ -288,7 +289,7 @@
             btEditResponse.BackColor = SystemColors.ButtonFace;
             btEditResponse.BackgroundImage = Properties.Resources.edit1;
             btEditResponse.BackgroundImageLayout = ImageLayout.Zoom;
-            btEditResponse.Location = new Point(10, 122);
+            btEditResponse.Location = new Point(10, 112);
             btEditResponse.Name = "btEditResponse";
             btEditResponse.Size = new Size(30, 30);
             btEditResponse.TabIndex = 21;
@@ -304,7 +305,7 @@
             tbResponse.Name = "tbResponse";
             tbResponse.ReadOnly = true;
             tbResponse.ScrollBars = ScrollBars.Vertical;
-            tbResponse.Size = new Size(402, 100);
+            tbResponse.Size = new Size(581, 90);
             tbResponse.TabIndex = 20;
             tbResponse.TextChanged += tbResponse_TextChanged;
             // 
@@ -321,7 +322,7 @@
             // 
             splitContainer2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             splitContainer2.BorderStyle = BorderStyle.Fixed3D;
-            splitContainer2.Location = new Point(-5, -6);
+            splitContainer2.Location = new Point(-5, -4);
             splitContainer2.Name = "splitContainer2";
             splitContainer2.Orientation = Orientation.Horizontal;
             // 
@@ -335,8 +336,8 @@
             splitContainer2.Panel2.Controls.Add(splitContainer3);
             splitContainer2.Panel2.Controls.Add(label4);
             splitContainer2.Panel2.RightToLeft = RightToLeft.No;
-            splitContainer2.Size = new Size(415, 594);
-            splitContainer2.SplitterDistance = 328;
+            splitContainer2.Size = new Size(594, 714);
+            splitContainer2.SplitterDistance = 280;
             splitContainer2.TabIndex = 20;
             // 
             // splitContainer3
@@ -355,8 +356,8 @@
             // 
             splitContainer3.Panel2.AutoScroll = true;
             splitContainer3.Panel2.Controls.Add(flCommands);
-            splitContainer3.Size = new Size(405, 240);
-            splitContainer3.SplitterDistance = 115;
+            splitContainer3.Size = new Size(584, 408);
+            splitContainer3.SplitterDistance = 124;
             splitContainer3.TabIndex = 18;
             // 
             // flCommands
@@ -366,7 +367,7 @@
             flCommands.Location = new Point(0, 0);
             flCommands.Margin = new Padding(0);
             flCommands.Name = "flCommands";
-            flCommands.Size = new Size(401, 117);
+            flCommands.Size = new Size(580, 276);
             flCommands.TabIndex = 0;
             // 
             // MainWin
@@ -374,11 +375,13 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLight;
-            ClientSize = new Size(405, 588);
+            ClientSize = new Size(584, 710);
             Controls.Add(splitContainer2);
+            MinimumSize = new Size(600, 400);
             Name = "MainWin";
             SizeGripStyle = SizeGripStyle.Hide;
             Text = "AIE Broker";
+            Resize += MainWin_Resize;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);

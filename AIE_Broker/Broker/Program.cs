@@ -4,8 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using static System.Windows.Forms.LinkLabel;
 
 namespace Broker
 {
@@ -29,6 +31,12 @@ namespace Broker
 
         public static string Context = "Base";
 
+        public static bool LLMRunning = false;
+
+        public static bool Executing = false;
+
+        public static Queue<ActionExecutor> ExecutedQueue = new Queue<ActionExecutor>();
+
 
         /// <summary>
         ///  The main entry point for the application.
@@ -44,13 +52,14 @@ namespace Broker
 
             await InitializeBrokerageAsync();
 
-            LLM = new LargeLanguageModel();
-
             //start the api
             System.Threading.Tasks.Task.Run(() =>
             {
+                LLM = new LargeLanguageModel();
+
                 server = new WebServer();
                 server.Main(args);
+
             });
 
             //bring up the ui
@@ -97,7 +106,7 @@ namespace Broker
                     Route = null
                 });
 
-                await SaveCapibilities();
+                await SaveCapibilitiesAsync();
 
                 SharedContext.AutomationLog.Enqueue("Default Capibilities Saved");
             }
@@ -143,11 +152,11 @@ namespace Broker
                 }
             }
 
-            await SaveCapibilities();
+            await SaveCapibilitiesAsync();
             SharedContext.AutomationLog.Enqueue("Capibility Vectors Saved");
         }
 
-        public async static Task SaveCapibilities()
+        public async static Task SaveCapibilitiesAsync()
         {
             string root = ConfigurationManager.AppSettings["rootPath"];
             var capibilitiesFilePath = Path.Combine(root, Context, "Capibilities.json");
@@ -173,7 +182,7 @@ namespace Broker
 
         public static void PromptLLM(string[] lines)
         {
-            bool running = true;
+            LLMRunning = true;
             System.Threading.Tasks.Task.Run(() =>
             {
                 var systemPromptArray = GenerateSystemPrompt();
@@ -190,13 +199,13 @@ namespace Broker
                     userPrompt += "\r\n";
                 }
                 LLM.Generate(systemPrompt, userPrompt, "");
-                running = false;
+                LLMRunning = false;
             });
 
             System.Threading.Tasks.Task.Run(() =>
             {
                 DateTime now = DateTime.Now;
-                while (running)
+                while (LLMRunning)
                 {
                     Task.Delay(100);
                     LLMStatus = "Running: " + DateTime.Now.Subtract(now);
@@ -211,7 +220,21 @@ namespace Broker
             {
                 capibility.Vector = null;
             }
-            SaveCapibilities();
+            SaveCapibilitiesAsync().Wait();
+        }
+
+        public static void ExecuteCommands()
+        {
+            Executing = true;
+            System.Threading.Tasks.Task.Run(async () =>
+            {
+                while(ExecuteQueue.Count > 0)
+                {
+                    var executor = ExecuteQueue.Dequeue();
+                    await executor.ExecuteAsync();
+                    ExecutedQueue.Enqueue(executor);
+                }
+            });
         }
     }
 }

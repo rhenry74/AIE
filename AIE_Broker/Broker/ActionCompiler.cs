@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Broker
 {
-    public class ActionCompiler
+    public class ActionCompiler: BrokerWorker
     {
         public string ActionText;
 
@@ -21,28 +21,28 @@ namespace Broker
         }
 
         public bool Compiled { get; set; } = false;
-        public bool Compiling { get; set; } = false;
         public EmbeddingComparison? TopChoice { get; private set; } = null;
         public string Error { get; private set; }
-        public bool Success { get; private set; } = false;
+
+        public BrokerWorker.Status Status { get; private set; } = Status.Ready;
         public string Parameter { get; private set; }    
 
         public void Compile()
         {
-            Compiling = true;
+            this.Status = Status.Compiling;
 
             Task.Run(async () =>
             {
                 try
                 {
-                    Program.SharedContext.AutomationLog.Enqueue("Compiling: " + this.ActionText);
+                    LogMessage("Compiling: " + this.ActionText);                    
 
                     //strip out parameter text
                     string actionText = this.ActionText;
                     var startPosition = this.ActionText.IndexOf('[');
                     if (startPosition > -1)
                     {
-                        Program.SharedContext.AutomationLog.Enqueue("Parsing parameter...");
+                        LogMessage("Parsing parameter...");
                         var endPosition = this.ActionText.Substring(startPosition + 1).IndexOf("]");
                         this.Parameter = this.ActionText.Substring(startPosition + 1, startPosition + endPosition - startPosition);
                         actionText = this.ActionText.Substring(0, startPosition);
@@ -52,7 +52,7 @@ namespace Broker
                             actionText = actionText + this.ActionText.Substring(startPosition + endPosition + 2,
                                 this.ActionText.Length - (startPosition + endPosition) - 2);
                         }
-                        Program.SharedContext.AutomationLog.Enqueue("Parameter='" + this.Parameter + "'");
+                        LogMessage("Parameter='" + this.Parameter + "'");
 
                     }
 
@@ -60,11 +60,11 @@ namespace Broker
                     var embedding = await Embedding.GetForAsync(actionText);
 
                     var comparisons = await Embedding.TopThreeCapibilitiesForAsync(embedding);
-                    Program.SharedContext.AutomationLog.Enqueue("Top 3:");
+                    LogMessage("Top 3:");
                     EmbeddingComparison nextChoice = null;
                     foreach (var comparison in comparisons)
                     {
-                        Program.SharedContext.AutomationLog.Enqueue(comparison.Capibility.Action + " : " +
+                        LogMessage(comparison.Capibility.Action + " : " +
                             comparison.Likeness);
                         if (TopChoice == null)
                         {
@@ -78,26 +78,29 @@ namespace Broker
 
                     if (TopChoice.Likeness > 0.99)
                     {
-                        this.Success = true;
-                        Program.SharedContext.AutomationLog.Enqueue("Compilation Success.");
+                        this.Status = Status.Success;
+                        LogMessage("Compilation Success.");
                     }
                     else
                     {
                         if (TopChoice.Likeness - nextChoice.Likeness < 0.01)
                         {
-                            this.Error = "Ambigous";                            
+                            this.Status = Status.Ambigous;
+                            this.Error = "Ambigous: TopChoice.Likeness - nextChoice.Likeness < 0.01";                            
                         }
                         else
                         {
-                            this.Error = "Weak Likeness";
+                            this.Status = Status.Weak;
+                            this.Error = "Weak Likeness: execute with caution";
                         }
-                        Program.SharedContext.AutomationLog.Enqueue(this.Error);
+                        LogMessage(this.Error);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Program.SharedContext.AutomationLog.Enqueue(ex.ToString());
+                    LogMessage(ex.ToString());
                     this.Error = ex.ToString();
+                    this.Status = Status.Failure;
                 }
 
                 Compiled = true;

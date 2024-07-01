@@ -30,31 +30,74 @@ namespace Broker
 
                 if (Program.SharedContext.Altered(Constants.RESPONSE_KEY))
                 {
-                    tbResponse.Text = Program.SharedContext.GetValue(Constants.RESPONSE_KEY);
-                    Program.SharedContext.SetAltered(Constants.RESPONSE_KEY, false);
+                    tbResponse.Text = Program.SharedContext.Dequeue(Constants.RESPONSE_KEY);
                 }
 
                 if (Program.SharedContext.AutomationLog.Count > 0)
                 {
-                    tbAutomationStatus.AppendText(Program.SharedContext.AutomationLog.Dequeue() + Environment.NewLine);
+                    var toPump = Program.SharedContext.AutomationLog.Count;
+                    while (toPump > 0)
+                    {
+                        tbAutomationStatus.AppendText(Program.SharedContext.AutomationLog.Dequeue() + Environment.NewLine);
+                        toPump--;
+                    }
                 }
 
+                //as actions are compiled update the UI
                 if (Program.CompileQueue.Count > 0)
                 {
                     var actionCompiler = Program.CompileQueue.Peek();
                     if (actionCompiler.Compiled)
                     {
-                        Program.ExecuteQueue.Enqueue(new ActionExecutor(Program.CompileQueue.Dequeue()));
                         var actionUI = new ActionControl();
+                        Program.ExecuteQueue.Enqueue(new ActionExecutor(
+                            Program.CompileQueue.Dequeue(),
+                            actionUI));
                         flCommands.Controls.Add(actionUI);
                         actionUI.Initialize(actionCompiler);
                         actionUI.Width = flCommands.Width - SystemInformation.VerticalScrollBarWidth - 6;
+
                     }
-                    if (!actionCompiler.Compiling)
+                    if (actionCompiler.Status == BrokerWorker.Status.Ready)
                     {
                         actionCompiler.Compile();
                     }
                 }
+
+                if (!btRun.Visible && Program.ExecuteQueue.Count > 0)
+                {
+                    btRun.Visible = true;
+                }
+                if (btRun.Visible && Program.ExecuteQueue.Count == 0)
+                {
+                    btRun.Visible = false;
+                }
+
+                //as commands execute update the UI
+                if (Program.ExecuteQueue.Count > 0)
+                {
+                    var actionExecutor = Program.ExecuteQueue.Peek();
+                    if (actionExecutor.Executing)
+                    {
+                        var actionUI = actionExecutor.ActionUI;
+                        actionUI.MakeExecuteStatus(BrokerWorker.Status.Executing);
+                    }
+                }
+                if (Program.ExecutedQueue.Count > 0)
+                {
+                    var actionExecutor = Program.ExecutedQueue.Dequeue();
+                    var actionUI = actionExecutor.ActionUI;
+                    if (actionExecutor.SkipIt)
+                    {
+                        actionUI.MakeExecuteStatus(BrokerWorker.Status.Skipped);
+                    }
+                    else
+                    {
+                        actionUI.MakeExecuteStatus(actionExecutor.Error == null ? BrokerWorker.Status.Success :
+                            BrokerWorker.Status.Failure);
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -64,7 +107,7 @@ namespace Broker
 
         private void tbPrompt_TextChanged(object sender, EventArgs e)
         {
-            Program.SharedContext.SetPair(Constants.PROMPT_KEY, tbPrompt.Text);
+            Program.SharedContext.Enqueue(Constants.PROMPT_KEY, tbPrompt.Text);
         }
 
         private void bt_EditResponse_Click(object sender, EventArgs e)
@@ -104,6 +147,18 @@ namespace Broker
 
         private void btPromptLLM_Click(object sender, EventArgs e)
         {
+            if (Program.LLMRunning)
+            {
+                MessageBox.Show(this, "The LLM is already running a prompt.", "Whoa there cowboy!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(tbPrompt.Text))
+            {
+                MessageBox.Show(this, "Sorry partner, there's no prompt.", "Hmmmmm....", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             tbResponse.Clear();
 
             Program.CompileQueue.Clear();
@@ -117,8 +172,24 @@ namespace Broker
         private void bt_Settings_Click(object sender, EventArgs e)
         {
             var dialog = new Settings();
-            
+
             dialog.ShowDialog();
         }
+
+        private void btRun_Click(object sender, EventArgs e)
+        {
+            Program.ExecuteCommands();
+        }
+
+        private void MainWin_Resize(object sender, EventArgs e)
+        {
+            foreach (var executor in Program.ExecuteQueue.ToList())
+            {
+                var executorUI = executor.ActionUI;
+                executorUI.Width = this.Width - 40;
+            }
+        }
+
+        
     }
 }

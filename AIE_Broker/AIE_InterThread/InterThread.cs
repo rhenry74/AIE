@@ -1,39 +1,42 @@
-﻿namespace AIE_InterThread
+﻿using System.Collections;
+
+namespace AIE_InterThread
 {
     public class InterThread
     {
-        private Dictionary<string, string> KeyValuePairs = new Dictionary<string, string>();
-        private Dictionary<string, bool> AlteredState = new Dictionary<string, bool>();
-        public Queue<string> AutomationLog = new Queue<string>();
+        private Dictionary<string, Queue<string>> Queues = new Dictionary<string, Queue<string>>();
+
+        public Queue<string> AutomationLog { get; set; } = new Queue<string>();
 
         public bool Altered(string key)
         {
-            return AlteredState.ContainsKey(key) ? AlteredState[key] : false;
+            return Queues.ContainsKey(key);
         }
 
-        public void SetAltered(string key, bool value) 
+        public void Enqueue(string key, string value)
         {
-            AlteredState[key] = value;
-        }
-
-        public void SetPair(string key, string value)
-        {
-            if (KeyValuePairs.ContainsKey(key)) 
-            { 
-                KeyValuePairs[key] = value; 
+            if (Queues.ContainsKey(key)) 
+            {
+                Queues[key].Enqueue(value);
             }
             else
-            { 
-                KeyValuePairs.Add(key, value);
+            {
+                var queue = new Queue<string>();
+                queue.Enqueue(value);
+                Queues.Add(key, queue);
             }
-            SetAltered(key, true);
         }
 
-        public string GetValue(string key)
+        public string Dequeue(string key)
         {
-            if (KeyValuePairs.ContainsKey(key))
+            if (Queues.ContainsKey(key))
             {
-                return KeyValuePairs[key];
+                var value = Queues[key].Dequeue();
+                if (Queues[key].Count == 0)
+                {
+                    Queues.Remove(key);
+                }
+                return value;
             }
             else
             {

@@ -32,6 +32,7 @@ namespace Email
                     try
                     {
                         await SelfRegisterAsync();
+                        return;
                     }
                     catch (Exception ex)
                     {
@@ -102,7 +103,7 @@ namespace Email
                 Description = "set the subject of the email",
                 Contract = "SingleText",
                 Method = MethodType.POST,
-                Route = "/" + Constants.SUBJECT_KEY
+                Route = Constants.SUBJECT_KEY
             };
 
             json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
@@ -118,7 +119,7 @@ namespace Email
                 Description = "append a line of the body of the eamil",
                 Contract = "SingleText",
                 Method = MethodType.POST,
-                Route = "/" + Constants.BODY_KEY
+                Route = Constants.BODY_KEY
             };
 
             json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
@@ -134,7 +135,7 @@ namespace Email
                 Description = "add a recipient email address to the email",
                 Contract = "SingleText",
                 Method = MethodType.POST,
-                Route = "/" + Constants.RECIPIENT_KEY
+                Route = Constants.RECIPIENT_KEY
             };
 
             json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);

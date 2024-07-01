@@ -95,6 +95,12 @@ namespace Calendar
                 this.tbTitle.Text = blockGraphic.Events[0].Title;
                 this.tbBody.Lines = blockGraphic.Events[0].Description;
             }
+            if (blockGraphic.Events.Count == 0)
+            {
+                this.nudDuration.Value = 30;
+                this.tbTitle.Text = "";
+                this.tbBody.Text = "";
+            }
         }
 
         private void btSave_Click(object sender, EventArgs e)

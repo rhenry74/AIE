@@ -87,6 +87,7 @@ namespace Calendar
             blockGraphic.IsCurrent = true;
             _currentTimeBlock = blockGraphic;
             dtpTime.Value = blockGraphic.HourOnDay;
+
             if (blockGraphic.Events.Count == 1 )
             {
                 this.dtpDate.Value = blockGraphic.Events[0].Start;
@@ -101,6 +102,35 @@ namespace Calendar
                 this.tbTitle.Text = "";
                 this.tbBody.Text = "";
             }
+            if (blockGraphic.Events.Count > 1)
+            {
+                GenerateDaysEvents(blockGraphic.Events);
+            }
+        }
+
+        private void GenerateDaysEvents(List<CalendarEvent> events)
+        {
+            layoutDay.Controls.Clear();
+            this.nudDuration.Value = 30;
+            this.tbTitle.Text = "";
+            this.tbBody.Text = "";
+
+            foreach (var calEvent in events)
+            {
+                var blockGraphic = new AnEvent(calEvent);
+                layoutDay.Controls.Add(blockGraphic);
+                blockGraphic.CalendarEventClick += BlockGraphic_CalendarEventClick;
+            }
+        }
+
+        private void BlockGraphic_CalendarEventClick(object? sender, EventArgs e)
+        {
+            AnEvent blockGraphic = (AnEvent)sender;
+            this.dtpDate.Value = blockGraphic.Event.Start;
+            this.dtpTime.Value = blockGraphic.Event.Start;
+            this.nudDuration.Value = blockGraphic.Event.Duration;
+            this.tbTitle.Text = blockGraphic.Event.Title;
+            this.tbBody.Lines = blockGraphic.Event.Description;
         }
 
         private void btSave_Click(object sender, EventArgs e)
@@ -123,8 +153,12 @@ namespace Calendar
         private void dtpDate_ValueChanged(object sender, EventArgs e)
         {
             var theEventDay = new DateTime(dtpDate.Value.Year, dtpDate.Value.Month, dtpDate.Value.Day);
+            
             if (_lastEventDay != theEventDay)
             {
+                this.nudDuration.Value = 30;
+                this.tbTitle.Text = "";
+                this.tbBody.Text = "";
                 GenerateEventDay();
                 _lastEventDay = theEventDay;
             }

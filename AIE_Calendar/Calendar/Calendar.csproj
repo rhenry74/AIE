@@ -18,4 +18,16 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="TimeBlock.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="AnEvent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

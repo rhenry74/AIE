@@ -65,6 +65,7 @@ namespace Calendar
                 int size = (int)(calendarEvent.Duration * panel.Width / 60);
                 int location = (int)(calendarEvent.Start.Minute * panel.Width / 60);
                 e.Graphics.FillRectangle(brush, 2 + location, 2, size, panel.Height - 4);
+                e.Graphics.DrawLine(Pens.AliceBlue, 2 + location, 2, 2 + location, panel.Height - 4);
             }
         }
     }

@@ -197,6 +197,7 @@
             // 
             nudDuration.Increment = new decimal(new int[] { 5, 0, 0, 0 });
             nudDuration.Location = new Point(243, 27);
+            nudDuration.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             nudDuration.Name = "nudDuration";
             nudDuration.Size = new Size(61, 23);
             nudDuration.TabIndex = 24;

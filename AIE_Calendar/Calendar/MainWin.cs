@@ -65,7 +65,10 @@ namespace Calendar
 
             for (int block = 0; block < 24; block++)
             {
-                var hoursEvents = Program.Events.Where(e => e.Start >= day && e.Start < day.AddHours(1))
+                //(StartA < EndB) and (EndA > StartB) overlap test
+                DateTime eventEnd(CalendarEvent e) => e.Start.AddMinutes(e.Duration);
+                var dayEnd = day.AddHours(1);
+                var hoursEvents = Program.Events.Where(e => e.Start < dayEnd &&  eventEnd(e) > day)
                     .OrderBy(e => e.Start).ToList();
 
                 var blockGraphic = new TimeBlock(day, hoursEvents);
@@ -98,24 +101,36 @@ namespace Calendar
             }
             if (blockGraphic.Events.Count == 0)
             {
-                this.nudDuration.Value = 30;
-                this.tbTitle.Text = "";
-                this.tbBody.Text = "";
+                ClearEventEdits();
             }
             if (blockGraphic.Events.Count > 1)
             {
-                GenerateDaysEvents(blockGraphic.Events);
+                GenerateDaysEvents(blockGraphic);
             }
         }
 
-        private void GenerateDaysEvents(List<CalendarEvent> events)
+        private void ClearEventEdits()
         {
-            layoutDay.Controls.Clear();
             this.nudDuration.Value = 30;
             this.tbTitle.Text = "";
             this.tbBody.Text = "";
+        }
 
-            foreach (var calEvent in events)
+        private void GenerateDaysEvents(TimeBlock block)
+        {
+            layoutDay.Controls.Clear();
+            var backButton = new Button();
+            backButton.Text = "< "+ block.HourOnDay.ToShortTimeString();
+            backButton.Click += (s, e) => 
+            {
+                ClearEventEdits();
+                GenerateEventDay(); 
+            };
+            layoutDay.Controls.Add(backButton);
+
+            ClearEventEdits();
+
+            foreach (var calEvent in block.Events)
             {
                 var blockGraphic = new AnEvent(calEvent);
                 layoutDay.Controls.Add(blockGraphic);

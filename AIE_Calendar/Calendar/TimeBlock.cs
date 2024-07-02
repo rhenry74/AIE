@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -62,10 +63,23 @@ namespace Calendar
             var brush = new SolidBrush(color);
             foreach(var calendarEvent in Events)
             {
-                int size = (int)(calendarEvent.Duration * panel.Width / 60);
-                int location = (int)(calendarEvent.Start.Minute * panel.Width / 60);
-                e.Graphics.FillRectangle(brush, 2 + location, 2, size, panel.Height - 4);
-                e.Graphics.DrawLine(Pens.AliceBlue, 2 + location, 2, 2 + location, panel.Height - 4);
+                if (calendarEvent.Start < this.HourOnDay)
+                {
+                    //the event started on the previous day
+                    int location = 1;
+                    var diff = this.HourOnDay.Subtract(calendarEvent.Start).TotalMinutes;
+                    diff = calendarEvent.Duration - diff;
+                    int size = (int)(diff * panel.Width / 60);
+                    e.Graphics.FillRectangle(brush, 2 + location, 2, size, panel.Height - 4);
+                    e.Graphics.DrawLine(Pens.AliceBlue, 2 + location, 2, 2 + location, panel.Height - 4);
+                }
+                else
+                {
+                    int size = (int)(calendarEvent.Duration * panel.Width / 60);
+                    int location = (int)(calendarEvent.Start.Minute * panel.Width / 60);
+                    e.Graphics.FillRectangle(brush, 2 + location, 2, size, panel.Height - 4);
+                    e.Graphics.DrawLine(Pens.AliceBlue, 2 + location, 2, 2 + location, panel.Height - 4);
+                }
             }
         }
     }

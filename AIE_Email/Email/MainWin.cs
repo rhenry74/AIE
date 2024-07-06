@@ -12,7 +12,6 @@ namespace Email
 {
     public partial class MainWin : Form
     {
-        List<string> _body = new List<string>();
         public MainWin()
         {
             InitializeComponent();
@@ -28,11 +27,9 @@ namespace Email
             while (Program.SharedContext.Altered(Constants.BODY_KEY))
             {
                 var text = Program.SharedContext.Dequeue(Constants.BODY_KEY);
-                _body.Add(text);
-            }
-            if (tbBody.Lines.Count() != _body.Count)
-            {
-                tbBody.Lines = _body.ToArray();
+                tbBody.AppendText(text);
+                tbBody.AppendText(Environment.NewLine);
+                tbBody.AppendText(Environment.NewLine);
             }
 
             if (Program.SharedContext.Altered(Constants.RECIPIENT_KEY))
@@ -45,6 +42,11 @@ namespace Email
             {
                 tbAutomationStatus.AppendText(Program.SharedContext.AutomationLog.Dequeue() + Environment.NewLine);
             }
+        }
+
+        private void MainWin_Load(object sender, EventArgs e)
+        {
+            this.Text = "AIE Email on Port " + Program.PortText;
         }
     }
 }

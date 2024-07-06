@@ -17,6 +17,11 @@ namespace Broker
 
         public static List<ApplicationCapibility> Capabilities = new List<ApplicationCapibility>();
 
+        public static List<ApplicationExample> Examples = new List<ApplicationExample>();
+
+        public static Dictionary<string, List<KeyValuePair<string, string>>> ContextParameters = 
+            new Dictionary<string, List<KeyValuePair<string, string>>>();
+
         public static List<PortMapping> PortMappings = new List<PortMapping>();
 
         public static Queue<ActionCompiler> CompileQueue = new Queue<ActionCompiler>();
@@ -138,6 +143,34 @@ namespace Broker
                 await File.WriteAllTextAsync(portMapFilePath, JsonSerializer.Serialize(PortMappings));
                 SharedContext.AutomationLog.Enqueue("Default Port Map Saved");
             }
+
+            //context parameters
+            var contextFilePath = Path.Combine(root, Context, "Parameters.json");
+            try
+            {
+                var baseParameters = JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(
+                    File.ReadAllText(capibilitiesFilePath));
+                ContextParameters.Add(Context, baseParameters);
+                SharedContext.AutomationLog.Enqueue("Parameters for " + Context +" Loaded");
+            }
+            catch (Exception ex)
+            {
+                SharedContext.AutomationLog.Enqueue("Error Loading Parameters: " + ex.ToString());
+            }
+            if (ContextParameters.Count == 0)
+            {
+                List<KeyValuePair<string, string>> baseContextParameters;
+                ContextParameters.TryGetValue(Context, out baseContextParameters);
+                if (baseContextParameters == null)
+                {
+                    baseContextParameters = new List<KeyValuePair<string, string>>();
+                    ContextParameters.Add(Context, baseContextParameters);
+                }
+                baseContextParameters.Add(new KeyValuePair<string, string>("User's Name", "Robert Henry"));
+                baseContextParameters.Add(new KeyValuePair<string, string>("Current Date", DateTime.Now.ToString()));
+                await SaveContextParametersAsync(Context);
+                SharedContext.AutomationLog.Enqueue("Parameters Initalized");
+            }
         }
 
         public async static Task InitializeCapibilityVectorsAsync()
@@ -159,7 +192,7 @@ namespace Broker
         public async static Task SaveCapibilitiesAsync()
         {
             string root = ConfigurationManager.AppSettings["rootPath"];
-            var capibilitiesFilePath = Path.Combine(root, Context, "Capibilities.json");
+            var capibilitiesFilePath = Path.Combine(root, Context, "Parameters.json");
             if (!Directory.Exists(Path.GetDirectoryName(capibilitiesFilePath)))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(capibilitiesFilePath));
@@ -167,17 +200,29 @@ namespace Broker
             await File.WriteAllTextAsync(capibilitiesFilePath, JsonSerializer.Serialize(Capabilities));
         }
 
-        public static string[] GenerateSystemPrompt()
+        public async static Task SaveContextParametersAsync(string context)
         {
-            var lines = new List<string>();
-            lines.Add(ConfigurationManager.AppSettings["systemPrompt"]);
-            lines.Add("");
-            //lines.Add("");
-            foreach (var capibility in Capabilities)
+            string root = ConfigurationManager.AppSettings["rootPath"];
+            var filePath = Path.Combine(root, context, "Capibilities.json");
+            if (!Directory.Exists(Path.GetDirectoryName(filePath)))
             {
-                lines.Add(capibility.Action.Replace("[]", "[?]"));
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
             }
-            return lines.ToArray();
+            await File.WriteAllTextAsync(filePath, JsonSerializer.Serialize(ContextParameters));
+        }
+
+        public static string[] PreviewPrompt(string[] lines)
+        {
+            string userPrompt = "";
+            foreach (var line in lines)
+            {
+                userPrompt += line;
+                userPrompt += "\r\n";
+            }
+
+            LLM.AssemblePrompt(Capabilities.ToArray(), Examples.ToArray(), 
+                ContextParameters[Context].ToArray(), userPrompt);
+            return LLM.Prompt.Split("\r\n");
         }
 
         public static void PromptLLM(string[] lines)
@@ -185,20 +230,16 @@ namespace Broker
             LLMRunning = true;
             System.Threading.Tasks.Task.Run(() =>
             {
-                var systemPromptArray = GenerateSystemPrompt();
-                string systemPrompt = "";
-                foreach (var line in systemPromptArray)
-                {
-                    systemPrompt += line;
-                    systemPrompt += "\r\n";
-                }
                 string userPrompt = "";
                 foreach (var line in lines)
                 {
                     userPrompt += line;
                     userPrompt += "\r\n";
                 }
-                LLM.Generate(systemPrompt, userPrompt, "");
+
+                LLM.AssemblePrompt(Capabilities.ToArray(), Examples.ToArray(), 
+                    ContextParameters[Context].ToArray(), userPrompt);
+                LLM.Generate();
                 LLMRunning = false;
             });
 
@@ -236,5 +277,18 @@ namespace Broker
                 }
             });
         }
+
+        public static async Task SaveExamplesAsync()
+        {
+            string root = ConfigurationManager.AppSettings["rootPath"];
+            var exampleFilePath = Path.Combine(root, Context, "Examples.json");
+            if (!Directory.Exists(Path.GetDirectoryName(exampleFilePath)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(exampleFilePath));
+            }
+            await File.WriteAllTextAsync(exampleFilePath, JsonSerializer.Serialize(Examples));
+        }
+
+        
     }
 }

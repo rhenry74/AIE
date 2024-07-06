@@ -94,6 +94,11 @@ namespace Broker
 
         private void btStatus_Click(object sender, EventArgs e)
         {
+            if (btStatus.Text == "Ready")
+            {
+                Program.ExecuteCommands(true);
+                return;
+            }
             var dialog = new InfoDia();
             dialog.tbInfo.Lines = Executor.Logs.ToArray();
             dialog.ShowDialog();

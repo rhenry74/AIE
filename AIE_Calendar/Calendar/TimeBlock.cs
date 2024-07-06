@@ -28,7 +28,6 @@ namespace Calendar
             }
         }
 
-
         public event EventHandler TimeBlockClick;
 
         public TimeBlock()
@@ -46,6 +45,11 @@ namespace Calendar
         {
             btTime.Text = HourOnDay.ToShortTimeString();
             btTime.BackColor = Events == null ? Color.SeaShell : Events.Count > 0 ? Color.LightBlue : Color.SeaShell;
+        }
+
+        public override void Refresh()
+        {
+            base.Refresh();
         }
 
         private void btTime_Click(object sender, EventArgs e)
@@ -71,16 +75,16 @@ namespace Calendar
                     diff = calendarEvent.Duration - diff;
                     int size = (int)(diff * panel.Width / 60);
                     e.Graphics.FillRectangle(brush, 2 + location, 2, size, panel.Height - 4);
-                    e.Graphics.DrawLine(Pens.AliceBlue, 2 + location, 2, 2 + location, panel.Height - 4);
                 }
                 else
                 {
                     int size = (int)(calendarEvent.Duration * panel.Width / 60);
                     int location = (int)(calendarEvent.Start.Minute * panel.Width / 60);
                     e.Graphics.FillRectangle(brush, 2 + location, 2, size, panel.Height - 4);
-                    e.Graphics.DrawLine(Pens.AliceBlue, 2 + location, 2, 2 + location, panel.Height - 4);
+                    e.Graphics.DrawLine(Pens.Gray, 2 + location, 2, 2 + location, panel.Height - 4);
                 }
             }
         }
+
     }
 }

@@ -230,7 +230,7 @@ namespace Broker
             Task.Run(() => SaveCapibilitiesAsync()).Wait();
         }
 
-        public static void ExecuteCommands()
+        public static void ExecuteCommands(bool justOne=false)
         {
             Executing = true;
             System.Threading.Tasks.Task.Run(async () =>
@@ -240,6 +240,10 @@ namespace Broker
                     var executor = ExecuteQueue.Dequeue();
                     await executor.ExecuteAsync();
                     ExecutedQueue.Enqueue(executor);
+                    if (justOne)
+                    {
+                        break;
+                    }
                 }
             });
         }

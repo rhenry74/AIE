@@ -45,6 +45,8 @@
             btSave = new Button();
             nudDuration = new NumericUpDown();
             layoutDay = new FlowLayoutPanel();
+            btUpdate = new Button();
+            btDelete = new Button();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -185,7 +187,7 @@
             // btSave
             // 
             btSave.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btSave.Location = new Point(530, 30);
+            btSave.Location = new Point(530, 18);
             btSave.Name = "btSave";
             btSave.Size = new Size(53, 44);
             btSave.TabIndex = 23;
@@ -199,7 +201,7 @@
             nudDuration.Location = new Point(243, 27);
             nudDuration.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             nudDuration.Name = "nudDuration";
-            nudDuration.Size = new Size(61, 23);
+            nudDuration.Size = new Size(64, 23);
             nudDuration.TabIndex = 24;
             nudDuration.Value = new decimal(new int[] { 30, 0, 0, 0 });
             // 
@@ -214,11 +216,37 @@
             layoutDay.Size = new Size(166, 231);
             layoutDay.TabIndex = 25;
             // 
+            // btUpdate
+            // 
+            btUpdate.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btUpdate.Enabled = false;
+            btUpdate.Location = new Point(471, 18);
+            btUpdate.Name = "btUpdate";
+            btUpdate.Size = new Size(53, 44);
+            btUpdate.TabIndex = 26;
+            btUpdate.Text = "Update";
+            btUpdate.UseVisualStyleBackColor = true;
+            btUpdate.Click += btUpdate_Click;
+            // 
+            // btDelete
+            // 
+            btDelete.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btDelete.Enabled = false;
+            btDelete.Location = new Point(412, 18);
+            btDelete.Name = "btDelete";
+            btDelete.Size = new Size(53, 44);
+            btDelete.TabIndex = 27;
+            btDelete.Text = "Delete";
+            btDelete.UseVisualStyleBackColor = true;
+            btDelete.Click += btDelete_Click;
+            // 
             // MainWin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(607, 339);
+            Controls.Add(btDelete);
+            Controls.Add(btUpdate);
             Controls.Add(layoutDay);
             Controls.Add(nudDuration);
             Controls.Add(btSave);
@@ -263,5 +291,7 @@
         private Button btSave;
         private NumericUpDown nudDuration;
         private FlowLayoutPanel layoutDay;
+        private Button btUpdate;
+        private Button btDelete;
     }
 }

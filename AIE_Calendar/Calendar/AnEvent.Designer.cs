@@ -60,7 +60,9 @@
             // nudDuration
             // 
             nudDuration.Location = new Point(83, 2);
+            nudDuration.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             nudDuration.Name = "nudDuration";
+            nudDuration.ReadOnly = true;
             nudDuration.Size = new Size(54, 23);
             nudDuration.TabIndex = 2;
             // 

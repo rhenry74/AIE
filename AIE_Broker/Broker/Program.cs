@@ -116,6 +116,19 @@ namespace Broker
                 SharedContext.AutomationLog.Enqueue("Default Capibilities Saved");
             }
 
+            //examples
+            var examplesFilePath = Path.Combine(root, Context, "Examples.json");
+            try
+            {
+                Examples = JsonSerializer.Deserialize<List<ApplicationExample>>(File.ReadAllText(examplesFilePath));
+                SharedContext.AutomationLog.Enqueue("Examples Loaded");
+            }
+            catch (Exception ex)
+            {
+                SharedContext.AutomationLog.Enqueue("Error Loading examples: " + ex.ToString());
+            }
+
+            //port map
             var portMapFilePath = Path.Combine(root, "PortMap.json");
             try
             {

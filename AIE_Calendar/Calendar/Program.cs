@@ -2,6 +2,7 @@ using AIE_InterThread;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Policy;
@@ -9,6 +10,8 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Calendar
 {
@@ -119,7 +122,7 @@ namespace Calendar
                 Route = ""
             };
 
-            var url = "register";
+            var url = "capibility";
             var json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await sender.PostAsync(url, content);
@@ -172,6 +175,25 @@ namespace Calendar
             content = new StringContent(json, Encoding.UTF8, "application/json");
             response = await sender.PostAsync(url, content);
 
+            url = "example";
+
+            var example = new ApplicationExample()
+            {
+                AppClass = "email",
+                Question = "add a calendar event to remind me i have a dentist appointment for cleaning july 12th at 2:00\r\nthe address is: 13 Carver Rd in Memphis",
+                Answers = new[]
+                {                   
+                    "start calendar application",
+                    "set calendar event date and time to[7/12/2024 2:00 PM]",
+                    "set calendar event title to[Dentist Appointment - Cleaning]",
+                    "append calendar event description with[You have a dentist appointment scheduled for a cleaning on July 12th at 2:00 PM.]",
+                    "append calendar event description with[The address is 13 Carver Rd in Memphis]"
+                }
+            };
+
+            json = JsonSerializer.Serialize<ApplicationExample>(example);
+            content = new StringContent(json, Encoding.UTF8, "application/json");
+            response = await sender.PostAsync(url, content);
         }
     }
 }

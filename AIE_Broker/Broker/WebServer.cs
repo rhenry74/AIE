@@ -67,8 +67,8 @@ namespace Broker
             });
 
             var exampleApi = app.MapGroup("/" + Constants.EXAMPLE_KEY);
-            
-            registerApi.MapPost("/", async (ApplicationExample newExample) =>
+
+            exampleApi.MapPost("/", async (ApplicationExample newExample) =>
             {                
                 Program.Examples.Add(newExample);
                 await Program.SaveExamplesAsync();

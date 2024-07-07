@@ -149,7 +149,7 @@ namespace Broker
             try
             {
                 var baseParameters = JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(
-                    File.ReadAllText(capibilitiesFilePath));
+                    File.ReadAllText(contextFilePath));
                 ContextParameters.Add(Context, baseParameters);
                 SharedContext.AutomationLog.Enqueue("Parameters for " + Context +" Loaded");
             }
@@ -192,7 +192,7 @@ namespace Broker
         public async static Task SaveCapibilitiesAsync()
         {
             string root = ConfigurationManager.AppSettings["rootPath"];
-            var capibilitiesFilePath = Path.Combine(root, Context, "Parameters.json");
+            var capibilitiesFilePath = Path.Combine(root, Context, "Capibilities.json");
             if (!Directory.Exists(Path.GetDirectoryName(capibilitiesFilePath)))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(capibilitiesFilePath));
@@ -203,12 +203,12 @@ namespace Broker
         public async static Task SaveContextParametersAsync(string context)
         {
             string root = ConfigurationManager.AppSettings["rootPath"];
-            var filePath = Path.Combine(root, context, "Capibilities.json");
+            var filePath = Path.Combine(root, context, "Parameters.json");
             if (!Directory.Exists(Path.GetDirectoryName(filePath)))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(filePath));
             }
-            await File.WriteAllTextAsync(filePath, JsonSerializer.Serialize(ContextParameters));
+            await File.WriteAllTextAsync(filePath, JsonSerializer.Serialize(ContextParameters[context]));
         }
 
         public static string[] PreviewPrompt(string[] lines)

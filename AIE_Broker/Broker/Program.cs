@@ -191,13 +191,20 @@ namespace Broker
 
         public async static Task SaveCapibilitiesAsync()
         {
-            string root = ConfigurationManager.AppSettings["rootPath"];
-            var capibilitiesFilePath = Path.Combine(root, Context, "Capibilities.json");
-            if (!Directory.Exists(Path.GetDirectoryName(capibilitiesFilePath)))
+            try
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(capibilitiesFilePath));
-            }            
-            await File.WriteAllTextAsync(capibilitiesFilePath, JsonSerializer.Serialize(Capabilities));
+                string root = ConfigurationManager.AppSettings["rootPath"];
+                var capibilitiesFilePath = Path.Combine(root, Context, "Capibilities.json");
+                if (!Directory.Exists(Path.GetDirectoryName(capibilitiesFilePath)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(capibilitiesFilePath));
+                }
+                await File.WriteAllTextAsync(capibilitiesFilePath, JsonSerializer.Serialize(Capabilities));
+            }
+            catch (Exception ex)
+            {
+                SharedContext.AutomationLog.Enqueue("SaveCapibilitiesAsync: " + ex.ToString());
+            }
         }
 
         public async static Task SaveContextParametersAsync(string context)
@@ -261,10 +268,10 @@ namespace Broker
             {
                 capibility.Vector = null;
             }
-            SaveCapibilitiesAsync().Wait();
+            Task.Run(() => SaveCapibilitiesAsync()).Wait();
         }
 
-        public static void ExecuteCommands()
+        public static void ExecuteCommands(bool justOne=false)
         {
             Executing = true;
             System.Threading.Tasks.Task.Run(async () =>
@@ -274,6 +281,10 @@ namespace Broker
                     var executor = ExecuteQueue.Dequeue();
                     await executor.ExecuteAsync();
                     ExecutedQueue.Enqueue(executor);
+                    if (justOne)
+                    {
+                        break;
+                    }
                 }
             });
         }

@@ -30,6 +30,10 @@ namespace Broker
             UpdateCompileStatus();
             lbParmsEx.Text = this.Action.TopChoice?.Capibility.Action.ToArray().Where(c => c == '[').Count().ToString();
             btParsed.Text = this.Action.Parameter == null ? "0" : "1"; //someday maybe we can have more that 1 parameter per action
+            if (action.Status == Status.Failure)
+            {
+                this.cbExecute.Checked = false;
+            }
         }
 
         public void MakeExecuteStatus(Status status)
@@ -90,6 +94,11 @@ namespace Broker
 
         private void btStatus_Click(object sender, EventArgs e)
         {
+            if (btStatus.Text == "Ready")
+            {
+                Program.ExecuteCommands(true);
+                return;
+            }
             var dialog = new InfoDia();
             dialog.tbInfo.Lines = Executor.Logs.ToArray();
             dialog.ShowDialog();

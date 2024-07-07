@@ -84,7 +84,8 @@ namespace Broker
                 {
                     Name = Program.Context + ":" + capibility.AppClass,
                     Port = portNumber,
-                    Server = "localhost"
+                    Server = "localhost",
+                    Started = DateTime.Now,
                 };
                 Program.PortMappings.Add(newPortMapping);
 
@@ -121,8 +122,15 @@ namespace Broker
                 var capibility = ActionCompiler.TopChoice?.Capibility;
                 LogMessage("Calling API " + capibility.Route);
 
-                var portMap = Program.PortMappings.Find(pm => pm.Name == Program.Context + ":" + capibility.AppClass);
-                LogMessage("Port = " + portMap.Port);
+                var portMap = Program.PortMappings.Where(pm => pm.Name == Program.Context + ":" + capibility.AppClass)
+                    .OrderByDescending(pm => pm.Started).FirstOrDefault();
+                if (portMap == null)
+                {
+                    LogMessage("Could not find the port of the app. capibility.AppClass=" + capibility.AppClass);
+                    return;
+                }
+
+                LogMessage($"Using Port {portMap.Port} for AppClass {capibility.AppClass} that was started at {portMap.Started}");
 
                 var url = "http://" + portMap.Server + ":" + portMap.Port;
                 LogMessage("url = " + url + "/" + capibility.Route);
@@ -140,7 +148,7 @@ namespace Broker
                     };
                     json = JsonSerializer.Serialize<SingleText>(singleText);
                 }
-                
+
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = null;
@@ -155,6 +163,7 @@ namespace Broker
                     Error = "API Call Failed";
                     LogMessage(Error);
                 }
+                
             }
             catch (Exception any)
             {

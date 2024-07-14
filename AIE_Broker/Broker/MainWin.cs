@@ -141,7 +141,7 @@ namespace Broker
         private void btSeePrompt_Click(object sender, EventArgs e)
         {
             var dialog = new InfoDia();
-            dialog.tbInfo.Lines = Program.GenerateSystemPrompt();
+            dialog.tbInfo.Lines = Program.PreviewPrompt(tbPrompt.Lines);
             dialog.ShowDialog();
         }
 

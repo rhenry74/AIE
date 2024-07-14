@@ -29,7 +29,7 @@ namespace Broker
 
             var app = builder.Build();
    
-            var registerApi = app.MapGroup("/" + Constants.REGISTER_KEY);
+            var registerApi = app.MapGroup("/" + Constants.CAPIBILITY_KEY);
             //subjectApi.MapGet("/", () =>
             //{
             //    var val = new SingleText() { Text = Program.SharedContext.GetValue(Constants.SUBJECT_KEY) };
@@ -49,12 +49,30 @@ namespace Broker
                     {
                         Program.Capabilities.Remove(capibilityToRemove);
                     }
+                    //remove all existing examples for the app class
+                    var existingExamplesForAppClass = Program.Examples.Where(c => c.AppClass == appclass).ToList();
+                    foreach (var toRemove in existingExamplesForAppClass)
+                    {
+                        Program.Examples.Remove(toRemove);
+                    }
+                    await Program.SaveExamplesAsync();
                 }
 
                 Program.Capabilities.Add(newCapibility);
                 await Program.SaveCapibilitiesAsync();
-                Program.SharedContext.AutomationLog.Enqueue("registerApi POST: " + newCapibility.Action);
+                Program.SharedContext.AutomationLog.Enqueue(Constants.CAPIBILITY_KEY + "Api POST: " + 
+                    newCapibility.Action);
 
+                return Results.Ok();
+            });
+
+            var exampleApi = app.MapGroup("/" + Constants.EXAMPLE_KEY);
+
+            exampleApi.MapPost("/", async (ApplicationExample newExample) =>
+            {                
+                Program.Examples.Add(newExample);
+                await Program.SaveExamplesAsync();
+                Program.SharedContext.AutomationLog.Enqueue(Constants.EXAMPLE_KEY + "Api POST: " + newExample.Question);
                 return Results.Ok();
             });
 

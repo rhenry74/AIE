@@ -125,30 +125,39 @@ namespace AIE_Chart
             content = new StringContent(json, Encoding.UTF8, "application/json");
             response = await sender.PostAsync(url, content);
 
-            //url = "example";
+            url = "example";
 
-            //var example = new ApplicationExample()
-            //{
-            //    AppClass = "column chart",
-            //    Question = "send an column chart to ryker@nphs.com\r\nin the column chart summarize the early life of George Washington for his research paper\r\nlist 3 impacts Washington had on us history with a paragraph for each\r\nbe sure to include that George was a slave owner\r\n",
-            //    Answers = new[]
-            //    {
-            //        "start column chart application",
-            //        "add recipient column chart address [ryker@nphs.com]",
-            //        "set column chart subject to [George Washington's Early Life and Impact on US History]",
-            //        "append column chart body with [George Washington, the first President of the United States, was born on February 22, 1732, in Westmoreland County, Virginia. He was the eldest of six children to Augustine Washington and his second wife, Mary Ball Washington. Washington's early life was marked by his love for the outdoors, hunting, and surveying, which would later influence his military career.]",
-            //        "append column chart body with [Washington's early life was also marked by his involvement in the French and Indian War, where he served as a major in the Virginia militia. He was appointed as the commander-in-chief of the Continental Army in 1775, leading the country to victory in the American Revolutionary War.]",
-            //        "append column chart body with [Here are five significant impacts Washington had on US history:]",
-            //        "append column chart body with [1. Washington's leadership during the American Revolutionary War led to the country's independence from British rule, setting a precedent for future presidents to lead the country through times of war and peace.]",
-            //        "append column chart body with [2. Washington's decision to step down as president after two terms set the precedent for the two-term limit, which has been followed by most presidents since.]",
-            //        "append column chart body with [3. Washington's leadership during the Whiskey Rebellion, a tax protest in western Pennsylvania, demonstrated his commitment to upholding federal authority and established the principle of federal supremacy.]",
-            //        "append column chart body with [Good luck with your paper, Robert Henry]"
-            //    }
-            //};
+            var example = new ApplicationExample()
+            {
+                AppClass = "column chart",
+                Question = "create a chart that shows the number of days in each month of the year",
+                Answers = new[]
+                {
+                    "start column chart application",
+                    "set column chart title to [Days in Each Month of the Year]",
+                    "add column chart series [January=31:February=28:March=31:April=30:May=31:June=30:July=31:August=31:September=30:October=31:November=30:December=31]"
+                }
+            };
 
-            //json = JsonSerializer.Serialize<ApplicationExample>(example);
-            //content = new StringContent(json, Encoding.UTF8, "application/json");
-            //response = await sender.PostAsync(url, content);
+            json = JsonSerializer.Serialize<ApplicationExample>(example);
+            content = new StringContent(json, Encoding.UTF8, "application/json");
+            response = await sender.PostAsync(url, content);
+
+            example = new ApplicationExample()
+            {
+                AppClass = "column chart",
+                Question = "create a chart that shows the planet's sizes",
+                Answers = new[]
+                {
+                    "start column chart application",
+                    "set column chart title to [Planets in Our Solar System - Size Comparison in km]",
+                    "add column chart series [Mercury=4879:Venus=12104:Earth=12742:Mars=6794:Jupiter=142984:Saturn=116464:Uranus=51118:Neptune=49528:Pluto=2374]"
+                }
+            };
+
+            json = JsonSerializer.Serialize<ApplicationExample>(example);
+            content = new StringContent(json, Encoding.UTF8, "application/json");
+            response = await sender.PostAsync(url, content);
         }
     }
 }

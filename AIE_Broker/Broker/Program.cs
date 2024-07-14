@@ -84,32 +84,32 @@ namespace Broker
             {
                 SharedContext.AutomationLog.Enqueue("Error Loading Capibilities: " + ex.ToString());
             }
-            if (Capabilities.Count == 0)
+            if (Capabilities.Where(c => c.AppClass == "built in").Count() == 0)
             {
                 Capabilities.Add(new ApplicationCapibility()
                 {
-                    Action = "set email subjet from clipboard",
-                    ActionType = ActionType.HTTP,
-                    AppClass = "email",
+                    Action = "respond to user with []",
+                    ActionType = ActionType.UI,
+                    AppClass = "built in",
                     AppPath = null,
-                    ContentType = "application/json",
+                    ContentType = "text/plain",
                     Contract = "SingleText",
-                    Description = "Set the Subject of an EMail",
-                    Method = MethodType.POST,
-                    Route = "subject"
-                });
-                Capabilities.Add(new ApplicationCapibility()
-                {
-                    Action = "launch email",
-                    ActionType = ActionType.LAUNCH,
-                    AppClass = "email",
-                    AppPath = "C:\\Users\\rhenry74\\source\\repos\\AIE\\AIE_Email\\Email\\bin\\Debug\\net8.0-windows\\Email.exe",
-                    ContentType = null,
-                    Contract = "SingleText",
-                    Description = "Launch EMail",
+                    Description = "",
                     Method = MethodType.NA,
-                    Route = null
+                    Route = ""
                 });
+                //Capabilities.Add(new ApplicationCapibility()
+                //{
+                //    Action = "save clipboard to file []",
+                //    ActionType = ActionType.UI,
+                //    AppClass = "built in",
+                //    AppPath = null,
+                //    ContentType = "text/plain",
+                //    Contract = "SingleText",
+                //    Description = "",
+                //    Method = MethodType.NA,
+                //    Route = null
+                //});
 
                 await SaveCapibilitiesAsync();
 

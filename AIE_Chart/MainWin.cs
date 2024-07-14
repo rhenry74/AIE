@@ -53,7 +53,8 @@ namespace AIE_Chart
             if (Program.SharedContext.Altered(Constants.SERIES_KEY))
             {
                 var seriesDef = Program.SharedContext.Dequeue(Constants.SERIES_KEY);
-                var pairs = seriesDef.Split(',');
+                tbSeriesDef.Text = seriesDef;
+                var pairs = seriesDef.Split(':');
                 dataGridView1.Rows.Clear();
                 foreach (var pair in pairs)
                 {
@@ -62,7 +63,16 @@ namespace AIE_Chart
                         var lableAndVal = pair.Split("=");
                         int index = dataGridView1.Rows.Add();
                         dataGridView1.Rows[index].Cells[0].Value = lableAndVal[0];
-                        dataGridView1.Rows[index].Cells[1].Value = lableAndVal[1];
+                        string digitsOnly = "";
+                        var digits = "0123456789.";
+                        foreach (var val in lableAndVal[1].ToArray())
+                        {
+                            if (digits.ToArray().Contains(val))
+                            {
+                                digitsOnly = digitsOnly + val.ToString();
+                            }
+                        }
+                        dataGridView1.Rows[index].Cells[1].Value = digitsOnly;
                     }
                     catch (Exception ex)
                     {

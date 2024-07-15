@@ -1,17 +1,6 @@
 using AIE_InterThread;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics.Metrics;
-using System;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace Email
 {
@@ -42,8 +31,8 @@ namespace Email
                     }
                     catch (Exception ex)
                     {
-                        SharedContext.AutomationLog.Enqueue("Could not self register capibilities with the AI broker.");
-                        Console.WriteLine("Could not self register capibilities with the AI broker.");
+                        SharedContext.AutomationLog.Enqueue("Could not self register capabilities with the AI broker.");
+                        Console.WriteLine("Could not self register capabilities with the AI broker.");
                         SharedContext.AutomationLog.Enqueue(ex.ToString());
                         Console.WriteLine(ex.ToString());
                     }
@@ -68,7 +57,7 @@ namespace Email
             HttpClient sender = new HttpClient();
             sender.BaseAddress = new Uri("http://localhost:7771/");
 
-            //var content = new ApplicationCapibility()
+            //var content = new ApplicationCapability()
             //{
             //    Action = "get email subject",
             //    ActionType = ActionType.HTTP,
@@ -80,11 +69,11 @@ namespace Email
             //    Method = MethodType.GET,
             //    Route = "/subject"
             //};
-            //var applicationContentAsJson = JsonSerializer.Serialize<ApplicationCapibility>(content);
+            //var applicationContentAsJson = JsonSerializer.Serialize<ApplicationCapability>(content);
             //message.Content = new StringContent(applicationContentAsJson);
             //sender.Send(message);
 
-            var capibility = new ApplicationCapibility()
+            var capability = new ApplicationCapability()
             {
                 Action = "start email application",
                 ActionType = ActionType.LAUNCH,
@@ -97,12 +86,12 @@ namespace Email
                 Route = ""
             };
 
-            var url = "capibility";
-            var json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
+            var url = "capability";
+            var json = JsonSerializer.Serialize<ApplicationCapability>(capability);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await sender.PostAsync(url, content);
 
-            capibility = new ApplicationCapibility()
+            capability = new ApplicationCapability()
             {
                 Action = "set email subject to []",
                 ActionType = ActionType.HTTP,
@@ -114,11 +103,11 @@ namespace Email
                 Route = Constants.SUBJECT_KEY
             };
 
-            json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
+            json = JsonSerializer.Serialize<ApplicationCapability>(capability);
             content = new StringContent(json, Encoding.UTF8, "application/json");
             response = await sender.PostAsync(url, content);
 
-            capibility = new ApplicationCapibility()
+            capability = new ApplicationCapability()
             {
                 Action = "append email body with []",
                 ActionType = ActionType.HTTP,
@@ -130,11 +119,11 @@ namespace Email
                 Route = Constants.BODY_KEY
             };
 
-            json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
+            json = JsonSerializer.Serialize<ApplicationCapability>(capability);
             content = new StringContent(json, Encoding.UTF8, "application/json");
             response = await sender.PostAsync(url, content);
 
-            capibility = new ApplicationCapibility()
+            capability = new ApplicationCapability()
             {
                 Action = "add recipient email address []",
                 ActionType = ActionType.HTTP,
@@ -146,7 +135,7 @@ namespace Email
                 Route = Constants.RECIPIENT_KEY
             };
 
-            json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
+            json = JsonSerializer.Serialize<ApplicationCapability>(capability);
             content = new StringContent(json, Encoding.UTF8, "application/json");
             response = await sender.PostAsync(url, content);
 

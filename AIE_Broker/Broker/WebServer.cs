@@ -1,20 +1,11 @@
 ﻿using AIE_InterThread;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using System.Configuration;
 
 namespace Broker
 {
-    
+
     public class WebServer
     {
         public async Task Main(string[] args)
@@ -83,6 +74,12 @@ namespace Broker
                 await Program.SaveExamplesAsync();
                 Program.SharedContext.AutomationLog.Enqueue(Constants.EXAMPLE_KEY + "Api POST: " + newExample.Question);
                 return Results.Ok();
+            });
+
+            var rootApi = app.MapGroup("/");
+            rootApi.MapGet("/", () =>
+            {
+                return Results.Ok(ConfigurationManager.AppSettings["version"]);
             });
 
             var brokerServer = Program.PortMappings.First(pm => pm.Name == "Broker");

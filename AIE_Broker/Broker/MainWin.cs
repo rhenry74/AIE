@@ -183,10 +183,9 @@ namespace Broker
 
         private void MainWin_Resize(object sender, EventArgs e)
         {
-            foreach (var executor in Program.ExecuteQueue.ToList())
+            foreach (Control executor in flCommands.Controls)
             {
-                var executorUI = executor.ActionUI;
-                executorUI.Width = this.Width - 40;
+                executor.Width = this.Width - 40;
             }
         }
 

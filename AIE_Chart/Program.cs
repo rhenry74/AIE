@@ -33,8 +33,8 @@ namespace AIE_Chart
                     }
                     catch (Exception ex)
                     {
-                        SharedContext.AutomationLog.Enqueue("Could not self register capibilities with the AI broker.");
-                        Console.WriteLine("Could not self register capibilities with the AI broker.");
+                        SharedContext.AutomationLog.Enqueue("Could not self register capabilities with the AI broker.");
+                        Console.WriteLine("Could not self register capabilities with the AI broker.");
                         SharedContext.AutomationLog.Enqueue(ex.ToString());
                         Console.WriteLine(ex.ToString());
                     }
@@ -59,7 +59,7 @@ namespace AIE_Chart
             HttpClient sender = new HttpClient();
             sender.BaseAddress = new Uri("http://localhost:7771/");
 
-            //var content = new ApplicationCapibility()
+            //var content = new ApplicationCapability()
             //{
             //    Action = "get column chart subject",
             //    ActionType = ActionType.HTTP,
@@ -71,11 +71,11 @@ namespace AIE_Chart
             //    Method = MethodType.GET,
             //    Route = "/subject"
             //};
-            //var applicationContentAsJson = JsonSerializer.Serialize<ApplicationCapibility>(content);
+            //var applicationContentAsJson = JsonSerializer.Serialize<ApplicationCapability>(content);
             //message.Content = new StringContent(applicationContentAsJson);
             //sender.Send(message);
 
-            var capibility = new ApplicationCapibility()
+            var capability = new ApplicationCapability()
             {
                 Action = "start column chart application",
                 ActionType = ActionType.LAUNCH,
@@ -88,12 +88,12 @@ namespace AIE_Chart
                 Route = ""
             };
 
-            var url = "capibility";
-            var json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
+            var url = "capability";
+            var json = JsonSerializer.Serialize<ApplicationCapability>(capability);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await sender.PostAsync(url, content);
 
-            capibility = new ApplicationCapibility()
+            capability = new ApplicationCapability()
             {
                 Action = "set column chart title to []",
                 ActionType = ActionType.HTTP,
@@ -105,11 +105,11 @@ namespace AIE_Chart
                 Route = Constants.TITLE_KEY
             };
 
-            json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
+            json = JsonSerializer.Serialize<ApplicationCapability>(capability);
             content = new StringContent(json, Encoding.UTF8, "application/json");
             response = await sender.PostAsync(url, content);
 
-            capibility = new ApplicationCapibility()
+            capability = new ApplicationCapability()
             {
                 Action = "add column chart series []",
                 ActionType = ActionType.HTTP,
@@ -121,7 +121,7 @@ namespace AIE_Chart
                 Route = Constants.SERIES_KEY
             };
 
-            json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
+            json = JsonSerializer.Serialize<ApplicationCapability>(capability);
             content = new StringContent(json, Encoding.UTF8, "application/json");
             response = await sender.PostAsync(url, content);
 

@@ -8,7 +8,7 @@ namespace Broker
 {
     internal static class Constants
     {
-        public const string CAPIBILITY_KEY = "capibility";
+        public const string CAPABILITY_KEY = "capability";
         public const string EXAMPLE_KEY = "example";
 
         public const string RESPONSE_KEY = "response";

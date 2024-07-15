@@ -18,7 +18,7 @@ namespace Broker
 
     public class EmbeddingComparison
     {
-        public ApplicationCapibility Capibility { get; set; }
+        public ApplicationCapability Capability { get; set; }
         public Embedding ToCompare { get; set; }
 
         private double? _likeness;
@@ -40,12 +40,12 @@ namespace Broker
 
                 if (Mode == CompareMode.Cosign)
                 {
-                    _likeness = CosignSimilarity(Capibility.Vector, ToCompare.Vector);
+                    _likeness = CosignSimilarity(Capability.Vector, ToCompare.Vector);
                 }
 
                 if (Mode == CompareMode.Levenshtein)
                 {
-                    _likeness = LevenshteinDistance(Capibility.Vector, ToCompare.Vector);
+                    _likeness = LevenshteinDistance(Capability.Vector, ToCompare.Vector);
                 }
 
                 return _likeness.Value;
@@ -55,9 +55,9 @@ namespace Broker
         public double DotProduct()
         {
             double dotProduct = 0;
-            for (int count = 0; count < Capibility.Vector.Length; count++)
+            for (int count = 0; count < Capability.Vector.Length; count++)
             {
-                dotProduct += Capibility.Vector[count] * ToCompare.Vector[count];
+                dotProduct += Capability.Vector[count] * ToCompare.Vector[count];
             }
             return dotProduct;
         }
@@ -157,22 +157,22 @@ namespace Broker
             return embedding;
         }
 
-        public async static Task<IEnumerable<EmbeddingComparison>> TopThreeCapibilitiesForAsync(Embedding embedding)
+        public async static Task<IEnumerable<EmbeddingComparison>> TopThreeCapabilitiesForAsync(Embedding embedding)
         {
             var comparisons = new List<EmbeddingComparison>();
 
-            foreach (var capibility in Program.Capabilities)
+            foreach (var capability in Program.Capabilities)
             {
-                if (capibility.Vector == null)
+                if (capability.Vector == null)
                 {
-                    //hmm we need need to get the embeddings for these capibilities
-                    await Program.InitializeCapibilityVectorsAsync();
+                    //hmm we need need to get the embeddings for these capabilities
+                    await Program.InitializeCapabilityVectorsAsync();
                 }
 
                 var comparison = new EmbeddingComparison
                 {
                     Mode = CompareMode.Cosign,
-                    Capibility = capibility,
+                    Capability = capability,
                     ToCompare = embedding
                 };
                 comparisons.Add(comparison);

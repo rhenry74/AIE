@@ -44,8 +44,8 @@ namespace Calendar
                     }
                     catch (Exception ex)
                     {
-                        SharedContext.AutomationLog.Enqueue("Could not self register capibilities with the AI broker.");
-                        Console.WriteLine("Could not self register capibilities with the AI broker.");
+                        SharedContext.AutomationLog.Enqueue("Could not self register capabilities with the AI broker.");
+                        Console.WriteLine("Could not self register capabilities with the AI broker.");
                         SharedContext.AutomationLog.Enqueue(ex.ToString());
                         Console.WriteLine(ex.ToString());
                     }
@@ -93,7 +93,7 @@ namespace Calendar
             HttpClient sender = new HttpClient();
             sender.BaseAddress = new Uri("http://localhost:7771/");
             
-            //var content = new ApplicationCapibility()
+            //var content = new ApplicationCapability()
             //{
             //    Action = "get email subject",
             //    ActionType = ActionType.HTTP,
@@ -105,11 +105,11 @@ namespace Calendar
             //    Method = MethodType.GET,
             //    Route = "/subject"
             //};
-            //var applicationContentAsJson = JsonSerializer.Serialize<ApplicationCapibility>(content);
+            //var applicationContentAsJson = JsonSerializer.Serialize<ApplicationCapability>(content);
             //message.Content = new StringContent(applicationContentAsJson);
             //sender.Send(message);
 
-            var capibility = new ApplicationCapibility()
+            var capability = new ApplicationCapability()
             {
                 Action = "start calendar application",
                 ActionType = ActionType.LAUNCH,
@@ -122,12 +122,12 @@ namespace Calendar
                 Route = ""
             };
 
-            var url = "capibility";
-            var json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
+            var url = "capability";
+            var json = JsonSerializer.Serialize<ApplicationCapability>(capability);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await sender.PostAsync(url, content);
 
-            capibility = new ApplicationCapibility()
+            capability = new ApplicationCapability()
             {
                 Action = "set calendar event title to []",
                 ActionType = ActionType.HTTP,
@@ -139,11 +139,11 @@ namespace Calendar
                 Route = Constants.TITLE_KEY
             };
 
-            json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
+            json = JsonSerializer.Serialize<ApplicationCapability>(capability);
             content = new StringContent(json, Encoding.UTF8, "application/json");
             response = await sender.PostAsync(url, content);
 
-            capibility = new ApplicationCapibility()
+            capability = new ApplicationCapability()
             {
                 Action = "append calendar event description with []",
                 ActionType = ActionType.HTTP,
@@ -155,11 +155,11 @@ namespace Calendar
                 Route = Constants.DESCRIPTION_KEY
             };
 
-            json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
+            json = JsonSerializer.Serialize<ApplicationCapability>(capability);
             content = new StringContent(json, Encoding.UTF8, "application/json");
             response = await sender.PostAsync(url, content);
 
-            capibility = new ApplicationCapibility()
+            capability = new ApplicationCapability()
             {
                 Action = "set calendar event date and time to []",
                 ActionType = ActionType.HTTP,
@@ -171,7 +171,7 @@ namespace Calendar
                 Route = Constants.FROM_KEY
             };
 
-            json = JsonSerializer.Serialize<ApplicationCapibility>(capibility);
+            json = JsonSerializer.Serialize<ApplicationCapability>(capability);
             content = new StringContent(json, Encoding.UTF8, "application/json");
             response = await sender.PostAsync(url, content);
 

@@ -31,7 +31,7 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             tbUserName = new TextBox();
-            btClearCapibilityVectors = new Button();
+            btClearCapabilityVectors = new Button();
             toolTip1 = new ToolTip(components);
             cbDateTime = new CheckBox();
             cbUserName = new CheckBox();
@@ -44,16 +44,16 @@
             tbUserName.Size = new Size(300, 23);
             tbUserName.TabIndex = 1;
             // 
-            // btClearCapibilityVectors
+            // btClearCapabilityVectors
             // 
-            btClearCapibilityVectors.Location = new Point(12, 208);
-            btClearCapibilityVectors.Name = "btClearCapibilityVectors";
-            btClearCapibilityVectors.Size = new Size(177, 23);
-            btClearCapibilityVectors.TabIndex = 2;
-            btClearCapibilityVectors.Text = "Clear Capibility Vectors";
-            toolTip1.SetToolTip(btClearCapibilityVectors, resources.GetString("btClearCapibilityVectors.ToolTip"));
-            btClearCapibilityVectors.UseVisualStyleBackColor = true;
-            btClearCapibilityVectors.Click += btClearCapibilityVectors_Click;
+            btClearCapabilityVectors.Location = new Point(12, 208);
+            btClearCapabilityVectors.Name = "btClearCapabilityVectors";
+            btClearCapabilityVectors.Size = new Size(177, 23);
+            btClearCapabilityVectors.TabIndex = 2;
+            btClearCapabilityVectors.Text = "Clear Capability Vectors";
+            toolTip1.SetToolTip(btClearCapabilityVectors, resources.GetString("btClearCapabilityVectors.ToolTip"));
+            btClearCapabilityVectors.UseVisualStyleBackColor = true;
+            btClearCapabilityVectors.Click += btClearCapabilityVectors_Click;
             // 
             // cbDateTime
             // 
@@ -82,7 +82,7 @@
             ClientSize = new Size(800, 450);
             Controls.Add(cbUserName);
             Controls.Add(cbDateTime);
-            Controls.Add(btClearCapibilityVectors);
+            Controls.Add(btClearCapabilityVectors);
             Controls.Add(tbUserName);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "Settings";
@@ -93,7 +93,7 @@
 
         #endregion
         private TextBox tbUserName;
-        private Button btClearCapibilityVectors;
+        private Button btClearCapabilityVectors;
         private ToolTip toolTip1;
         private CheckBox cbDateTime;
         private CheckBox cbUserName;

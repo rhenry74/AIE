@@ -1,11 +1,13 @@
 using AIE_InterThread;
+using Microsoft.VisualBasic;
 using System.Text;
 using System.Text.Json;
 
-namespace Email
+namespace AIE_Chart
 {
-    static class Program
+    internal static class Program
     {
+
         public static InterThread SharedContext = new InterThread();
 
         private static WebServer server;
@@ -16,7 +18,7 @@ namespace Email
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             PortText = args[0];
 
@@ -26,7 +28,7 @@ namespace Email
                 {
                     try
                     {
-                        await SelfRegisterAsync();
+                        Task.Run(() => SelfRegisterAsync()).Wait();
                         return;
                     }
                     catch (Exception ex)
@@ -39,7 +41,7 @@ namespace Email
                 }
             }
 
-            var serverTask = System.Threading.Tasks.Task.Run( () => 
+            var serverTask = Task.Run(() =>
             {
                 server = new WebServer();
                 server.Main(int.Parse(PortText));
@@ -49,8 +51,8 @@ namespace Email
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new MainWin());
-
         }
+
 
         private static async Task SelfRegisterAsync()
         {
@@ -59,12 +61,12 @@ namespace Email
 
             //var content = new ApplicationCapability()
             //{
-            //    Action = "get email subject",
+            //    Action = "get column chart subject",
             //    ActionType = ActionType.HTTP,
-            //    AppClass = "email",
+            //    AppClass = "column chart",
             //    AppPath = Application.ExecutablePath,
             //    ContentType = "application/json",
-            //    Description = "get the subject of the email from the text box",
+            //    Description = "get the subject of the column chart from the text box",
             //    Contract = "SingleText",
             //    Method = MethodType.GET,
             //    Route = "/subject"
@@ -75,12 +77,12 @@ namespace Email
 
             var capability = new ApplicationCapability()
             {
-                Action = "start email application",
+                Action = "start column chart application",
                 ActionType = ActionType.LAUNCH,
-                AppClass = "email",
+                AppClass = "column chart",
                 AppPath = Application.ExecutablePath,
                 ContentType = "",
-                Description = "launch an empty email in the email app",
+                Description = "launch an empty column chart in the column chart app",
                 Contract = "",
                 Method = MethodType.NA,
                 Route = ""
@@ -93,14 +95,14 @@ namespace Email
 
             capability = new ApplicationCapability()
             {
-                Action = "set email subject to []",
+                Action = "set column chart title to []",
                 ActionType = ActionType.HTTP,
-                AppClass = "email",
+                AppClass = "column chart",
                 ContentType = "application/json",
-                Description = "set the subject of the email",
+                Description = "set the title of the column chart",
                 Contract = "SingleText",
                 Method = MethodType.POST,
-                Route = Constants.SUBJECT_KEY
+                Route = Constants.TITLE_KEY
             };
 
             json = JsonSerializer.Serialize<ApplicationCapability>(capability);
@@ -109,30 +111,14 @@ namespace Email
 
             capability = new ApplicationCapability()
             {
-                Action = "append email body with []",
+                Action = "add column chart series []",
                 ActionType = ActionType.HTTP,
-                AppClass = "email",
+                AppClass = "column chart",
                 ContentType = "application/json",
-                Description = "append a line of the body of the eamil",
+                Description = "add a series to the chart",
                 Contract = "SingleText",
                 Method = MethodType.POST,
-                Route = Constants.BODY_KEY
-            };
-
-            json = JsonSerializer.Serialize<ApplicationCapability>(capability);
-            content = new StringContent(json, Encoding.UTF8, "application/json");
-            response = await sender.PostAsync(url, content);
-
-            capability = new ApplicationCapability()
-            {
-                Action = "add recipient email address []",
-                ActionType = ActionType.HTTP,
-                AppClass = "email",
-                ContentType = "application/json",
-                Description = "add a recipient email address to the email",
-                Contract = "SingleText",
-                Method = MethodType.POST,
-                Route = Constants.RECIPIENT_KEY
+                Route = Constants.SERIES_KEY
             };
 
             json = JsonSerializer.Serialize<ApplicationCapability>(capability);
@@ -143,20 +129,29 @@ namespace Email
 
             var example = new ApplicationExample()
             {
-                AppClass = "email",
-                Question = "send an email to ryker@nphs.com\r\nin the email summarize the early life of George Washington for his research paper\r\nlist 3 impacts Washington had on us history with a paragraph for each\r\nbe sure to include that George was a slave owner\r\n",
+                AppClass = "column chart",
+                Question = "create a chart that shows the number of days in each month of the year",
                 Answers = new[]
                 {
-                    "start email application",
-                    "add recipient email address [ryker@nphs.com]",
-                    "set email subject to [George Washington's Early Life and Impact on US History]",
-                    "append email body with [George Washington, the first President of the United States, was born on February 22, 1732, in Westmoreland County, Virginia. He was the eldest of six children to Augustine Washington and his second wife, Mary Ball Washington. Washington's early life was marked by his love for the outdoors, hunting, and surveying, which would later influence his military career.]",
-                    "append email body with [Washington's early life was also marked by his involvement in the French and Indian War, where he served as a major in the Virginia militia. He was appointed as the commander-in-chief of the Continental Army in 1775, leading the country to victory in the American Revolutionary War.]",
-                    "append email body with [Here are five significant impacts Washington had on US history:]",
-                    "append email body with [1. Washington's leadership during the American Revolutionary War led to the country's independence from British rule, setting a precedent for future presidents to lead the country through times of war and peace.]",
-                    "append email body with [2. Washington's decision to step down as president after two terms set the precedent for the two-term limit, which has been followed by most presidents since.]",
-                    "append email body with [3. Washington's leadership during the Whiskey Rebellion, a tax protest in western Pennsylvania, demonstrated his commitment to upholding federal authority and established the principle of federal supremacy.]",
-                    "append email body with [Good luck with your paper, Robert Henry]"
+                    "start column chart application",
+                    "set column chart title to [Days in Each Month of the Year]",
+                    "add column chart series [January=31:February=28:March=31:April=30:May=31:June=30:July=31:August=31:September=30:October=31:November=30:December=31]"
+                }
+            };
+
+            json = JsonSerializer.Serialize<ApplicationExample>(example);
+            content = new StringContent(json, Encoding.UTF8, "application/json");
+            response = await sender.PostAsync(url, content);
+
+            example = new ApplicationExample()
+            {
+                AppClass = "column chart",
+                Question = "create a chart that shows the planet's sizes",
+                Answers = new[]
+                {
+                    "start column chart application",
+                    "set column chart title to [Planets in Our Solar System - Size Comparison in km]",
+                    "add column chart series [Mercury=4879:Venus=12104:Earth=12742:Mars=6794:Jupiter=142984:Saturn=116464:Uranus=51118:Neptune=49528:Pluto=2374]"
                 }
             };
 

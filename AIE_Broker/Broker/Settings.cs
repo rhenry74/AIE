@@ -17,9 +17,9 @@ namespace Broker
             InitializeComponent();
         }
 
-        private void btClearCapibilityVectors_Click(object sender, EventArgs e)
+        private void btClearCapabilityVectors_Click(object sender, EventArgs e)
         {
-            Program.ClearCapibilities();
+            Program.ClearCapabilities();
         }
     }
 }

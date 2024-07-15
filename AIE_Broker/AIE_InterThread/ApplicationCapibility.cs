@@ -22,7 +22,7 @@ namespace AIE_InterThread
         NA
     }
 
-    public class ApplicationCapibility
+    public class ApplicationCapability
     {
         public string Action { get; set; }
         public string AppClass { get; set; }

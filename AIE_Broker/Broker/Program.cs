@@ -15,7 +15,7 @@ namespace Broker
     {
         public static InterThread SharedContext = new InterThread();
 
-        public static List<ApplicationCapibility> Capabilities = new List<ApplicationCapibility>();
+        public static List<ApplicationCapability> Capabilities = new List<ApplicationCapability>();
 
         public static List<ApplicationExample> Examples = new List<ApplicationExample>();
 
@@ -74,20 +74,20 @@ namespace Broker
         private async static Task InitializeBrokerageAsync()
         {
             string root = ConfigurationManager.AppSettings["rootPath"];
-            var capibilitiesFilePath = Path.Combine(root, Context, "Capibilities.json");
+            var capabilitiesFilePath = Path.Combine(root, Context, "Capabilities.json");
             try
             {
-                Capabilities = JsonSerializer.Deserialize<List<ApplicationCapibility>>(File.ReadAllText(capibilitiesFilePath));
-                SharedContext.AutomationLog.Enqueue("Capibilities Loaded");
+                Capabilities = JsonSerializer.Deserialize<List<ApplicationCapability>>(File.ReadAllText(capabilitiesFilePath));
+                SharedContext.AutomationLog.Enqueue("Capabilities Loaded");
             }
             catch (Exception ex)
             {
-                SharedContext.AutomationLog.Enqueue("Error Loading Capibilities: " + ex.ToString());
+                SharedContext.AutomationLog.Enqueue("Error Loading Capabilities: " + ex.ToString());
             }
 
             if (Capabilities.Where(c => c.AppClass == "built in").Count() == 0)
             {
-                Capabilities.Add(new ApplicationCapibility()
+                Capabilities.Add(new ApplicationCapability()
                 {
                     Action = "respond to user with []",
                     ActionType = ActionType.UI,
@@ -99,7 +99,7 @@ namespace Broker
                     Method = MethodType.NA,
                     Route = ""
                 });
-                //Capabilities.Add(new ApplicationCapibility()
+                //Capabilities.Add(new ApplicationCapability()
                 //{
                 //    Action = "save clipboard to file []",
                 //    ActionType = ActionType.UI,
@@ -112,8 +112,8 @@ namespace Broker
                 //    Route = null
                 //});
 
-                await SaveCapibilitiesAsync();
-                SharedContext.AutomationLog.Enqueue("Default Capibilities Saved");
+                await SaveCapabilitiesAsync();
+                SharedContext.AutomationLog.Enqueue("Default Capabilities Saved");
             }            
 
             //examples
@@ -199,37 +199,37 @@ namespace Broker
             }
         }
 
-        public async static Task InitializeCapibilityVectorsAsync()
+        public async static Task InitializeCapabilityVectorsAsync()
         {
-            SharedContext.AutomationLog.Enqueue("Initializing Capibility Vectors");
-            foreach (var capibility in Capabilities)
+            SharedContext.AutomationLog.Enqueue("Initializing Capability Vectors");
+            foreach (var capability in Capabilities)
             {
-                if (capibility.Vector == null)
+                if (capability.Vector == null)
                 {
-                    SharedContext.AutomationLog.Enqueue("Getting Embedding for: " + capibility.Action);
-                    capibility.Vector = (await Embedding.GetForAsync(capibility.Action)).Vector;
+                    SharedContext.AutomationLog.Enqueue("Getting Embedding for: " + capability.Action);
+                    capability.Vector = (await Embedding.GetForAsync(capability.Action)).Vector;
                 }
             }
 
-            await SaveCapibilitiesAsync();
-            SharedContext.AutomationLog.Enqueue("Capibility Vectors Saved");
+            await SaveCapabilitiesAsync();
+            SharedContext.AutomationLog.Enqueue("Capability Vectors Saved");
         }
 
-        public async static Task SaveCapibilitiesAsync()
+        public async static Task SaveCapabilitiesAsync()
         {
             try
             {
                 string root = ConfigurationManager.AppSettings["rootPath"];
-                var capibilitiesFilePath = Path.Combine(root, Context, "Capibilities.json");
-                if (!Directory.Exists(Path.GetDirectoryName(capibilitiesFilePath)))
+                var capabilitiesFilePath = Path.Combine(root, Context, "Capabilities.json");
+                if (!Directory.Exists(Path.GetDirectoryName(capabilitiesFilePath)))
                 {
-                    Directory.CreateDirectory(Path.GetDirectoryName(capibilitiesFilePath));
+                    Directory.CreateDirectory(Path.GetDirectoryName(capabilitiesFilePath));
                 }
-                await File.WriteAllTextAsync(capibilitiesFilePath, JsonSerializer.Serialize(Capabilities));
+                await File.WriteAllTextAsync(capabilitiesFilePath, JsonSerializer.Serialize(Capabilities));
             }
             catch (Exception ex)
             {
-                SharedContext.AutomationLog.Enqueue("SaveCapibilitiesAsync: " + ex.ToString());
+                SharedContext.AutomationLog.Enqueue("SaveCapabilitiesAsync: " + ex.ToString());
             }
         }
 
@@ -288,13 +288,13 @@ namespace Broker
             });
         }
 
-        public static void ClearCapibilities()
+        public static void ClearCapabilities()
         {
-            foreach (var capibility in Capabilities)
+            foreach (var capability in Capabilities)
             {
-                capibility.Vector = null;
+                capability.Vector = null;
             }
-            Task.Run(() => SaveCapibilitiesAsync()).Wait();
+            Task.Run(() => SaveCapabilitiesAsync()).Wait();
         }
 
         public static void ExecuteCommands(bool justOne = false)

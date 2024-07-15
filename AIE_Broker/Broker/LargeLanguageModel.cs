@@ -54,11 +54,11 @@ namespace Broker
             set { _prompt = value; }
         }
 
-        public void AssemblePrompt(ApplicationCapibility[] capibilities, ApplicationExample[] examples, 
+        public void AssemblePrompt(ApplicationCapability[] capabilities, ApplicationExample[] examples, 
             KeyValuePair<string, string>[] contextParameters, string userPrompt)
         {
             string systemPrompt = "";
-            var systemPromptArray = GenerateSystemPrompt(capibilities);
+            var systemPromptArray = GenerateSystemPrompt(capabilities);
             foreach (var line in systemPromptArray)
             {
                 systemPrompt += line;
@@ -96,15 +96,15 @@ namespace Broker
             _prompt = prompt;
         }
 
-        private string[] GenerateSystemPrompt(ApplicationCapibility[] capibilities)
+        private string[] GenerateSystemPrompt(ApplicationCapability[] capabilities)
         {
             var lines = new List<string>();
             lines.Add(ConfigurationManager.AppSettings["systemPrompt"]);
             lines.Add("");
             //lines.Add("");
-            foreach (var capibility in capibilities)
+            foreach (var capability in capabilities)
             {
-                lines.Add(capibility.Action.Replace("[]", "[?]"));
+                lines.Add(capability.Action.Replace("[]", "[?]"));
             }
             return lines.ToArray();
         }

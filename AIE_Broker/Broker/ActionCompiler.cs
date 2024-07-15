@@ -59,12 +59,12 @@ namespace Broker
                     //find best match
                     var embedding = await Embedding.GetForAsync(actionText);
 
-                    var comparisons = await Embedding.TopThreeCapibilitiesForAsync(embedding);
+                    var comparisons = await Embedding.TopThreeCapabilitiesForAsync(embedding);
                     LogMessage("Top 3:");
                     EmbeddingComparison nextChoice = null;
                     foreach (var comparison in comparisons)
                     {
-                        LogMessage(comparison.Capibility.Action + " : " +
+                        LogMessage(comparison.Capability.Action + " : " +
                             comparison.Likeness);
                         if (TopChoice == null)
                         {

@@ -24,11 +24,11 @@ namespace Broker
         public void Initialize(ActionCompiler action)
         {
             this.Action = action;
-            lbActionText.Text = this.Action.TopChoice?.Capibility.Action;
+            lbActionText.Text = this.Action.TopChoice?.Capability.Action;
             lbLikeness.Text = this.Action.TopChoice?.Likeness.ToString();
             lbTopChoice.Text = this.Action.ActionText;
             UpdateCompileStatus();
-            lbParmsEx.Text = this.Action.TopChoice?.Capibility.Action.ToArray().Where(c => c == '[').Count().ToString();
+            lbParmsEx.Text = this.Action.TopChoice?.Capability.Action.ToArray().Where(c => c == '[').Count().ToString();
             btParsed.Text = this.Action.Parameter == null ? "0" : "1"; //someday maybe we can have more that 1 parameter per action
             if (action.Status == Status.Failure)
             {

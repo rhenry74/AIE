@@ -36,10 +36,10 @@ namespace Broker
         {
             Executing = true;
             LogMessage("Executing...");
-            var capibility = ActionCompiler.TopChoice?.Capibility;
-            if (capibility != null)
+            var capability = ActionCompiler.TopChoice?.Capability;
+            if (capability != null)
             {
-                LogMessage(capibility.ToString());
+                LogMessage(capability.ToString());
                 if (SkipIt)
                 {
                     Executing = false;
@@ -47,7 +47,7 @@ namespace Broker
                     return;
                 }
 
-                switch (capibility.ActionType)
+                switch (capability.ActionType)
                 {
                     case AIE_InterThread.ActionType.LAUNCH:
                         LaunchApplication();
@@ -67,7 +67,7 @@ namespace Broker
             }
             else
             {
-                Error = "Unable to determin top capibility.";
+                Error = "Unable to determin top capability.";
                 LogMessage(Error);
             }
             Executing = false;
@@ -77,12 +77,12 @@ namespace Broker
         {
             try
             {
-                var capibility = ActionCompiler.TopChoice?.Capibility;
-                LogMessage("Launching Application " + capibility.AppPath);
+                var capability = ActionCompiler.TopChoice?.Capability;
+                LogMessage("Launching Application " + capability.AppPath);
                 var portNumber = Program.PortMappings.Max(x => x.Port) + 1;
                 var newPortMapping = new PortMapping()
                 {
-                    Name = Program.Context + ":" + capibility.AppClass,
+                    Name = Program.Context + ":" + capability.AppClass,
                     Port = portNumber,
                     Server = "localhost",
                     Started = DateTime.Now,
@@ -90,8 +90,8 @@ namespace Broker
                 Program.PortMappings.Add(newPortMapping);
 
                 //start app
-                var exe = Path.GetFileName(capibility.AppPath);
-                var dir = Path.GetDirectoryName(capibility.AppPath);
+                var exe = Path.GetFileName(capability.AppPath);
+                var dir = Path.GetDirectoryName(capability.AppPath);
 
                 System.Diagnostics.Process process = new System.Diagnostics.Process();
                 process.StartInfo = new System.Diagnostics.ProcessStartInfo()
@@ -119,28 +119,28 @@ namespace Broker
         {
             try
             {
-                var capibility = ActionCompiler.TopChoice?.Capibility;
-                LogMessage("Calling API " + capibility.Route);
+                var capability = ActionCompiler.TopChoice?.Capability;
+                LogMessage("Calling API " + capability.Route);
 
-                var portMap = Program.PortMappings.Where(pm => pm.Name == Program.Context + ":" + capibility.AppClass)
+                var portMap = Program.PortMappings.Where(pm => pm.Name == Program.Context + ":" + capability.AppClass)
                     .OrderByDescending(pm => pm.Started).FirstOrDefault();
                 if (portMap == null)
                 {
-                    LogMessage("Could not find the port of the app. capibility.AppClass=" + capibility.AppClass);
+                    LogMessage("Could not find the port of the app. capability.AppClass=" + capability.AppClass);
                     return;
                 }
 
-                LogMessage($"Using Port {portMap.Port} for AppClass {capibility.AppClass} that was started at {portMap.Started}");
+                LogMessage($"Using Port {portMap.Port} for AppClass {capability.AppClass} that was started at {portMap.Started}");
 
                 var url = "http://" + portMap.Server + ":" + portMap.Port;
-                LogMessage("url = " + url + "/" + capibility.Route);
+                LogMessage("url = " + url + "/" + capability.Route);
 
                 //call api
                 HttpClient sender = new HttpClient();
                 sender.BaseAddress = new Uri(url);
 
                 string json = null;
-                if (capibility.Contract == "SingleText")
+                if (capability.Contract == "SingleText")
                 {
                     var singleText = new SingleText()
                     {
@@ -152,9 +152,9 @@ namespace Broker
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = null;
-                if (capibility.Method == MethodType.POST)
+                if (capability.Method == MethodType.POST)
                 {
-                    response = await sender.PostAsync(capibility.Route, content);
+                    response = await sender.PostAsync(capability.Route, content);
                 }
 
                 LogMessage("response.StatusCode: " + response.StatusCode.ToString());

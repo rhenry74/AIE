@@ -29,25 +29,34 @@ namespace Broker
 
             var app = builder.Build();
    
-            var registerApi = app.MapGroup("/" + Constants.CAPIBILITY_KEY);
-            //subjectApi.MapGet("/", () =>
-            //{
-            //    var val = new SingleText() { Text = Program.SharedContext.GetValue(Constants.SUBJECT_KEY) };
-            //    Program.SharedContext.AutomationLog.Enqueue("subjectApi GET: " + val);
-            //    return Results.Ok(val);
-            //});
+            var registerApi = app.MapGroup("/" + Constants.CAPABILITY_KEY);
+            registerApi.MapGet("/", () =>
+            {                
+                Program.SharedContext.AutomationLog.Enqueue($"registerApi GET: {Program.Capabilities.Count} Capabilities");
+                return Results.Ok(Program.Capabilities.Where(c => c.ActionType != ActionType.LAUNCH).Select(c => new ApplicationCapability()
+                {
+                    Action = c.Action,
+                    ActionType = c.ActionType,
+                    AppClass = c.AppClass,
+                    ContentType = c.ContentType,
+                    Contract = c.Contract,
+                    Description = c.Description,
+                    Method = c.Method,
+                    Route = c.Route,
+                }));
+            });
 
-            registerApi.MapPost("/", async (ApplicationCapibility newCapibility) =>
+            registerApi.MapPost("/", async (ApplicationCapability newCapability) =>
             {
-                if (newCapibility.ActionType == ActionType.LAUNCH)
+                if (newCapability.ActionType == ActionType.LAUNCH)
                 {
                     //we are installing a new app class
-                    //remove all existing capibilities for the app class
-                    var appclass = newCapibility.AppClass;
-                    var existingCapibilitiesForAppClass = Program.Capabilities.Where(c => c.AppClass == appclass).ToList();
-                    foreach(var capibilityToRemove in existingCapibilitiesForAppClass)
+                    //remove all existing Capabilities for the app class
+                    var appclass = newCapability.AppClass;
+                    var existingCapabilitiesForAppClass = Program.Capabilities.Where(c => c.AppClass == appclass).ToList();
+                    foreach(var CapabilityToRemove in existingCapabilitiesForAppClass)
                     {
-                        Program.Capabilities.Remove(capibilityToRemove);
+                        Program.Capabilities.Remove(CapabilityToRemove);
                     }
                     //remove all existing examples for the app class
                     var existingExamplesForAppClass = Program.Examples.Where(c => c.AppClass == appclass).ToList();
@@ -58,10 +67,10 @@ namespace Broker
                     await Program.SaveExamplesAsync();
                 }
 
-                Program.Capabilities.Add(newCapibility);
-                await Program.SaveCapibilitiesAsync();
-                Program.SharedContext.AutomationLog.Enqueue(Constants.CAPIBILITY_KEY + "Api POST: " + 
-                    newCapibility.Action);
+                Program.Capabilities.Add(newCapability);
+                await Program.SaveCapabilitiesAsync();
+                Program.SharedContext.AutomationLog.Enqueue(Constants.CAPABILITY_KEY + "Api POST: " + 
+                    newCapability.Action);
 
                 return Results.Ok();
             });

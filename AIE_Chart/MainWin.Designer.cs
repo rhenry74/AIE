@@ -50,6 +50,8 @@
             tbSeriesDef = new TextBox();
             tbAutomationStatus = new TextBox();
             saveFileDialog1 = new SaveFileDialog();
+            label2 = new Label();
+            textBox1 = new TextBox();
             ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tabControl1.SuspendLayout();
@@ -92,7 +94,7 @@
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.Location = new Point(3, 3);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(290, 482);
+            dataGridView1.Size = new Size(290, 447);
             dataGridView1.TabIndex = 1;
             dataGridView1.CellEndEdit += dataGridView1_CellEndEdit;
             // 
@@ -117,10 +119,10 @@
             // 
             tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             tabControl1.Controls.Add(tabPage1);
-            tabControl1.Location = new Point(751, 32);
+            tabControl1.Location = new Point(751, 67);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(304, 516);
+            tabControl1.Size = new Size(304, 481);
             tabControl1.TabIndex = 2;
             // 
             // tabPage1
@@ -129,7 +131,7 @@
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(296, 488);
+            tabPage1.Size = new Size(296, 453);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "1";
             tabPage1.UseVisualStyleBackColor = true;
@@ -138,7 +140,7 @@
             // 
             label1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label1.AutoSize = true;
-            label1.Location = new Point(766, 14);
+            label1.Location = new Point(758, 49);
             label1.Name = "label1";
             label1.Size = new Size(40, 15);
             label1.TabIndex = 3;
@@ -147,12 +149,13 @@
             // btAddSeries
             // 
             btAddSeries.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btAddSeries.Location = new Point(812, 6);
+            btAddSeries.Location = new Point(804, 45);
             btAddSeries.Name = "btAddSeries";
             btAddSeries.Size = new Size(86, 23);
             btAddSeries.TabIndex = 4;
             btAddSeries.Text = "Add Series";
             btAddSeries.UseVisualStyleBackColor = true;
+            btAddSeries.Visible = false;
             // 
             // timer1
             // 
@@ -169,6 +172,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(textBox1);
+            splitContainer1.Panel1.Controls.Add(label2);
             splitContainer1.Panel1.Controls.Add(btSave);
             splitContainer1.Panel1.Controls.Add(chart1);
             splitContainer1.Panel1.Controls.Add(label1);
@@ -217,6 +222,24 @@
             // 
             saveFileDialog1.FileOk += saveFileDialog1_FileOk;
             // 
+            // label2
+            // 
+            label2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label2.AutoSize = true;
+            label2.Location = new Point(758, 14);
+            label2.Name = "label2";
+            label2.Size = new Size(32, 15);
+            label2.TabIndex = 6;
+            label2.Text = "Title:";
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(791, 11);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(176, 23);
+            textBox1.TabIndex = 7;
+            textBox1.TextChanged += textBox1_TextChanged;
+            // 
             // MainWin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -255,5 +278,7 @@
         private DataGridViewButtonColumn ColorCol;
         private SaveFileDialog saveFileDialog1;
         private TextBox tbSeriesDef;
+        private TextBox textBox1;
+        private Label label2;
     }
 }

@@ -48,6 +48,7 @@ namespace AIE_Chart
             if (Program.SharedContext.Altered(Constants.TITLE_KEY))
             {
                 chart1.Titles[0].Text = Program.SharedContext.Dequeue(Constants.TITLE_KEY);
+                textBox1.Text = chart1.Titles[0].Text;
             }
 
             if (Program.SharedContext.Altered(Constants.SERIES_KEY))
@@ -104,6 +105,11 @@ namespace AIE_Chart
         private void tbSeriesDef_Leave(object sender, EventArgs e)
         {
             Program.SharedContext.Enqueue(Constants.SERIES_KEY, tbSeriesDef.Text);
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            chart1.Titles[0].Text = textBox1.Text;
         }
     }
 }

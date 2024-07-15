@@ -19,7 +19,7 @@ namespace Broker
 
         public static List<ApplicationExample> Examples = new List<ApplicationExample>();
 
-        public static Dictionary<string, List<KeyValuePair<string, string>>> ContextParameters = 
+        public static Dictionary<string, List<KeyValuePair<string, string>>> ContextParameters =
             new Dictionary<string, List<KeyValuePair<string, string>>>();
 
         public static List<PortMapping> PortMappings = new List<PortMapping>();
@@ -80,10 +80,11 @@ namespace Broker
                 Capabilities = JsonSerializer.Deserialize<List<ApplicationCapibility>>(File.ReadAllText(capibilitiesFilePath));
                 SharedContext.AutomationLog.Enqueue("Capibilities Loaded");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 SharedContext.AutomationLog.Enqueue("Error Loading Capibilities: " + ex.ToString());
             }
+
             if (Capabilities.Where(c => c.AppClass == "built in").Count() == 0)
             {
                 Capabilities.Add(new ApplicationCapibility()
@@ -112,9 +113,8 @@ namespace Broker
                 //});
 
                 await SaveCapibilitiesAsync();
-
                 SharedContext.AutomationLog.Enqueue("Default Capibilities Saved");
-            }
+            }            
 
             //examples
             var examplesFilePath = Path.Combine(root, Context, "Examples.json");
@@ -126,6 +126,19 @@ namespace Broker
             catch (Exception ex)
             {
                 SharedContext.AutomationLog.Enqueue("Error Loading examples: " + ex.ToString());
+            }
+
+            if (Examples.Where(c => c.AppClass == "built in").Count() == 0)
+            {
+                Examples.Add(new ApplicationExample()
+                {
+                    AppClass = "built in",
+                    Question = "Who was George Washington?",
+                    Answers = new[] { "respond to user with [George Washington was the first President of the United States, serving from 1789 to 1797. He was a military leader during the American Revolutionary War and is considered one of the founding fathers of the United States.]" }
+                });
+
+                await SaveExamplesAsync();
+                SharedContext.AutomationLog.Enqueue("Default Examples Saved");
             }
 
             //port map
@@ -164,7 +177,7 @@ namespace Broker
                 var baseParameters = JsonSerializer.Deserialize<List<KeyValuePair<string, string>>>(
                     File.ReadAllText(contextFilePath));
                 ContextParameters.Add(Context, baseParameters);
-                SharedContext.AutomationLog.Enqueue("Parameters for " + Context +" Loaded");
+                SharedContext.AutomationLog.Enqueue("Parameters for " + Context + " Loaded");
             }
             catch (Exception ex)
             {
@@ -189,7 +202,7 @@ namespace Broker
         public async static Task InitializeCapibilityVectorsAsync()
         {
             SharedContext.AutomationLog.Enqueue("Initializing Capibility Vectors");
-            foreach(var capibility in Capabilities)
+            foreach (var capibility in Capabilities)
             {
                 if (capibility.Vector == null)
                 {
@@ -240,7 +253,7 @@ namespace Broker
                 userPrompt += "\r\n";
             }
 
-            LLM.AssemblePrompt(Capabilities.ToArray(), Examples.ToArray(), 
+            LLM.AssemblePrompt(Capabilities.ToArray(), Examples.ToArray(),
                 ContextParameters[Context].ToArray(), userPrompt);
             return LLM.Prompt.Split("\r\n");
         }
@@ -257,7 +270,7 @@ namespace Broker
                     userPrompt += "\r\n";
                 }
 
-                LLM.AssemblePrompt(Capabilities.ToArray(), Examples.ToArray(), 
+                LLM.AssemblePrompt(Capabilities.ToArray(), Examples.ToArray(),
                     ContextParameters[Context].ToArray(), userPrompt);
                 LLM.Generate();
                 LLMRunning = false;
@@ -284,12 +297,12 @@ namespace Broker
             Task.Run(() => SaveCapibilitiesAsync()).Wait();
         }
 
-        public static void ExecuteCommands(bool justOne=false)
+        public static void ExecuteCommands(bool justOne = false)
         {
             Executing = true;
             System.Threading.Tasks.Task.Run(async () =>
             {
-                while(ExecuteQueue.Count > 0)
+                while (ExecuteQueue.Count > 0)
                 {
                     var executor = ExecuteQueue.Dequeue();
                     await executor.ExecuteAsync();
@@ -313,6 +326,6 @@ namespace Broker
             await File.WriteAllTextAsync(exampleFilePath, JsonSerializer.Serialize(Examples));
         }
 
-        
+
     }
 }

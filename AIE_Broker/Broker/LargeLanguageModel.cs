@@ -1,11 +1,15 @@
 ﻿using AIE_InterThread;
+using Microsoft.Extensions.Hosting;
 using Microsoft.ML.OnnxRuntimeGenAI;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using static System.Windows.Forms.LinkLabel;
 
@@ -114,13 +118,116 @@ namespace Broker
             parms.SetInputSequences(tokens);
             //parms.SetInputIDs(tokens[0], ((ulong)tokens[0].Length), tokens.NumSequences);
 
-            var outputTokens = _Model.Generate(parms);
+            //var outputTokens = _Model.Generate(parms);
 
-            _Text = "";
-            for (ulong i = 0; i < outputTokens.NumSequences; i++)
+            using var generator = new Generator(_Model, parms);
+            using var tokenizerStream = _Tokenizer.CreateStream();
+
+            while (!generator.IsDone())
             {
-                _Text = _Text + _Tokenizer.Decode(outputTokens[i]);               
+                generator.ComputeLogits();
+                generator.GenerateNextToken();
+                var tokenId = generator.GetSequence(0)[^1];
+                var sentencePiece = tokenizerStream.Decode(tokenId);
+                _Text = _Text + sentencePiece;
             }
+
+            //_Text = "";
+            //for (ulong i = 0; i < outputTokens.NumSequences; i++)
+            //{
+            //    _Text = _Text + _Tokenizer.Decode(outputTokens[i]);               
+            //}
         }
+
+
+
+        //public class ResultModel : INotifyPropertyChanged
+        //{
+        //    private string _content;
+        //    private bool _isUserInput;
+
+        //    public string Content
+        //    {
+        //        get { return _content; }
+        //        set { _content = value; NotifyPropertyChanged(); }
+        //    }
+
+        //    public bool IsUserInput
+        //    {
+        //        get { return _isUserInput; }
+        //        set { _isUserInput = value; NotifyPropertyChanged(); }
+        //    }
+
+        //    public DateTime Timestamp { get; } = DateTime.Now;
+
+        //    #region INotifyPropertyChanged
+        //    public event PropertyChangedEventHandler PropertyChanged;
+        //    public void NotifyPropertyChanged([CallerMemberName] string property = "")
+        //    {
+        //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+        //    }
+        //    #endregion
+        //}
+
+        //private async Task GenerateAsync()
+        //{
+        //    try
+        //    {
+        //        var userInput = new ResultModel
+        //        {
+        //            Content = Prompt,
+        //            IsUserInput = true
+        //        };
+
+        //        Prompt = null;
+        //        CurrentResult = null;
+        //        ResultHistory.Add(userInput);
+        //        _cancellationTokenSource = new CancellationTokenSource();
+        //        await foreach (var sentencePiece in RunInferenceAsync(userInput.Content, _cancellationTokenSource.Token))
+        //        {
+        //            if (CurrentResult == null)
+        //            {
+        //                if (string.IsNullOrWhiteSpace(sentencePiece.Content)) // Ingore preceding '\n'
+        //                    continue;
+
+        //                ResultHistory.Add(CurrentResult = new ResultModel());
+        //            }
+        //            CurrentResult.Content += sentencePiece.Content;
+        //        }
+        //    }
+        //    catch (OperationCanceledException)
+        //    {
+        //        CurrentResult.Content += "\n\n[Operation Canceled]";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message, "Inference Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
+
+        //private async IAsyncEnumerable<TokenModel> RunInferenceAsync(string prompt, [EnumeratorCancellation] CancellationToken cancellationToken)
+        //{
+        //    var sequences = await Tokenizer.EncodeAsync($"<|user|>{prompt}<|end|><|assistant|>", cancellationToken);
+
+        //    using var generatorParams = new GeneratorParams(Model);
+        //    generatorParams.ApplySearchOptions(SearchOptions);
+        //    generatorParams.SetInputSequences(sequences);
+
+        //    using var tokenizerStream = Tokenizer.CreateStream();
+        //    using var generator = new Generator(Model, generatorParams);
+        //    while (!generator.IsDone())
+        //    {
+        //        cancellationToken.ThrowIfCancellationRequested();
+
+        //        yield return await Task.Run(() =>
+        //        {
+        //            generator.ComputeLogits();
+        //            generator.GenerateNextToken();
+
+        //            var tokenId = generator.GetSequence(0)[^1];
+        //            return new TokenModel(tokenId, tokenizerStream.Decode(tokenId));
+        //        }, cancellationToken);
+        //    }
+        //}
     }
 }

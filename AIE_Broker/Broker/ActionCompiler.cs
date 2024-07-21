@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Broker
 {
-    public class ActionCompiler: BrokerWorker
+    public class ActionCompiler : BrokerWorker
     {
         public string ActionText;
 
@@ -25,7 +25,7 @@ namespace Broker
         public string Error { get; private set; }
 
         public BrokerWorker.Status Status { get; private set; } = Status.Ready;
-        public string Parameter { get; private set; }    
+        public string Parameter { get; private set; }
 
         public void Compile()
         {
@@ -35,7 +35,7 @@ namespace Broker
             {
                 try
                 {
-                    LogMessage("Compiling: " + this.ActionText);                    
+                    LogMessage("Compiling: " + this.ActionText);
 
                     //strip out parameter text
                     string actionText = this.ActionText;
@@ -83,10 +83,10 @@ namespace Broker
                     }
                     else
                     {
-                        if (TopChoice.Likeness - nextChoice.Likeness < 0.01)
+                        if (nextChoice != null && TopChoice.Likeness - nextChoice.Likeness < 0.01)
                         {
                             this.Status = Status.Ambigous;
-                            this.Error = "Ambigous: TopChoice.Likeness - nextChoice.Likeness < 0.01";                            
+                            this.Error = "Ambigous: TopChoice.Likeness - nextChoice.Likeness < 0.01";
                         }
                         else
                         {

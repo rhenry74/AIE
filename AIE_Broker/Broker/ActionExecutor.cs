@@ -77,9 +77,9 @@ namespace Broker
         {
             try
             {
-                var capability = ActionCompiler.TopChoice?.Capability;
-                LogMessage("Launching Application " + capability.AppPath);
+                var capability = ActionCompiler.TopChoice?.Capability;                
                 var portNumber = Program.PortMappings.Max(x => x.Port) + 1;
+                LogMessage($"Launching Application {capability.AppPath} on port {portNumber}");
                 var newPortMapping = new PortMapping()
                 {
                     Name = Program.Context + ":" + capability.AppClass,

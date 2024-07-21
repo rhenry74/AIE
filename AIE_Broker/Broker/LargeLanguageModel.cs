@@ -18,7 +18,6 @@ namespace Broker
     public class LargeLanguageModel
     {
         private Model _Model;
-        private Tokenizer _Tokenizer;
 
         private string _Text;
         public string[] Result
@@ -37,7 +36,6 @@ namespace Broker
                 var modelPath = ConfigurationManager.AppSettings["modelPath"];
                 _Model = new Model(modelPath);
                 Program.SharedContext.AutomationLog.Enqueue("Hello, ONNX World! The model loaded.");
-                _Tokenizer = new Tokenizer(_Model);
             }
             catch (Exception ex)
             {
@@ -111,7 +109,9 @@ namespace Broker
 
         public void Generate()
         {
-            var tokens = _Tokenizer.Encode(_prompt);
+            _Text = string.Empty;
+            using var tokenizer = new Tokenizer(_Model);
+            var tokens = tokenizer.Encode(_prompt);
             var parms = new GeneratorParams(_Model);
             parms.SetSearchOption("max_length", 8192);
             parms.TryGraphCaptureWithMaxBatchSize(8192);
@@ -121,7 +121,7 @@ namespace Broker
             //var outputTokens = _Model.Generate(parms);
 
             using var generator = new Generator(_Model, parms);
-            using var tokenizerStream = _Tokenizer.CreateStream();
+            using var tokenizerStream = tokenizer.CreateStream();
 
             while (!generator.IsDone())
             {
@@ -131,6 +131,7 @@ namespace Broker
                 var sentencePiece = tokenizerStream.Decode(tokenId);
                 _Text = _Text + sentencePiece;
             }
+            
 
             //_Text = "";
             //for (ulong i = 0; i < outputTokens.NumSequences; i++)

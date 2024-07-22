@@ -33,7 +33,12 @@ namespace AIE_Draw
         private void button1_Click(object sender, EventArgs e)
         {
             var elementForm = new DrawElement();
-            elementForm.ShowDialog();
+            var result = elementForm.ShowDialog();
+            if (result == DialogResult.OK) 
+            {
+                lbElements.Items.Add(elementForm.Element);
+            }
+            this.Refresh();
         }
 
         private void pSurface_Paint(object sender, PaintEventArgs e)

@@ -30,7 +30,8 @@
         {
             comboBox1 = new ComboBox();
             label1 = new Label();
-            pElement = new Panel();
+            flowLayout = new FlowLayoutPanel();
+            button1 = new Button();
             SuspendLayout();
             // 
             // comboBox1
@@ -53,22 +54,35 @@
             label1.TabIndex = 1;
             label1.Text = "Type:";
             // 
-            // pElement
+            // flowLayout
             // 
-            pElement.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            pElement.Location = new Point(5, 49);
-            pElement.Name = "pElement";
-            pElement.Size = new Size(452, 195);
-            pElement.TabIndex = 2;
+            flowLayout.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            flowLayout.Location = new Point(5, 50);
+            flowLayout.Name = "flowLayout";
+            flowLayout.Size = new Size(384, 244);
+            flowLayout.TabIndex = 2;
+            // 
+            // button1
+            // 
+            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            button1.Location = new Point(307, 302);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 3;
+            button1.Text = "OK";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // DrawElement
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(459, 256);
-            Controls.Add(pElement);
+            ClientSize = new Size(394, 333);
+            Controls.Add(button1);
+            Controls.Add(flowLayout);
             Controls.Add(label1);
             Controls.Add(comboBox1);
+            MinimumSize = new Size(410, 372);
             Name = "DrawElement";
             Text = "DrawElement";
             ResumeLayout(false);
@@ -79,6 +93,7 @@
 
         private ComboBox comboBox1;
         private Label label1;
-        private Panel pElement;
+        private FlowLayoutPanel flowLayout;
+        private Button button1;
     }
 }

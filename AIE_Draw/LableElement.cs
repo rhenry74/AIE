@@ -19,9 +19,18 @@ namespace AIE_Draw
             this.elementDef = elementDef;
         }
 
+        public LableElement()
+        {
+        }
+
         public void DrawOn(Graphics graphics)
         {
             throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return $"Lable: X={X}, Y={Y}, Text={Text}";
         }
     }
 

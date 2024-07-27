@@ -1,3 +1,13 @@
+This repo is an artifact entered into
+Pervasive AI Developer Contest
+with AMD
+
+https://www.hackster.io/contests/amd2023
+
+See the project here:
+https://www.hackster.io/rhenry74/the-ai-enabled-operating-system-ecosystem-f66272
+
+
 # The AI Enabled Operating System Ecosystem #
 
 ## What problem are you going to solve ##

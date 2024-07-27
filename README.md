@@ -3,7 +3,7 @@ This repo is an artifact entered into
 
 # The AI Enabled Operating System Ecosystem #
 
-[on hackser.io](https://www.hackster.io/rhenry74/the-ai-enabled-operating-system-ecosystem-f66272)
+[See it on hackser.io!](https://www.hackster.io/rhenry74/the-ai-enabled-operating-system-ecosystem-f66272)
 
 ## What problem are you going to solve ##
 

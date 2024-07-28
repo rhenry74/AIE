@@ -180,14 +180,18 @@ namespace Calendar
             var example = new ApplicationExample()
             {
                 AppClass = "email",
-                Question = "add a calendar event to remind me i have a dentist appointment for cleaning july 12th at 2:00\r\nthe address is: 13 Carver Rd in Memphis",
+                Question = "Current Date = 7/7/2024 1:02:03 AM\r\n" +
+                "User's Name = Robert Henry\r\n" +
+                "\r\n" +
+                "add a calendar event to remind me i have a dentist appointment for cleaning july 12th at 2:00 pm\r\nthe address is: 13 Carver Rd in Memphis",
                 Answers = new[]
-                {                   
+                {
                     "start calendar application",
-                    "set calendar event date and time to[7/12/2024 2:00 PM]",
-                    "set calendar event title to[Dentist Appointment - Cleaning]",
-                    "append calendar event description with[You have a dentist appointment scheduled for a cleaning on July 12th at 2:00 PM.]",
-                    "append calendar event description with[The address is 13 Carver Rd in Memphis]"
+                    "set calendar event date and time to [7/12/2024 2:00 PM]",
+                    "set calendar event title to [Dentist Appointment - Cleaning]",
+                    "append calendar event description with [Robert,]" ,
+                    "append calendar event description with [You have a dentist appointment scheduled for a cleaning on July 12th at 2:00 PM.]",
+                    "append calendar event description with [The address is 13 Carver Rd in Memphis]"
                 }
             };
 

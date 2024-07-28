@@ -28,15 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             splitContainer1 = new SplitContainer();
             splitContainer2 = new SplitContainer();
-            button3 = new Button();
-            button2 = new Button();
-            button1 = new Button();
+            btDelete = new Button();
+            btTopAdd = new Button();
             lbElements = new ListBox();
             pSurface = new Panel();
-            tbSeriesDef = new TextBox();
+            btUpdate = new Button();
+            btDefAdd = new Button();
+            tbElementDef = new TextBox();
             tbAutomationStatus = new TextBox();
+            timer1 = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -60,10 +63,12 @@
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(tbSeriesDef);
+            splitContainer1.Panel2.Controls.Add(btUpdate);
+            splitContainer1.Panel2.Controls.Add(btDefAdd);
+            splitContainer1.Panel2.Controls.Add(tbElementDef);
             splitContainer1.Panel2.Controls.Add(tbAutomationStatus);
-            splitContainer1.Size = new Size(840, 453);
-            splitContainer1.SplitterDistance = 364;
+            splitContainer1.Size = new Size(960, 682);
+            splitContainer1.SplitterDistance = 548;
             splitContainer1.TabIndex = 0;
             // 
             // splitContainer2
@@ -74,48 +79,38 @@
             // 
             // splitContainer2.Panel1
             // 
-            splitContainer2.Panel1.Controls.Add(button3);
-            splitContainer2.Panel1.Controls.Add(button2);
-            splitContainer2.Panel1.Controls.Add(button1);
+            splitContainer2.Panel1.Controls.Add(btDelete);
+            splitContainer2.Panel1.Controls.Add(btTopAdd);
             splitContainer2.Panel1.Controls.Add(lbElements);
             // 
             // splitContainer2.Panel2
             // 
             splitContainer2.Panel2.Controls.Add(pSurface);
-            splitContainer2.Size = new Size(840, 364);
-            splitContainer2.SplitterDistance = 247;
+            splitContainer2.Size = new Size(960, 548);
+            splitContainer2.SplitterDistance = 282;
             splitContainer2.TabIndex = 1;
             // 
-            // button3
+            // btDelete
             // 
-            button3.Anchor = AnchorStyles.Top;
-            button3.Location = new Point(167, 4);
-            button3.Name = "button3";
-            button3.Size = new Size(75, 23);
-            button3.TabIndex = 3;
-            button3.Text = "Update";
-            button3.UseVisualStyleBackColor = true;
+            btDelete.Anchor = AnchorStyles.Top;
+            btDelete.Location = new Point(104, 4);
+            btDelete.Name = "btDelete";
+            btDelete.Size = new Size(75, 23);
+            btDelete.TabIndex = 2;
+            btDelete.Text = "Delete";
+            btDelete.UseVisualStyleBackColor = true;
+            btDelete.Click += btDelete_Click;
             // 
-            // button2
+            // btTopAdd
             // 
-            button2.Anchor = AnchorStyles.Top;
-            button2.Location = new Point(86, 4);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 2;
-            button2.Text = "Delete";
-            button2.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            button1.Anchor = AnchorStyles.Top;
-            button1.Location = new Point(5, 4);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 1;
-            button1.Text = "Add";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            btTopAdd.Anchor = AnchorStyles.Top;
+            btTopAdd.Location = new Point(23, 4);
+            btTopAdd.Name = "btTopAdd";
+            btTopAdd.Size = new Size(75, 23);
+            btTopAdd.TabIndex = 1;
+            btTopAdd.Text = "Add";
+            btTopAdd.UseVisualStyleBackColor = true;
+            btTopAdd.Click += btTopAdd_Click;
             // 
             // lbElements
             // 
@@ -124,25 +119,48 @@
             lbElements.ItemHeight = 15;
             lbElements.Location = new Point(0, 33);
             lbElements.Name = "lbElements";
-            lbElements.Size = new Size(244, 289);
+            lbElements.Size = new Size(279, 469);
             lbElements.TabIndex = 0;
+            lbElements.SelectedIndexChanged += lbElements_SelectedIndexChanged;
             // 
             // pSurface
             // 
             pSurface.Dock = DockStyle.Fill;
             pSurface.Location = new Point(0, 0);
             pSurface.Name = "pSurface";
-            pSurface.Size = new Size(589, 364);
+            pSurface.Size = new Size(674, 548);
             pSurface.TabIndex = 0;
             pSurface.Paint += pSurface_Paint;
             // 
-            // tbSeriesDef
+            // btUpdate
             // 
-            tbSeriesDef.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tbSeriesDef.Location = new Point(3, 2);
-            tbSeriesDef.Name = "tbSeriesDef";
-            tbSeriesDef.Size = new Size(834, 23);
-            tbSeriesDef.TabIndex = 1;
+            btUpdate.Anchor = AnchorStyles.Top;
+            btUpdate.Location = new Point(893, 1);
+            btUpdate.Name = "btUpdate";
+            btUpdate.Size = new Size(64, 23);
+            btUpdate.TabIndex = 4;
+            btUpdate.Text = "Update";
+            btUpdate.UseVisualStyleBackColor = true;
+            btUpdate.Click += btUpdate_Click;
+            // 
+            // btDefAdd
+            // 
+            btDefAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btDefAdd.Location = new Point(830, 1);
+            btDefAdd.Name = "btDefAdd";
+            btDefAdd.Size = new Size(64, 23);
+            btDefAdd.TabIndex = 2;
+            btDefAdd.Text = "Add";
+            btDefAdd.UseVisualStyleBackColor = true;
+            btDefAdd.Click += btDefAdd_Click;
+            // 
+            // tbElementDef
+            // 
+            tbElementDef.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tbElementDef.Location = new Point(3, 2);
+            tbElementDef.Name = "tbElementDef";
+            tbElementDef.Size = new Size(821, 23);
+            tbElementDef.TabIndex = 1;
             // 
             // tbAutomationStatus
             // 
@@ -150,16 +168,22 @@
             tbAutomationStatus.Location = new Point(0, 24);
             tbAutomationStatus.Multiline = true;
             tbAutomationStatus.Name = "tbAutomationStatus";
-            tbAutomationStatus.Size = new Size(840, 61);
+            tbAutomationStatus.Size = new Size(960, 106);
             tbAutomationStatus.TabIndex = 0;
+            // 
+            // timer1
+            // 
+            timer1.Enabled = true;
+            timer1.Tick += timer1_Tick;
             // 
             // MainWin
             // 
-            ClientSize = new Size(840, 453);
+            ClientSize = new Size(960, 682);
             Controls.Add(splitContainer1);
             MinimumSize = new Size(856, 492);
             Name = "MainWin";
             Text = "AIE_Draw";
+            Load += MainWin_Load;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             splitContainer1.Panel2.PerformLayout();
@@ -178,10 +202,12 @@
         private Panel pSurface;
         private TextBox tbAutomationStatus;
         private SplitContainer splitContainer2;
-        private Button button3;
-        private Button button2;
-        private Button button1;
+        private Button btDelete;
+        private Button btTopAdd;
         private ListBox lbElements;
-        private TextBox tbSeriesDef;
+        private TextBox tbElementDef;
+        private Button btDefAdd;
+        private Button btUpdate;
+        private System.Windows.Forms.Timer timer1;
     }
 }

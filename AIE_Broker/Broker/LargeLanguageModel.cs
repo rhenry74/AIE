@@ -52,6 +52,8 @@ namespace Broker
             set { _prompt = value; }
         }
 
+        public int Tokens { get; private set; }
+
         public void AssemblePrompt(ApplicationCapability[] capabilities, ApplicationExample[] examples, 
             KeyValuePair<string, string>[] contextParameters, string userPrompt)
         {
@@ -122,6 +124,7 @@ namespace Broker
 
             using var generator = new Generator(_Model, parms);
             using var tokenizerStream = tokenizer.CreateStream();
+            Tokens = 0;
 
             while (!generator.IsDone())
             {
@@ -130,6 +133,7 @@ namespace Broker
                 var tokenId = generator.GetSequence(0)[^1];
                 var sentencePiece = tokenizerStream.Decode(tokenId);
                 _Text = _Text + sentencePiece;
+                Tokens++;
             }
             
 

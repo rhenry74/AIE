@@ -18,7 +18,7 @@ namespace AIE_Draw
             InitializeComponent();
         }
 
-        public GraphicElement Element { get; set; }
+        public IGraphicElement Element { get; set; }
         public Type ElementType { get; set; }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -77,12 +77,16 @@ namespace AIE_Draw
                         {
                             prop.SetValue(instance, int.Parse(group.Controls[0].Text));
                         }
+                        if (prop.PropertyType == typeof(float))
+                        {
+                            prop.SetValue(instance, float.Parse(group.Controls[0].Text));
+                        }
                         break;
                     }
                 }
             }
 
-            Element = (GraphicElement)instance;
+            Element = (IGraphicElement)instance;
 
             this.DialogResult = DialogResult.OK;
             this.Close();

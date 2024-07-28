@@ -1,31 +1,36 @@
 ﻿
 namespace AIE_Draw
 {
-    internal class LableElement: GraphicElement
+    internal class LableElement: IGraphicElement
     {
         private string elementDef;
 
         [DrawElementProperty]
-        public int X { get; set; }
+        public float X { get; set; }
         
         [DrawElementProperty]
-        public int Y { get; set; }
+        public float Y { get; set; }
 
         [DrawElementProperty] 
         public string Text { get; set; }
 
-        public LableElement(string elementDef)
+        private Font _font;
+        private Brush _brush;
+
+        public LableElement(string elementDef): this()
         {
             this.elementDef = elementDef;
         }
 
         public LableElement()
         {
+            _font = SystemFonts.DefaultFont;
+            _brush = Brushes.Black;
         }
 
         public void DrawOn(Graphics graphics)
         {
-            throw new NotImplementedException();
+            graphics.DrawString(Text, _font, _brush, X, Y);
         }
 
         public override string ToString()

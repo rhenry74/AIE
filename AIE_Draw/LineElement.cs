@@ -3,27 +3,27 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace AIE_Draw
 {
-    internal class LineElement: GraphicElement
+    internal class LineElement: IGraphicElement
     {
         private string text;
 
         [DrawElementProperty]
-        public int X1 { get; set; }
+        public float X1 { get; set; }
 
         [DrawElementProperty]
-        public int Y1 { get; set; }
+        public float Y1 { get; set; }
 
         [DrawElementProperty]
-        public int X2 { get; set; }
+        public float X2 { get; set; }
 
         [DrawElementProperty]
-        public int Y2 { get; set; }
+        public float Y2 { get; set; }
 
-        private Pen pen;
+        private Pen _pen;
 
         public LineElement()
         {
-            pen = Pens.Black;
+            _pen = Pens.Black;
         }
 
         public LineElement(string text): this()
@@ -33,7 +33,7 @@ namespace AIE_Draw
 
         public void DrawOn(Graphics graphics)
         {
-            graphics.DrawLine(pen, X1, Y1, X2, Y2);
+            graphics.DrawLine(_pen, X1, Y1, X2, Y2);
         }
 
         public override string ToString()

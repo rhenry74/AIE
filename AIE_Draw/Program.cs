@@ -95,7 +95,7 @@ namespace AIE_Draw
 
             capability = new ApplicationCapability()
             {
-                Action = "add line to drawing []",
+                Action = "add line to drawing at []",
                 ActionType = ActionType.HTTP,
                 AppClass = "drawing",
                 ContentType = "application/json",
@@ -109,23 +109,27 @@ namespace AIE_Draw
             content = new StringContent(json, Encoding.UTF8, "application/json");
             response = await sender.PostAsync(url, content);
 
-            //url = "example";
+            url = "example";
 
-            //var example = new ApplicationExample()
-            //{
-            //    AppClass = "column chart",
-            //    Question = "create a chart that shows the number of days in each month of the year",
-            //    Answers = new[]
-            //    {
-            //        "start column chart application",
-            //        "set column chart title to [Days in Each Month of the Year]",
-            //        "add column chart series [January=31:February=28:March=31:April=30:May=31:June=30:July=31:August=31:September=30:October=31:November=30:December=31]"
-            //    }
-            //};
+            var example = new ApplicationExample()
+            {
+                AppClass = "drawing",
+                Question = "draw a right triangle and lable the sides",
+                Answers = new[]
+                {
+                    "start drawing application",
+                    "add line to drawing at [X1=100, Y1=100, X2=100, Y2=300]",
+                    "add line to drawing at [X1=100, Y1=100, X2=300, Y2=300]",
+                    "add line to drawing at [X1=100, Y1=300, X2=300, Y2=300]",
+                    "add text to drawing at [X=90, Y=200, Text=a]",
+                    "add text to drawing at [X=200, Y=300, Text=b]",
+                    "add text to drawing at [X=210, Y=200, Text=c]"
+                }
+            };
 
-            //json = JsonSerializer.Serialize<ApplicationExample>(example);
-            //content = new StringContent(json, Encoding.UTF8, "application/json");
-            //response = await sender.PostAsync(url, content);
+            json = JsonSerializer.Serialize<ApplicationExample>(example);
+            content = new StringContent(json, Encoding.UTF8, "application/json");
+            response = await sender.PostAsync(url, content);
 
             //example = new ApplicationExample()
             //{

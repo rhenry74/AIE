@@ -281,8 +281,9 @@ namespace Broker
                 DateTime now = DateTime.Now;
                 while (LLMRunning)
                 {
-                    Task.Delay(100);
+                    Task.Delay(250);
                     LLMStatus = "Running: " + DateTime.Now.Subtract(now);
+                    LLMStatus += " Tokens: " + LLM.Tokens;
                 }
                 LLMStatus = "Done";
             });

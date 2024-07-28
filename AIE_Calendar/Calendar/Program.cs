@@ -185,11 +185,11 @@ namespace Calendar
                 "\r\n" +
                 "add a calendar event to remind me i have a dentist appointment for cleaning july 12th at 2:00 pm\r\nthe address is: 13 Carver Rd in Memphis",
                 Answers = new[]
-                {                   
+                {
                     "start calendar application",
                     "set calendar event date and time to [7/12/2024 2:00 PM]",
                     "set calendar event title to [Dentist Appointment - Cleaning]",
-                    "append calendar event description with [Robert,]" +
+                    "append calendar event description with [Robert,]" ,
                     "append calendar event description with [You have a dentist appointment scheduled for a cleaning on July 12th at 2:00 PM.]",
                     "append calendar event description with [The address is 13 Carver Rd in Memphis]"
                 }
